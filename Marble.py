@@ -10,7 +10,7 @@ class Marble:
 
     def draw_clickable(self, coordinate_ceil, color=(255, 255, 255)):
         assert coordinate_ceil in self.coordinates, "Coordiante ouside shape"
-
+        
         pygame.draw.circle(self.surface, color, coordinate_ceil, coordinate_ceil[-1])
 
     def can_move(self, coordinate, new_coordinate) -> bool:
