@@ -29,4 +29,3 @@ class Marble:
 
     def remove_pieces(self, pieces) -> dict:
         raise
-       
