@@ -27,18 +27,18 @@ class CreateBoard:
         if self.polygon_outline is None:
             raise AbaloneException().missing_values("Please set polygon First")
 
-        x = self.x
+        x = 10
+        y = 10
         radius_circle = (self.radius//2)//5
 
         list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
         
-        x = radius_circle*5
-        y = radius_circle
         coordinates = []
-        for i, n in enumerate(list_coo_x):
+        for n in list_coo_x:
+            y += radius_circle*2
             for p in range(1,(n+1)):
-                coordinates.append(((i+1)*p*radius_circle+x, (i+1)*radius_circle+y))
-        # print(coordinates)
+                coordinates.append((p*(radius_circle+x+radius_circle), y))
+        # print(len(coordinates))
         
         for i in coordinates:
             pygame.draw.circle(surface, color, i, radius_circle, outline)
