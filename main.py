@@ -2,7 +2,7 @@ import pygame
 from Abalone import CreateBoard
 
 pygame.init()
-size = [500, 500]
+size = [1000, 1000]
 screen = pygame.display.set_mode(size)
 
 screen.fill((150, 255, 10))
@@ -19,7 +19,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    board = CreateBoard([e // 2 for e in size], 200)
+    board = CreateBoard([e // 2 for e in size], 360)
     board.draw_regular_polygon(screen, (255, 255, 255), outline=10)
     coordinate = board.draw_ceil(screen, (0, 0, 0), 2)
     play = ""
