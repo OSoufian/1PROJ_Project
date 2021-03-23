@@ -26,20 +26,26 @@ class CreateBoard:
     def draw_ceil(self, surface, color, outline=0):
         if self.polygon_outline is None:
             raise AbaloneException().missing_values("Please set polygon First")
-
-        x = self.x
         list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-        radius_circle = self.radius / (pi * (self.sides/2))
-        x = x // 2 + 40
-        y = self.y // 2 - (self.polygon_outline + radius_circle)
+        x = self.x
+
+        radius_circle = self.radius / (pi * (self.sides / 2))
+        x = x // 4
+        y = self.y // 2 - (self.polygon_outline)
 
         coordinates = []
+
         for i in list_coo_x:
             for p in range(i):
                 coordinates.append((x + (p * radius_circle * outline), y))
-            y += radius_circle
-        
+            x = x + 15
+            y += 2 * radius_circle
+
         for i in coordinates:
             pygame.draw.circle(surface, color, i, radius_circle, outline)
         coordinates.append(radius_circle)
         return coordinates
+
+
+
+
