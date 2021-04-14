@@ -12,39 +12,41 @@ class CreateBoard:
         self.polygon_outline = None
         self.sides = sides
 
-
-
     def draw_regular_polygon(self, surface, color, outline=0):
 
         pygame.draw.polygon(surface, color,
-                            [(round(self.x + self.radius * cos(2 * pi * i / self.sides)),
-                              round(self.y + self.radius * sin(2 * pi * i / self.sides)))
+                            [(self.x + self.radius * cos(2 * pi * i / self.sides),
+                              self.y + self.radius * sin(2 * pi * i / self.sides))
                              for i
                              in
                              range(self.sides)], outline)
 
         self.polygon_outline = outline
 
-    def get_coordinates(self, outline=1):
+    def draw_ceil(self, surface, color, outline=0):
         if self.polygon_outline is None:
             raise AbaloneException().missing_values("Please set polygon First")
         list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-        radius_circle = self.radius/10
+        x = self.x
 
-        x = round(self.x + self.radius * cos(2 * pi * 2 / self.sides)) + radius_circle
-
-        y = round(self.y + self.radius * sin(2 * pi * 4/ self.sides)) + radius_circle+4
-
+        radius_circle = self.radius / (pi * (self.sides / 2))
+        x = x // 4
+        y = self.y // 2 - (self.polygon_outline)
 
         coordinates = []
 
-        for n, i in enumerate (list_coo_x):
+        for i in list_coo_x:
             for p in range(i):
                 coordinates.append((x + (p * radius_circle * outline), y))
-            x = x+ radius_circle if n > 3 else x - radius_circle
-            y = y+ 2*radius_circle -3
+            x = x + 15
+            y += 2 * radius_circle
+
+        for i in coordinates:
+            pygame.draw.circle(surface, color, i, radius_circle, outline)
         coordinates.append(radius_circle)
         return coordinates
+
+
 
 
 
