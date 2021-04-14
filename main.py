@@ -21,7 +21,7 @@ while running:
 
     board = CreateBoard([e // 2 for e in size], 360)
     board.draw_regular_polygon(screen, (255, 255, 255), outline=10)
-    coordinate = board.draw_ceil(screen, (0, 0, 0), 2)
+    coordinate = board.get_coordinates()
     play = ""
 
     pygame.display.flip()
