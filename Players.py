@@ -69,7 +69,7 @@ class Player(object):
 
     @property
     def name(self) -> str:
-        return self.__player["name"] if "name" in self.__player else None
+        return self.__player["name"] if "name" in self.__player else ""
 
     @name.setter
     def name(self, name):
