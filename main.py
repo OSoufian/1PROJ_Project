@@ -16,9 +16,8 @@ pieces = {"p1": [], "p2": []}
 
 board = CreateBoard([e // 2 for e in size], 250)
 board.draw_regular_polygon(screen, (255, 255, 255), outline=10)
-coordinates = board.get_coordinates(screen)
+radius, sprites = board.draw_ceil(screen, (0, 0, 0), 2)
 
-sprites = [pygame.draw.circle(screen, "green", i, coordinates[-1], 2) for i in coordinates[:-1]]
 
 p1 = Player()
 p1.circles = []
@@ -50,7 +49,6 @@ while running:
                     print(players[play%2].circles)
                     valid = True
                 print(players[play%2].name, "as clicked on ", coordinate_Circle, "and take for him" * valid)
-                
                 play += 1
 
         if event.type == pygame.KEYDOWN:

@@ -23,7 +23,7 @@ class CreateBoard:
 
         self.polygon_outline = outline
 
-    def get_coordinates(self, outline=0):
+    def draw_ceil(self, surface, color, outline=0):
         if self.polygon_outline is None:
             raise AbaloneException().missing_values("Please set polygon First")
         list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
@@ -43,9 +43,9 @@ class CreateBoard:
             x = x + radius_circle if n > 3 else x - radius_circle
             y = y + 2*radius_circle - 7
 
-
+        sprites = [ pygame.draw.circle(surface, color, i, radius_circle, outline)for i in coordinates]
         coordinates.append(radius_circle)
-        return coordinates
+        return radius_circle,sprites
 
 
 
