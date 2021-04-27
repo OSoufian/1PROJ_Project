@@ -2,7 +2,7 @@ class Players:
     __players = []
 
     def new_player(self):
-        self.__players = Player(self.__players)
+        self.__players = Player()
 
     @classmethod
     def getPlayers(cls) -> list:
@@ -12,27 +12,14 @@ class Players:
 class Player(object):
     __player = {}
 
-    def __new__(cls, players=None, **kwargs):
-        players = [] if players is None else players
-
-        player = super(Player, cls).__new__(cls)
+    def __init__(self, **kwargs):
 
         players_data = ["circles", "colorn" "points", "nom"]
         for k in kwargs.keys():
             if k not in players_data:
                 del kwargs[k]
 
-        cls.__player = kwargs
-
-        cls.__player["id"] = len(players)
-
-        players.append(player)
-
-        return Player
-
-    @property
-    def player_id(self) -> int:
-        return self.__player["id"]
+        self.__player = kwargs
 
     @property
     def circles(self) -> list:
@@ -46,7 +33,8 @@ class Player(object):
             remove = False
         if remove:
             self.__player["circles"].remove(circles)
-        self.__player["circles"].append(circles)
+        if circles != []:
+            self.__player["circles"].append(circles)
 
     @property
     def color(self) -> str:

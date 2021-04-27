@@ -22,38 +22,43 @@ sprites = [pygame.draw.circle(screen, "green", i, coordinates[-1], 2) for i in c
 
 p1 = Player()
 p1.circles = []
+p1.name = "Toto"
 p2 = Player()
 p2.circles = []
+p2.name = "Hercule"
 players = [p1, p2]
 
+play = 0
 
 while running:
 
-    for player in players:
-        for event in pygame.event.get():
+    for event in pygame.event.get():
 
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                clicked_sprites = [s for s in sprites if s.collidepoint(pos)]
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            clicked_sprites = [s for s in sprites if s.collidepoint(pos)]
 
-                if len(clicked_sprites) >= 1:
-                    coordinate_Circle = clicked_sprites[0].center
+            if len(clicked_sprites) >= 1:
+                coordinate_Circle = clicked_sprites[0].center
 
-                    valid = False
-                    #print([p.circles for p in players if coordinate_Circle in p.circles], coordinate_Circle)
-                    if not any(p.circles for p in players if coordinate_Circle in p.circles):
+                valid = False
+                # print([p.circles for p in players if coordinate_Circle in p.circles], coordinate_Circle)
+                if not any(p.circles for p in players if coordinate_Circle in p.circles):
+                    players[play%2].circles.append(coordinate_Circle)
+                    print(players[play%2].circles)
+                    valid = True
+                print(players[play%2].name, "as clicked on ", coordinate_Circle, "and take for him" * valid)
+                
+                play += 1
 
-                        player.circles.append(coordinate_Circle)
-                        print(player.circles)
-                        valid = True
-
-                    print(player.name, "as clicked on ", coordinate_Circle, "and take for him"*valid)
+        if event.type == pygame.KEYDOWN:
+            running = False
 
 
-    play = ""
 
     pygame.display.flip()
 
+print(p1.name, ">", p1.circles,p2.name,">", p2.circles)
 pygame.quit()
