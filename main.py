@@ -16,7 +16,7 @@ pieces = {"p1": [], "p2": []}
 
 board = CreateBoard([e // 2 for e in size], 250)
 board.draw_regular_polygon(screen, (255, 255, 255), outline=10)
-coordinates = board.draw_ceil(screen, (0, 0, 0), 2)
+coordinates = board.get_coordinates(screen)
 
 sprites = [pygame.draw.circle(screen, "green", i, coordinates[-1], 2) for i in coordinates[:-1]]
 
