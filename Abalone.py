@@ -13,10 +13,10 @@ class CreateBoard:
         self.sides = sides
 
     def draw_regular_polygon(self, surface, color, outline=0):
-
+    
         pygame.draw.polygon(surface, color,
-                            [(self.x + self.radius * cos(2 * pi * i / self.sides),
-                              self.y + self.radius * sin(2 * pi * i / self.sides))
+                            [(round(self.x + self.radius * cos(2 * pi * i / self.sides)),
+                              round(self.y + self.radius * sin(2 * pi * i / self.sides)))
                              for i
                              in
                              range(self.sides)], outline)
@@ -30,16 +30,18 @@ class CreateBoard:
         x = self.x
 
         radius_circle = self.radius / (pi * (self.sides / 2))
-        x = x // 4
-        y = self.y // 2 - (self.polygon_outline)
+
+        x = round(self.x + self.radius * cos(2 * pi * 2 / self.sides)) + radius_circle - 6
+        
+        y = round(self.y + self.radius * sin(2 * pi * 4/ self.sides)) + radius_circle + 7
 
         coordinates = []
 
-        for i in list_coo_x:
+        for n, i in enumerate(list_coo_x):
             for p in range(i):
                 coordinates.append((x + (p * radius_circle * outline), y))
-            x = x + 15
-            y += 2 * radius_circle
+            x = x + radius_circle if n > 3 else x - radius_circle
+            y = y + 2*radius_circle - 7
 
         for i in coordinates:
             pygame.draw.circle(surface, color, i, radius_circle, outline)

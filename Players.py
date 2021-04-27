@@ -1,33 +1,76 @@
-"""import pygame
+class Players:
+    __players = []
 
-players = {}
+    def new_player(self):
+        self.__players = Player(self.__players)
 
-class players():"""
-
-
-class Meta(type):
-    def __new__(mcs, name, bases, dct):
-        mcs.x = super().__new__(mcs, name, bases, dct)
-        mcs.x.attr = 2000
-        setattr(mcs.x, mcs.test.__name__, mcs.test)
-        setattr(mcs.x, mcs.draw_pieces.__name__, mcs.draw_pieces)
-        return mcs.x
-
-    def test(cls):
-        print(1000)
-
-    def draw_pieces(cls):
-        pass
+    @classmethod
+    def getPlayers(cls) -> list:
+        return cls.__players
 
 
-class foo(metaclass=Meta):
+class Player(object):
+    __player = {}
 
-    def __init__(self):
-        x = 23
+    def __new__(cls, players=None, **kwargs):
+        players = [] if players is None else players
 
+        player = super(Player, cls).__new__(cls)
 
-class foo2(metaclass=Meta):
-    pass
+        players_data = ["circles", "colorn" "points", "nom"]
+        for k in kwargs.keys():
+            if k not in players_data:
+                del kwargs[k]
 
+        cls.__player = kwargs
 
-print(foo().test())
+        cls.__player["id"] = len(players)
+
+        players.append(player)
+
+        return players
+
+    @property
+    def player_id(self) -> int:
+        return self.__player["id"]
+
+    @property
+    def circles(self) -> list:
+
+        return self.__player["circles"] if "circles" in self.__player else None
+
+    @circles.setter
+    def circles(self, circles, remove=False):
+        if "circles" not in self.__player:
+            self.__player["circles"] = []
+            remove = False
+        if remove:
+            self.__player["circles"].remove(circles)
+        self.__player["circles"].append(circles)
+
+    @property
+    def color(self) -> str:
+        return self.__player["color"] if "color" in self.__player else "red"
+
+    @color.setter
+    def color(self, color):
+        self.__player["color"] = color
+
+    @property
+    def points(self) -> int:
+        return self.__player["points"] if "points" in self.__player else 0
+
+    @points.setter
+    def points(self, points):
+        if "points" not in self.__player:
+            self.__player["points"] = points
+        else:
+            self.__player["points"] += points
+
+    @property
+    def name(self) -> str:
+        return self.__player["name"] if "name" in self.__player else None
+
+    @name.setter
+    def name(self, name):
+        self.__player["name"] = name
