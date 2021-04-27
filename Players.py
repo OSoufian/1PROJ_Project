@@ -37,7 +37,7 @@ class Player(object):
     @property
     def circles(self) -> list:
 
-        return self.__player["circles"] if "circles" in self.__player else None
+        return self.__player["circles"] if "circles" in self.__player else []
 
     @circles.setter
     def circles(self, circles, remove=False):
