@@ -18,10 +18,16 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print(pygame.mouse.get_pos())
 
     board = CreateBoard([e // 2 for e in size], 250)
     board.draw_regular_polygon(screen, (255, 255, 255), outline=10)
-    coordinate = board.draw_ceil(screen, (0, 0, 0), 2)
+    coordinates = board.draw_ceil(screen, (0, 0, 0), 2)
+
+    for i in coordinates[:-1]:
+        pygame.draw.circle(screen, "black", i, coordinates[-1], 2)
+
     play = ""
 
     pygame.display.flip()
