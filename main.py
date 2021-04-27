@@ -33,8 +33,6 @@ players = [p1, p2]
 
 play = 0
 
-game_init = True
-
 while running:
 
     for event in pygame.event.get():
@@ -46,13 +44,11 @@ while running:
             clicked_sprites = [s for s in sprites if s.collidepoint(pos)]
 
             if len(clicked_sprites) >= 1:
-                if [p for p in players if len(p.circles) == 14]:
-                    game_init = False
                 coordinate_Circle = clicked_sprites[0].center
 
                 valid = False
                 # print([p.circles for p in players if coordinate_Circle in p.circles], coordinate_Circle)
-                if not any(p.circles for p in players if coordinate_Circle in p.circles) and game_init:
+                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % 2].circles)<15:
                     players[play % 2].circles.append(coordinate_Circle)
                     pygame.draw.circle(screen, players[play%2].color, coordinate_Circle, radius)
                     print(players[play % 2].circles)
