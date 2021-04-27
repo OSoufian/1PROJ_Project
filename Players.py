@@ -28,7 +28,7 @@ class Player(object):
 
         players.append(player)
 
-        return players
+        return Player
 
     @property
     def player_id(self) -> int:
