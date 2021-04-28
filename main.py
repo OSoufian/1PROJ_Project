@@ -33,7 +33,10 @@ players = [p1, p2]
 
 play = 0
 
-x, y = coordinates[len(coordinates)//2-1]
+list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
+middle = coordinates[len(list_coo_x)//2]
+
+x, y = middle[len(middle)//2]
 
 indice =0
 
