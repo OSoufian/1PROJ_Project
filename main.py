@@ -36,6 +36,8 @@ play = 0
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 middle = coordinates[len(list_coo_x)//2]
 
+indice_x = coordinates.index(middle)
+indice_y = middle.index(middle[len(middle)//2])
 x, y = middle[len(middle)//2]
 
 indice =0
@@ -47,11 +49,9 @@ where = lenX//2
 
 selected_circle = []
 
-def findIndice(i):
-    
-    while i not in list_coo_x:
-        i -=1
-    return i
+def get_coordinates(x, y):
+    list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
+    print(coordinates[y%len(list_coo_x)][x%list_coo_x[y%len(list_coo_x)]])
 
 while running:
     
@@ -81,37 +81,27 @@ while running:
             if event.type == pygame.KEYDOWN:
                 key = pygame.key.get_pressed()
 
-                if key[pygame.K_LEFT]:
-                    indice = (indice -1)%lenCo
-                    if indice in list_coo_x:
-                        where = (where-1)%lenX
+                if key[pygame.K_LEFT]:                    
+                    indice_x += 1
 
                 if key[pygame.K_RIGHT]:
-                    indice = (indice +1)%lenCo
-                    if indice in list_coo_x:
-                        where = (where+1)%lenX
+                    
+                    indice_x -= 1
 
                 if key[pygame.K_UP]:
-                    old = list_coo_x[where]
-                    where -= 1
-                    new = list_coo_x[where]
                     
-                    indice = indice + where if old < new else indice - where
+                    indice_y += 1
                 
                 if key[pygame.K_DOWN]:
-                    old = list_coo_x[where]
-                    where += 1
-                    new = list_coo_x[where]
                     
-                    # circleNumber = findIndice(indice + (where if old < new (-where))
-
-                    indice = indice + where if old < new else indice - where
-
+                    indice_y -= 1
+                    
+                
                                 
                 pygame.draw.circle(screen, (180, 50, 0), (x, y) , radius, 2)
                 
                 
-                x, y = coordinates[indice]
+                x, y = get_coordinates(indice_x, indice_y)
                 
                 pygame.display.update()
 
