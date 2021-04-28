@@ -28,22 +28,33 @@ coordinates = [[(295.5258238486492, 216.52582384864922), (348.5774715459477, 216
 
 
 def voisin(coordinates, xy) -> list:
-    coordinates = [e for sub in coordinates for e in sub]
+    var = [e for e in coordinates  if xy in e][0]
+    indice_y = coordinates.index(var)
+    indice_x = var.index(xy)
     voisin = []
-    faux_voisin = [e for e in coordinates if xy in e]
-    for i in coordinates :
-        if xy[1] == i[1] and( xy[0] // 100 == (i[0] // 100)+1 or xy[0] // 100 == (i[0] // 100)-1) :
-            voisin.append(i)
-            
-        if i in faux_voisin :
-            voisin.remove(i) 
-            
-    '''for i in coordinates :
-        if i == coordinates[][0][0] :
-            print ("ils sont voisins")
-        else:
-            print ("ils sont pas voisins") '''
-    return voisin
+    if len(coordinates[indice_y]) > indice_x+1 and indice_x+1 != 0:
+        voisin.append(coordinates[indice_y][indice_x + 1])
 
-print(voisin(coordinates, (348.5774715459477, 216.52582384864922) ))
-            
+    if len(coordinates[indice_y]) > indice_x-1  and indice_x-1 != 0:
+        voisin.append(coordinates[indice_y][indice_x - 1])
+
+    if len(coordinates) > indice_y+1 and indice_y +1 != 0:
+        sub_list = coordinates[indice_y + 1]
+        if len(sub_list) > indice_x:
+            voisin.append(coordinates[indice_y + 1][indice_x])
+        if indice_x - 1 >= -1:
+            voisin.append(coordinates[indice_y + 1][indice_x - 1])
+
+    if len(coordinates) > indice_y-1 and indice_y -1 != 0:
+        sub_list = coordinates[indice_y - 1]
+        if len(sub_list) > indice_x:
+            voisin.append(coordinates[indice_y - 1][indice_x])
+        if indice_x - 1 >= -1:
+            voisin.append(coordinates[indice_y - 1][indice_x - 1])
+
+    return voisin
+    
+    
+# print(voisin(coordinates, (348.5774715459477, 216.52582384864922) ))
+
+
