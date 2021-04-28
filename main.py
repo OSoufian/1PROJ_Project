@@ -1,6 +1,7 @@
 import pygame
 from Abalone import CreateBoard
 from Players import Player
+from test import voisin
 
 pygame.init()
 size = [800, 800]
@@ -30,6 +31,7 @@ p2.name = "Hercule"
 p2.color = "black"
 
 players = [p1, p2]
+nPlayers = len(players)
 
 play = 0
 
@@ -68,13 +70,13 @@ while running:
 
                 valid = False
                 # print([p.circles for p in players if coordinate_Circle in p.circles], coordinate_Circle)
-                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % 2].circles)<14:
-                    players[play % 2].circles.append(coordinate_Circle)
-                    pygame.draw.circle(screen, players[play%2].color, coordinate_Circle, radius - 3)
+                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % nPlayers].circles)<14:
+                    players[play % nPlayers].circles.append(coordinate_Circle)
+                    pygame.draw.circle(screen, players[play % nPlayers].color, coordinate_Circle, radius - 3)
                     valid = True
                 play += 1
-        # len([p for p in players if len(p.circles)==14]) == len(players)
-        if True: 
+        # len([p for p in players if len(p.circles)==14]) == nPlayers
+        if True:
             
             selector = pygame.draw.circle(screen, (255,255,255), (x, y) , radius, 2)
 
@@ -110,9 +112,12 @@ while running:
                         selected_circle.append((x,y))
 
                 print(indice, where)
+
+            for circle in voisin(coordinates, (x, y)):
+                pygame.draw.circle(screen, (255, 255, 255), circle, radius, 0)
                 
             for circle in selected_circle:
-                pygame.draw.circle(screen, (255, 0, 255), circle, radius, 2)
+                pygame.draw.circle(screen, (255, 0, 255), circle, radius, 0)
 
             # print(x, y)
 
