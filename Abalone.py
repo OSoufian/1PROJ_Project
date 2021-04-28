@@ -43,9 +43,7 @@ class CreateBoard:
             
 
         sprites = [ pygame.draw.circle(surface, color, i, radius_circle, outline)for i in [i for c in self.coordinates for i in c]]
-        
-        return radius_circle,sprites
-        
+
         for caca in self.coordinates:
             sprites.append(pygame.draw.circle(surface, color, caca, radius_circle))
             pygame.draw.circle(surface, (180, 50, 0), caca, radius_circle, 3)
