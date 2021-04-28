@@ -34,12 +34,14 @@ class CreateBoard:
         x = round(self.x + self.radius * cos(2 * pi * 2 / self.sides)) + radius_circle - 6
         
         y = round(self.y + self.radius * sin(2 * pi * 4/ self.sides)) + radius_circle + 7
+        sub = []
 
         for n, i in enumerate(list_coo_x):
             for p in range(i):
-                self.coordinates.append((x + (p * radius_circle * outline), y))
+                sub.append((x + (p * radius_circle * outline), y))
             x = x + radius_circle if n > 3 else x - radius_circle
             y = y + 2*radius_circle - 7
+            self.coordinates.append(sub)
 
         sprites = [ pygame.draw.circle(surface, color, i, radius_circle, outline)for i in self.coordinates]
         self.coordinates.append(radius_circle)
