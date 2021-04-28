@@ -14,7 +14,7 @@ class Player(object):
 
     def __init__(self, **kwargs):
 
-        players_data = ["circles", "colorn" "points", "nom"]
+        players_data = ["circles", "colorn" "points", "nom", "marbles"]
         for k in kwargs.keys():
             if k not in players_data:
                 del kwargs[k]
@@ -35,6 +35,21 @@ class Player(object):
             self.__player["circles"].remove(circles)
         if circles != []:
             self.__player["circles"].append(circles)
+
+    @property
+    def marbles(self) -> list:
+
+        return self.__player["marbles"] if "marbles" in self.__player else []
+
+    @marbles.setter
+    def marbles(self, marbles, remove=False):
+        if "marbles" not in self.__player:
+            self.__player["marbles"] = []
+            remove = False
+        if remove:
+            self.__player["marbles"].remove(marbles)
+        if marbles != []:
+            self.__player["marbles"].append(marbles)
 
     @property
     def color(self) -> str:
