@@ -43,7 +43,7 @@ class CreateBoard:
             y = y + 2*radius_circle - 7
             self.coordinates.append(sub)
 
-        sprites = [ pygame.draw.circle(surface, color, i, radius_circle, outline)for i in self.coordinates]
+        sprites = [ pygame.draw.circle(surface, color, i, radius_circle, outline)for i in [i for c in self.coordinates for i in c]]
         self.coordinates.append(radius_circle)
         return radius_circle,sprites
 
