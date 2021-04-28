@@ -51,7 +51,7 @@ selected_circle = []
 
 def get_coordinates(x, y):
     list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-    print(coordinates[y%len(list_coo_x)][x%list_coo_x[y%len(list_coo_x)]])
+    return coordinates[y%len(list_coo_x)][x%list_coo_x[y%len(list_coo_x)]]
 
 while running:
     
@@ -82,19 +82,19 @@ while running:
                 key = pygame.key.get_pressed()
 
                 if key[pygame.K_LEFT]:                    
-                    indice_x += 1
+                    indice_x -= 1
 
                 if key[pygame.K_RIGHT]:
                     
-                    indice_x -= 1
+                    indice_x += 1
 
                 if key[pygame.K_UP]:
                     
-                    indice_y += 1
+                    indice_y -= 1
                 
                 if key[pygame.K_DOWN]:
                     
-                    indice_y -= 1
+                    indice_y += 1
                     
                 
                                 
