@@ -27,34 +27,34 @@ coordinates = [[(295.5258238486492, 216.52582384864922), (348.5774715459477, 216
 
 
 
-def voisin(coordinates, xy) -> list:
+def voisin(coordinates, xy):
     var = [e for e in coordinates  if xy in e][0]
     indice_y = coordinates.index(var)
     indice_x = var.index(xy)
     voisin = []
-    if len(coordinates[indice_y]) > indice_x+1 and indice_x+1 != 0:
+    if len(coordinates[indice_y]) > indice_x + 1:
         voisin.append(coordinates[indice_y][indice_x + 1])
 
-    if len(coordinates[indice_y]) > indice_x-1  and indice_x-1 != 0:
+    if indice_x - 1 >= 0:
         voisin.append(coordinates[indice_y][indice_x - 1])
 
-    if len(coordinates) > indice_y+1 and indice_y +1 != 0:
+    if len(coordinates[indice_y]) > indice_y + 1:
         sub_list = coordinates[indice_y + 1]
+
         if len(sub_list) > indice_x:
             voisin.append(coordinates[indice_y + 1][indice_x])
-        if indice_x - 1 >= -1:
+
+        if indice_x - 1 >= 0:
             voisin.append(coordinates[indice_y + 1][indice_x - 1])
 
-    if len(coordinates) > indice_y-1 and indice_y -1 != 0:
+    if indice_y - 1 >= 0:
         sub_list = coordinates[indice_y - 1]
+
         if len(sub_list) > indice_x:
             voisin.append(coordinates[indice_y - 1][indice_x])
-        if indice_x - 1 >= -1:
+
+        if indice_x - 1 >= 0:
             voisin.append(coordinates[indice_y - 1][indice_x - 1])
 
+    print(indice_x, indice_y)
     return voisin
-    
-    
-# print(voisin(coordinates, (348.5774715459477, 216.52582384864922) ))
-
-

@@ -97,11 +97,8 @@ while running:
                 if key[pygame.K_DOWN]:
                     
                     indice_y += 1
-                    
-                
-                                
+                            
                 pygame.draw.circle(screen, (180, 50, 0), (x, y) , radius, 2)
-                
                 
                 x, y = get_coordinates(indice_x, indice_y)
                 
@@ -111,15 +108,11 @@ while running:
                     if (x,y) not in selected_circle:
                         selected_circle.append((x,y))
 
-                print(indice, where)
-
             for circle in voisin(coordinates, (x, y)):
-                pygame.draw.circle(screen, (255, 255, 255), circle, radius, 0)
+                pygame.draw.circle(screen, (255, 255, 255), circle, radius, 2)
                 
             for circle in selected_circle:
-                pygame.draw.circle(screen, (255, 0, 255), circle, radius, 0)
-
-            # print(x, y)
+                pygame.draw.circle(screen, (255, 0, 255), circle, radius, 2)
 
     pygame.display.flip()
 
