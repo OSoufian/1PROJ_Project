@@ -38,10 +38,11 @@ class CreateBoard:
         
         for n, i in enumerate(list_coo_x):
             for p in range(i):
+                sub.append((x + (p * radius_circle * outline), y))
+
                 if len(sub) == i:
                     self.coordinates.append(sub)
                     sub = []
-                sub.append((x + (p * radius_circle * outline), y))
             x = x + radius_circle if n > 3 else x - radius_circle
             y = y + 2*radius_circle - 7
             
