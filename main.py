@@ -6,25 +6,25 @@ pygame.init()
 size = [800, 800]
 screen = pygame.display.set_mode(size)
 
-screen.fill((150, 255, 10))
+screen.fill((150, 20, 10))
 
 pygame.display.flip()
 
 running = True
 
-pieces = {"p1": [], "p2": []}
-
 board = CreateBoard([e // 2 for e in size], 250)
-board.draw_regular_polygon(screen, (255, 255, 255), outline=10)
-radius, sprites = board.draw_ceil(screen, (0, 0, 0), 2)
+board.draw_regular_polygon(screen, (250, 100, 50))
+board.draw_regular_polygon(screen, (0, 0, 0), 5)
+radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
+
 
 p1 = Player()
 p1.circles = []
 p1.name = "Toto"
 p1.color = "white"
 
-p2 = Player()
+p2 = Player() 
 p2.circles = []
 p2.name = "Hercule"
 p2.color = "black"
@@ -33,8 +33,25 @@ players = [p1, p2]
 
 play = 0
 
-while running:
+x, y = coordinates[len(coordinates)//2-1]
 
+indice =0
+
+list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
+lenX = len(list_coo_x)
+lenCo = len(coordinates)
+where = lenX//2
+
+selected_circle = []
+
+def findIndice(i):
+    
+    while i not in list_coo_x:
+        i -=1
+    return i
+
+while running:
+    
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
@@ -48,17 +65,63 @@ while running:
 
                 valid = False
                 # print([p.circles for p in players if coordinate_Circle in p.circles], coordinate_Circle)
-                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % 2].circles)<15:
+                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % 2].circles)<14:
                     players[play % 2].circles.append(coordinate_Circle)
-                    pygame.draw.circle(screen, players[play%2].color, coordinate_Circle, radius)
-                    print(players[play % 2].circles)
+                    pygame.draw.circle(screen, players[play%2].color, coordinate_Circle, radius - 3)
                     valid = True
-                print(players[play % 2].name, "as clicked on ", coordinate_Circle, "and take for him" * valid)
                 play += 1
+        # len([p for p in players if len(p.circles)==14]) == len(players)
+        if True: 
+            
+            selector = pygame.draw.circle(screen, (255,255,255), (x, y) , radius, 2)
 
-        if event.type == pygame.KEYDOWN:
-            running = False
+            if event.type == pygame.KEYDOWN:
+                key = pygame.key.get_pressed()
 
+                if key[pygame.K_LEFT]:
+                    indice = (indice -1)%lenCo
+                    if indice in list_coo_x:
+                        where = (where-1)%lenX
+
+                if key[pygame.K_RIGHT]:
+                    indice = (indice +1)%lenCo
+                    if indice in list_coo_x:
+                        where = (where+1)%lenX
+
+                if key[pygame.K_UP]:
+                    old = list_coo_x[where]
+                    where -= 1
+                    new = list_coo_x[where]
+                    
+                    indice = indice + where if old < new else indice - where
+                
+                if key[pygame.K_DOWN]:
+                    old = list_coo_x[where]
+                    where += 1
+                    new = list_coo_x[where]
+                    
+                    # circleNumber = findIndice(indice + (where if old < new (-where))
+
+                    indice = indice + where if old < new else indice - where
+
+                                
+                pygame.draw.circle(screen, (180, 50, 0), (x, y) , radius, 2)
+                
+                
+                x, y = coordinates[indice]
+                
+                pygame.display.update()
+
+                if key[pygame.K_SPACE]:
+                    if (x,y) not in selected_circle:
+                        selected_circle.append((x,y))
+
+                print(indice, where)
+                
+            for circle in selected_circle:
+                pygame.draw.circle(screen, (255, 0, 255), circle, radius, 2)
+
+            # print(x, y)
 
     pygame.display.flip()
 

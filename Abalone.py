@@ -1,6 +1,5 @@
 import pygame
 from math import pi, sin, cos
-from AbaLesExcepetions import AbaloneException
 
 
 class CreateBoard:
@@ -10,7 +9,6 @@ class CreateBoard:
         assert not any(n for n in size if n == 0) or radius != 0, "Value is not valid"
         self.x, self.y = size
         self.radius = radius
-        self.polygon_outline = None
         self.sides = sides
 
     def draw_regular_polygon(self, surface, color, outline=0):
@@ -22,11 +20,8 @@ class CreateBoard:
                              in
                              range(self.sides)], outline)
 
-        self.polygon_outline = outline
 
-    def draw_ceil(self, surface, color, outline=0):
-        if self.polygon_outline is None:
-            raise AbaloneException().missing_values("Please set polygon First")
+    def draw_ceil(self, surface, color, outline):
         list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 
         radius_circle = self.radius / (pi * (self.sides / 2))
@@ -35,18 +30,20 @@ class CreateBoard:
         
         y = round(self.y + self.radius * sin(2 * pi * 4/ self.sides)) + radius_circle + 7
 
+        sub = []
         for n, i in enumerate(list_coo_x):
             for p in range(i):
-                self.coordinates.append((x + (p * radius_circle * outline), y))
+                sub.append((x + (p * radius_circle * outline), y))
+            self.coordinates.append(sub)
+            sub = []
             x = x + radius_circle if n > 3 else x - radius_circle
             y = y + 2*radius_circle - 7
 
-        sprites = [ pygame.draw.circle(surface, color, i, radius_circle, outline)for i in self.coordinates]
-        self.coordinates.append(radius_circle)
+        sprites = []
+
+        for caca in self.coordinates:
+            sprites.append(pygame.draw.circle(surface, color, caca, radius_circle))
+            pygame.draw.circle(surface, (180, 50, 0), caca, radius_circle, 3)
+            
+        # self.coordinates.append(radius_circle)
         return radius_circle,sprites
-
-
-
-
-
-
