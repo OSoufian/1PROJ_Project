@@ -1,12 +1,11 @@
 import pygame
 from Abalone import CreateBoard
 from Players import Player
-from test import voisin
+from test import neighbor
 
 pygame.init()
 size = [800, 800]
 screen = pygame.display.set_mode(size)
-
 screen.fill((150, 20, 10))
 
 pygame.display.flip()
@@ -18,7 +17,6 @@ board.draw_regular_polygon(screen, (250, 100, 50))
 board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
-
 
 p1 = Player()
 p1.circles = []
@@ -42,7 +40,7 @@ indice_x = coordinates.index(middle)
 indice_y = middle.index(middle[len(middle)//2])
 x, y = middle[len(middle)//2]
 
-indice =0
+indice = 0
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 lenX = len(list_coo_x)
@@ -52,15 +50,13 @@ where = lenX//2
 selected_circle = []
 
 def get_coordinates(x, y):
-    list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
     return coordinates[y%len(list_coo_x)][x%list_coo_x[y%len(list_coo_x)]]
 
-while running:
-    
+while running:    
     for event in pygame.event.get():
-
         if event.type == pygame.QUIT:
             running = False
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             clicked_sprites = [s for s in sprites if s.collidepoint(pos)]
@@ -70,14 +66,13 @@ while running:
 
                 valid = False
                 # print([p.circles for p in players if coordinate_Circle in p.circles], coordinate_Circle)
-                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % nPlayers].circles)<14:
+                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % nPlayers].circles) < 14:
                     players[play % nPlayers].circles.append(coordinate_Circle)
-                    pygame.draw.circle(screen, players[play % nPlayers].color, coordinate_Circle, radius - 3)
+                    pygame.draw.circle(screen, players[play % nPlayers].color, coordinate_Circle, radius-3)
                     valid = True
                 play += 1
         # len([p for p in players if len(p.circles)==14]) == nPlayers
-        if True:
-            
+        if True:            
             selector = pygame.draw.circle(screen, (255,255,255), (x, y) , radius, 2)
 
             if event.type == pygame.KEYDOWN:
@@ -86,29 +81,24 @@ while running:
                 if key[pygame.K_LEFT]:                    
                     indice_x -= 1
 
-                if key[pygame.K_RIGHT]:
-                    
+                if key[pygame.K_RIGHT]:                    
                     indice_x += 1
 
-                if key[pygame.K_UP]:
-                    
+                if key[pygame.K_UP]:                    
                     indice_y -= 1
                 
-                if key[pygame.K_DOWN]:
-                    
+                if key[pygame.K_DOWN]:                    
                     indice_y += 1
                             
-                pygame.draw.circle(screen, (180, 50, 0), (x, y) , radius, 2)
-                
-                x, y = get_coordinates(indice_x, indice_y)
-                
+                pygame.draw.circle(screen, (180, 50, 0), (x, y) , radius, 2)                
+                x, y = get_coordinates(indice_x, indice_y)                
                 pygame.display.update()
 
                 if key[pygame.K_SPACE]:
                     if (x,y) not in selected_circle:
                         selected_circle.append((x,y))
 
-            for circle in voisin(coordinates, (x, y)):
+            for circle in neighbor(coordinates, (x, y)):
                 pygame.draw.circle(screen, (255, 255, 255), circle, radius, 2)
                 
             for circle in selected_circle:
