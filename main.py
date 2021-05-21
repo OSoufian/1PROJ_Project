@@ -11,6 +11,10 @@ screen.fill((150, 20, 10))
 
 pygame.display.flip()
 
+clock = pygame.time.Clock()
+
+clock.tick(10)
+
 running = True
 
 board = CreateBoard([e // 2 for e in size], 250)
@@ -104,8 +108,9 @@ while running:
             for circle in selected_circle:
                 pygame.draw.circle(screen, (255, 0, 255), circle, radius, 2)
             
-            time.sleep(2)
+        
 
     pygame.display.flip()
+    
 
 pygame.quit()
