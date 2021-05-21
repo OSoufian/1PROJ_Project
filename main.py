@@ -2,6 +2,7 @@ import pygame
 from Abalone import CreateBoard
 from Players import Player
 from test import neighbor
+import time
 
 pygame.init()
 size = [800, 800]
@@ -94,15 +95,16 @@ while running:
                 x, y = get_coordinates(indice_x, indice_y)                
                 pygame.display.update()
 
-                if key[pygame.K_SPACE]:
-                    if (x,y) not in selected_circle:
-                        selected_circle.append((x,y))
+                if key[pygame.K_SPACE] and (x,y) not in selected_circle:
+                    selected_circle.append((x,y))
 
             for circle in neighbor(coordinates, (x, y)):
                 pygame.draw.circle(screen, (255, 255, 255), circle, radius, 2)
                 
             for circle in selected_circle:
                 pygame.draw.circle(screen, (255, 0, 255), circle, radius, 2)
+            
+            time.sleep(2)
 
     pygame.display.flip()
 
