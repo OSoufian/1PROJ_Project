@@ -32,7 +32,8 @@ class Jeu:
 
         
 
-        # image bouton jouer (configuration)self.rule = pygame.image.load("Menu/rule.png")
+        # image bouton jouer (configuration)
+        self.rule = pygame.image.load("Menu/rule.png")
         self.rule = pygame.transform.scale(self.rule, (50, 50))
         self.jouer = pygame.image.load('./Menu/play.png')
         self.jouer = pygame.transform.scale(self.jouer, (200, 100))
@@ -55,10 +56,9 @@ class Jeu:
             for evenement in pygame.event.get():
                 if evenement.type == pygame.QUIT:
                     sys.exit()
-                if evenement.type == pygame.MOUSEBUTTONDOWN:
-                    if self.button_play.collidepoint(evenement.pos):
-                        self.accueil = False
-                        self.ecran_regle = True
+                if evenement.type == pygame.MOUSEBUTTONDOWN and self.button_play.collidepoint(evenement.pos):
+                    self.accueil = False
+                    self.ecran_regle = True
                 self.message("grande", "WELCOME TO ABALONE ", (30, 220, 100, 50), (255, 255, 255))
                 self.ecran.blit(self.image_modif, (350, 280, 100, 50))
                 self.ecran.blit(self.button, self.button_play)
@@ -69,8 +69,7 @@ class Jeu:
             for evenement in pygame.event.get():
                 if evenement.type == pygame.QUIT:
                     sys.exit()
-                if evenement.type == pygame.MOUSEBUTTONDOWN:
-                    if self.suivant_play.collidepoint(evenement.pos):
+                if evenement.type == pygame.MOUSEBUTTON and self.suivant_play.collidepoint(evenement.pos):
                         self.ecran_regle = False
                         self.ecran_debut = True
                 self.message("moyenne", "Règles", (300, 50, 100, 50), (255, 255, 255))
