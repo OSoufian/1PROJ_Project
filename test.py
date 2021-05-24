@@ -5,7 +5,7 @@ def neighbor(coordinates, xy):
     indice_y = coordinates.index(var)
     indice_x = var.index(xy)
     neighbor = []
-    print(indice_x)
+    
     
     
         # neighbor = [    
