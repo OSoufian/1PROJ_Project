@@ -45,8 +45,13 @@ def neighbor(coordinates, xy):
     if indice_y+1 < len(coordinates) and -1 < indice_y+1:
         if indice_x < len(coordinates[indice_y+1]) and 0 <= indice_x:
             neighbor.append(coordinates[indice_y+1][indice_x])
+            
+            if indice_x == 0 and indice_y<4:
+                neighbor.append(coordinates[indice_y+1][indice_x+1])
         if indice_x-1 < len(coordinates[indice_y+1]) and 0 <= indice_x-1:
             neighbor.append(coordinates[indice_y+1][indice_x+1 if indice_y<4 else indice_x-1])
+
+        
 
     if indice_y < len(coordinates) and -1 < indice_y:
         if indice_x+1 < len(coordinates[indice_y]) and 0 <= indice_x+1:
