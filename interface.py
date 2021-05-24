@@ -50,7 +50,7 @@ class Jeu:
                                    "Marguerite suisse", "Pyramide", "Snake variante", "Personnalisé"]
         self.list_player = ["1", "2", "3", "4"]
 
-    def fonction_principale(self):
+    def master(self):
         while self.accueil:
             self.ecran.blit(self.fond, (0, 0))
             for evenement in pygame.event.get():
@@ -69,15 +69,15 @@ class Jeu:
             for evenement in pygame.event.get():
                 if evenement.type == pygame.QUIT:
                     sys.exit()
-                if evenement.type == pygame.MOUSEBUTTON and self.suivant_play.collidepoint(evenement.pos):
-                        self.ecran_regle = False
-                        self.ecran_debut = True
+                if evenement.type == pygame.MOUSEBUTTONDOWN and self.suivant_play.collidepoint(evenement.pos):
+                    self.ecran_regle = False
+                    self.ecran_debut = True
                 self.message("moyenne", "Règles", (300, 50, 100, 50), (255, 255, 255))
                 self.ecran.blit(self.suivant, self.suivant_play)
                 self.ecran.blit(self.rule, (460, 48, 100, 50))
                 pygame.display.flip()
 
-        while self.ecran_debut:
+        if self.ecran_debut:
             self.ecran.blit(self.fond, (0, 0))
             for evenement in pygame.event.get():
                 if evenement.type == pygame.QUIT:
@@ -122,5 +122,5 @@ class Jeu:
 
 if __name__ == "__main__":
     pygame.init()
-    Jeu().fonction_principale()
+    Jeu().master()
     pygame.quit()

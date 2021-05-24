@@ -63,21 +63,21 @@ while running:
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            clicked_sprites = [s for s in sprites if s.collidepoint(pos)]
 
-            if len(clicked_sprites) >= 1:
-                coordinate_Circle = clicked_sprites[0].center
+            while len(clicked_sprites := [s for s in sprites if s.collidepoint(pygame.mouse.get_pos())]) >= 1 and \
+                len(players[play % nPlayers].circles) < 14 and \
+                not any(p.circles for p in players if (coordinate_circle := clicked_sprites[0].center) in p.circles):
 
-                valid = False
-                # print([p.circles for p in players if coordinate_Circle in p.circles], coordinate_Circle)
-                if not any(p.circles for p in players if coordinate_Circle in p.circles) and len(players[play % nPlayers].circles) < 14:
-                    players[play % nPlayers].circles.append(coordinate_Circle)
-                    pygame.draw.circle(screen, players[play % nPlayers].color, coordinate_Circle, radius-3)
-                    valid = True
+                # print([p.circles for p in players if coordinate_circle in p.circles], coordinate_circle)
+                players[play % nPlayers].circles.append(coordinate_circle)
+                pygame.draw.circle(screen, players[play % nPlayers].color, coordinate_circle, radius-3)
+                
                 play += 1
         # len([p for p in players if len(p.circles)==14]) == nPlayers
-        if True:            
+        if True:       
+            for circle in neighbor(coordinates, (x, y)):
+                pygame.draw.circle(screen, (180, 50, 0), circle, radius, 2)
+
             selector = pygame.draw.circle(screen, (255,255,255), (x, y) , radius, 2)
 
             if event.type == pygame.KEYDOWN:
