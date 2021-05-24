@@ -6,29 +6,62 @@ def neighbor(coordinates, xy):
     indice_x = var.index(xy)
     neighbor = []
     
-    if len(coordinates[indice_y]) > indice_x + 1:
-        neighbor.append(coordinates[indice_y][indice_x + 1])
+    
+    if indice_y < 4:
+        pass
+        # neighbor = [    
+        #         coordinates[indice_y][indice_x-1],
+        #         coordinates[indice_y][indice_x+1],
 
-    if indice_x - 1 >= 0:
-        neighbor.append(coordinates[indice_y][indice_x - 1])
+        #         coordinates[indice_y-1][indice_x-1],
+        #         coordinates[indice_y-1][indice_x],
+                    # Change This #
+        #         coordinates[indice_y+1][indice_x],
+        #         coordinates[indice_y+1][indice_x+1],
+        # ]
+    
+    if indice_y > 4:
+        neighbor = [   
+                # Change This # 
+                coordinates[indice_y][indice_x-1],
+                coordinates[indice_y][indice_x+1],
 
-    if len(coordinates[indice_y]) > indice_y + 1:
-        sub_list = coordinates[indice_y + 1]
+                coordinates[indice_y-1][indice_x+1],
+                coordinates[indice_y-1][indice_x],
 
-        if len(sub_list) > indice_x:
-            neighbor.append(coordinates[indice_y + 1][indice_x])
+                coordinates[indice_y+1][indice_x],
+                coordinates[indice_y+1][indice_x-1],
+        ]
 
-        if indice_x - 1 >= 0:
-            neighbor.append(coordinates[indice_y + 1][indice_x - 1])
+    # if indice_y == 4:
+    if indice_y-1 < len(coordinates) and 0 <= indice_y-1:
+        if indice_x < len(coordinates[indice_y-1]) and 0 <= indice_x:
+            neighbor.append(coordinates[indice_y-1][indice_x])
+        if indice_x-1 < len(coordinates[indice_y-1]) and 0 <= indice_x-1:
+            neighbor.append(coordinates[indice_y-1][indice_x+1 if indice_y>4 else indice_x-1])
+            
+    if indice_y+1 < len(coordinates) and 0 <= indice_y+1:
+        if indice_x < len(coordinates[indice_y+1]) and 0 <= indice_x:
+            neighbor.append(coordinates[indice_y+1][indice_x])
+        if indice_x-1 < len(coordinates[indice_y+1]) and 0 <= indice_x-1:
+            neighbor.append(coordinates[indice_y+1][indice_x+1 if indice_y<4 else indice_x-1])
 
-    if indice_y - 1 >= 0:
-        sub_list = coordinates[indice_y - 1]
+    if indice_y < len(coordinates) and 0 <= indice_y:
+        if indice_x+1 < len(coordinates[indice_y]) and 0 <= indice_x+1:
+            neighbor.append(coordinates[indice_y][indice_x+1])
+        if indice_x-1 < len(coordinates[indice_y]) and 0 <= indice_x-1:
+            neighbor.append(coordinates[indice_y][indice_x-1])
 
-        if len(sub_list) > indice_x:
-            neighbor.append(coordinates[indice_y - 1][indice_x])
+        # neighbor = [
+        #             
+        #             coordinates[indice_y][indice_x-1],
+        #             coordinates[indice_y][indice_x+1],
 
-        if indice_x - 1 >= 0:
-            neighbor.append(coordinates[indice_y - 1][indice_x - 1])
+        #             coordinates[indice_y+1][indice_x],
+        #             coordinates[indice_y+1][indice_x-1],  
+                    
+        #             coordinates[indice_y-1][indice_x],
+        #             coordinates[indice_y-1][indice_x-1],
+        #             ]
 
-    print(len(neighbor))
     return neighbor
