@@ -83,17 +83,28 @@ while running:
             if event.type == pygame.KEYDOWN:
                 key = pygame.key.get_pressed()
 
-                if key[pygame.K_LEFT]:                    
-                    indice_x -= 1
+                if key[pygame.K_LEFT]: 
+                    if indice_x == 0:
+                        continue
+                    else:                   
+                        indice_x -= 1
 
-                if key[pygame.K_RIGHT]:                    
+                if key[pygame.K_RIGHT]:
+                    if indice_x == lenX-1:
+                        continue
                     indice_x += 1
 
-                if key[pygame.K_UP]:                    
-                    indice_y -= 1
+                if key[pygame.K_UP]:
+                    if indice_y == 0:
+                        continue
+                    else:                    
+                        indice_y -= 1
                 
                 if key[pygame.K_DOWN]:                    
-                    indice_y += 1
+                    if indice_y == 8:
+                        continue
+                    else:                    
+                        indice_y += 1
                             
                 pygame.draw.circle(screen, (180, 50, 0), (x, y) , radius, 2)                
                 x, y = get_coordinates(indice_x, indice_y)                
