@@ -1,7 +1,7 @@
 import pygame
 from Abalone import CreateBoard
 from Players import Player
-from test import neighbor
+from Marble import Marble
 import time
 
 pygame.init()
@@ -45,9 +45,6 @@ indice_x = coordinates.index(middle)
 indice_y = middle.index(middle[len(middle)//2])
 x, y = middle[len(middle)//2]
 
-indice = 0
-
-list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 lenX = len(list_coo_x)
 lenCo = len(coordinates)
 where = lenX//2
@@ -55,7 +52,7 @@ where = lenX//2
 selected_circle = []
 
 def get_coordinates(x, y):
-    return coordinates[y%len(list_coo_x)][x%list_coo_x[y%len(list_coo_x)]]
+    return coordinates[y][x]
 
 while running:    
     for event in pygame.event.get():
@@ -68,14 +65,13 @@ while running:
                 len(players[play % nPlayers].circles) < 14 and \
                 not any(p.circles for p in players if (coordinate_circle := clicked_sprites[0].center) in p.circles):
 
-                # print([p.circles for p in players if coordinate_circle in p.circles], coordinate_circle)
                 players[play % nPlayers].circles.append(coordinate_circle)
                 pygame.draw.circle(screen, players[play % nPlayers].color, coordinate_circle, radius-3)
                 
                 play += 1
         # len([p for p in players if len(p.circles)==14]) == nPlayers
         if True:       
-            for circle in neighbor(coordinates, (x, y)):
+            for circle in Marble(screen, coordinates, players).neighbor((x, y)):
                 pygame.draw.circle(screen, (180, 50, 0), circle, radius, 2)
 
             selector = pygame.draw.circle(screen, (255,255,255), (x, y) , radius, 2)
@@ -83,17 +79,35 @@ while running:
             if event.type == pygame.KEYDOWN:
                 key = pygame.key.get_pressed()
 
-                if key[pygame.K_LEFT]:                    
-                    indice_x -= 1
+                if key[pygame.K_LEFT]: 
+                    if indice_x == 0:
+                        continue
+                    else:                   
+                        indice_x -= 1
 
-                if key[pygame.K_RIGHT]:                    
-                    indice_x += 1
+                if key[pygame.K_RIGHT]:
+                    if indice_x == len(coordinates[indice_y])-1:
+                        continue
+                    else:
+                        indice_x += 1
 
-                if key[pygame.K_UP]:                    
-                    indice_y -= 1
+                if key[pygame.K_UP]:
+                    if indice_y == 0:
+                        continue
+                    elif (indice_y<=4 and indice_x == len(coordinates[indice_y])-1):
+                        indice_y -= 1
+                        indice_x -= 1
+                    else:
+                        indice_y -= 1
                 
-                if key[pygame.K_DOWN]:                    
-                    indice_y += 1
+                if key[pygame.K_DOWN]:
+                    if indice_y == 8:
+                        continue
+                    elif (indice_y>=4 and indice_x == len(coordinates[indice_y])-1):
+                        indice_y += 1
+                        indice_x -= 1
+                    else:
+                        indice_y += 1
                             
                 pygame.draw.circle(screen, (180, 50, 0), (x, y) , radius, 2)                
                 x, y = get_coordinates(indice_x, indice_y)                
@@ -102,7 +116,7 @@ while running:
                 if key[pygame.K_SPACE] and (x,y) not in selected_circle:
                     selected_circle.append((x,y))
 
-            for circle in neighbor(coordinates, (x, y)):
+            for circle in Marble(screen, coordinates, players).neighbor((x, y)):
                 pygame.draw.circle(screen, (255, 255, 255), circle, radius, 2)
                 
             for circle in selected_circle:

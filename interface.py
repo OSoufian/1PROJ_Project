@@ -77,7 +77,7 @@ class Jeu:
                 self.ecran.blit(self.rule, (460, 48, 100, 50))
                 pygame.display.flip()
 
-        if self.ecran_debut:
+        while self.ecran_debut:
             self.ecran.blit(self.fond, (0, 0))
             for evenement in pygame.event.get():
                 if evenement.type == pygame.QUIT:
