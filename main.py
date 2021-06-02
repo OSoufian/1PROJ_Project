@@ -113,7 +113,7 @@ while running:
                 x, y = get_coordinates(indice_x, indice_y)                
                 pygame.display.update()
 
-                if key[pygame.K_SPACE] and (x,y) not in selected_circle:
+                if key[pygame.K_SPACE] and (x,y) not in selected_circle and len(selected_circle) <=3 :
                     selected_circle.append((x,y))
 
             for circle in Marble(screen, coordinates, players).neighbor((x, y)):

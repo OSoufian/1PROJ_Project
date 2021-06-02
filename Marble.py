@@ -44,7 +44,7 @@ class Marble:
             if indice_x-1 < len(self.coordinates[indice_y]) and -1 < indice_x-1:
                 neighbor.append(self.coordinates[indice_y][indice_x-1])
 
-        print(self.can_move(xy))
+        
 
         return neighbor
 
