@@ -100,6 +100,7 @@ class Jeu:
                     k += 1
                     if k == len(self.list_player):
                         break
+
                 # checkbox for table
                 k = 0
                 for i in range(0, 600, 300):

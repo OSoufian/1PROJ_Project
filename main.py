@@ -12,6 +12,7 @@ screen = pygame.display.set_mode(size)
 
 pygame.display.flip()
 
+
 clock = pygame.time.Clock()
 
 clock.tick(10)
