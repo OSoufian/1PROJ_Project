@@ -1,7 +1,6 @@
 import sys
 import pygame
 
-
 class Jeu:
     def __init__(self):
         self.ecran = pygame.display.set_mode((800, 800))
@@ -30,6 +29,8 @@ class Jeu:
         self.suivant_play.x = 700
         self.suivant_play.y = 700
 
+        # l' image regle
+        self.regle = pygame.image.load("./Menu/regle.png")
         
 
         # image bouton jouer (configuration)
@@ -51,6 +52,7 @@ class Jeu:
         self.list_player = ["1", "2", "3", "4"]
 
     def master(self):
+
         while self.accueil:
             self.ecran.blit(self.fond, (0, 0))
             for evenement in pygame.event.get():
@@ -75,10 +77,12 @@ class Jeu:
                 self.message("moyenne", "Règles", (300, 50, 100, 50), (255, 255, 255))
                 self.ecran.blit(self.suivant, self.suivant_play)
                 self.ecran.blit(self.rule, (460, 48, 100, 50))
+                self.ecran.blit(self.regle, (15, 120, 100, 50))
                 pygame.display.flip()
 
         while self.ecran_debut:
             self.ecran.blit(self.fond, (0, 0))
+            pygame.draw.rect(self.ecran,(157,99,61,255), (15, 120, 768, 550))
             for evenement in pygame.event.get():
                 if evenement.type == pygame.QUIT:
                     sys.exit()
@@ -92,25 +96,27 @@ class Jeu:
                 k = 0
                 for i in range(0, 300, 60):
                     pygame.draw.rect(self.ecran, "WHITE", (340 + i, 200, 15, 15))
-                    self.message("petite", self.list_player[k], (342 + i, 220, 100, 50), "black")
+                    self.message("petite", self.list_player[k], (341 + i, 220, 100, 50), "black")
                     k += 1
                     if k == len(self.list_player):
                         break
-
                 # checkbox for table
                 k = 0
                 for i in range(0, 600, 300):
                     for j in range(0, 300, 50):
-                        pygame.draw.rect(self.ecran, "WHITE", (200 + i, 360 + j, 15, 15))
+                        pygame.draw.rect(self.ecran, "WHITE", (200 + i, 363 + j, 15, 15))
                         self.message("petite", self.list_configuration[k], (220 + i, 360 + j, 100, 50), "black")
                         k += 1
                         if k == len(self.list_configuration):
                             break
+                if evenement.type == pygame.MOUSEBUTTONDOWN and self.jouer_play.collidepoint(evenement.pos):
+                    self.ecran_debut = False
                 pygame.display.flip()
+
 
     def message(self, font, message, message_rectangle, couleur):
         if font == "petite":
-            font = pygame.font.SysFont('Lato', 30, False)
+            font = pygame.font.SysFont('Times New Roman', 20, False)
         elif font == "moyenne":
             font = pygame.font.SysFont('castellar', 40, False)
 
@@ -118,7 +124,6 @@ class Jeu:
             font = pygame.font.SysFont('castellar', 50, True)
         message = font.render(message, True, couleur)
         self.ecran.blit(message, message_rectangle)
-
 
 if __name__ == "__main__":
     pygame.init()
