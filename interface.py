@@ -49,7 +49,7 @@ class Jeu:
         self.liste_configuration = ["Standard", "Domanation", "Face à Face", "Fujiyama", "Infiltration",
                                    "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
                                    "Marguerite suisse", "Pyramide", "Snake variante", "Personnalisé"]
-        self.liste_player = ["1", "2", "3", "4"]
+        self.liste_joueur = ["1", "2", "3", "4"]
 
     def master(self):
 
@@ -96,9 +96,9 @@ class Jeu:
                 k = 0
                 for i in range(0, 300, 60):
                     pygame.draw.rect(self.ecran, "WHITE", (340 + i, 200, 15, 15))
-                    self.message("petite", self.liste_player[k], (341 + i, 220, 100, 50), "black")
+                    self.message("petite", self.liste_joueur[k], (341 + i, 220, 100, 50), "black")
                     k += 1
-                    if k == len(self.liste_player):
+                    if k == len(self.liste_joueur):
                         break
 
                 # checkbox for table
