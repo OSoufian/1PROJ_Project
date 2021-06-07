@@ -1,7 +1,8 @@
 import pygame
 from Abalone import CreateBoard
+from Marble import Marble
 from Players import Player
-from test import neighbor
+# from test import neighbor
 from interface import Jeu
 
 import time
@@ -19,8 +20,9 @@ clock.tick(10)
 
 running = True
 
-begin = Jeu()
-begin.master()
+begin = Jeu(screen).master()
+
+
 screen.fill((150, 20, 10))
 board = CreateBoard([e // 2 for e in size], 250)
 board.draw_regular_polygon(screen, (250, 100, 50))
@@ -80,7 +82,9 @@ while running:
                 play += 1
         # len([p for p in players if len(p.circles)==14]) == nPlayers
         if True:
-            for circle in neighbor(coordinates, (x, y)):
+
+            neighbor = Marble(screen, coordinates, players).neighbor((x, y))
+            for circle in neighbor:
                 pygame.draw.circle(screen, (180, 50, 0), circle, radius, 2)
 
             selector = pygame.draw.circle(screen, (255,255,255), (x, y) , radius, 2)
@@ -107,7 +111,7 @@ while running:
                 if key[pygame.K_SPACE] and (x,y) not in selected_circle:
                     selected_circle.append((x,y))
 
-            for circle in neighbor(coordinates, (x, y)):
+            for circle in neighbor:
                 pygame.draw.circle(screen, (255, 255, 255), circle, radius, 2)
 
             for circle in selected_circle:
