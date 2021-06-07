@@ -2,8 +2,8 @@ import sys
 import pygame
 
 class Jeu:
-    def __init__(self):
-        self.ecran = pygame.display.set_mode((800, 800))
+    def __init__(self, screen):
+        self.ecran = screen
         pygame.display.set_caption("Abalone")
         self.accueil = True
         self.ecran_debut = False
@@ -30,7 +30,7 @@ class Jeu:
         self.suivant_coord.y = 700
 
         # l' image regle
-        self.regle = pygame.image.load("./Menu/regle.png")
+        self.regle = pygame.image.load("./Menu/rule.png")
 
 
         # image bouton jouer (configuration)
