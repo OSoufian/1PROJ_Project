@@ -12,7 +12,9 @@ screen = pygame.display.set_mode(size)
 Jeu(screen).master()
 pygame.display.flip()
 
+
 screen.fill((180, 50, 0))
+
 background = pygame.transform.scale(pygame.image.load("./Menu/fond.jpg"), size)
 
 pygame.display.flip()
@@ -132,6 +134,7 @@ while running:
                     else:
                         indice_y += 1
 
+
                 print(len(p1.circles))
 
                 pygame.draw.circle(screen, (180, 50, 0), (x, y), radius, 2)
@@ -156,6 +159,7 @@ while running:
 
     
                           
+
 
             for circle in\
                     Marble(screen, coordinates, players).neighbor((x, y)):
