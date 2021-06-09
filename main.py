@@ -132,14 +132,30 @@ while running:
                     else:
                         indice_y += 1
 
+                print(len(p1.circles))
+
                 pygame.draw.circle(screen, (180, 50, 0), (x, y), radius, 2)
                 x, y = get_coordinates(indice_x, indice_y)
-                pygame.display.update()
+                pygame.display.update()                
 
                 if key[pygame.K_SPACE] and \
-                        (x, y) not in selected_circle and \
-                        len(selected_circle) <= 3:
+                (x, y) not in selected_circle and \
+                len(selected_circle) < 3 \
+                and ((int(x),int(y)) in p1.circles \
+                or (int(x),int(y)) in p2.circles):
                     selected_circle.append((x, y))
+                    # if len(selected_circle) == 0:
+                    #     selected_circle.append((x, y))
+                    # elif len(selected_circle) > 0 and :
+
+                elif key[pygame.K_SPACE] and \
+                (x, y) in selected_circle:
+                    selected_circle.remove((x, y))
+
+                
+
+    
+                          
 
             for circle in\
                     Marble(screen, coordinates, players).neighbor((x, y)):
