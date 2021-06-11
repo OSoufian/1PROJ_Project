@@ -144,9 +144,13 @@ while running:
                 and ((int(x),int(y)) in p1.circles \
                 or (int(x),int(y)) in p2.circles):
                     selected_circle.append((x, y))
-                    # if len(selected_circle) == 0:
-                    #     selected_circle.append((x, y))
-                    # elif len(selected_circle) > 0 and :
+                    if len(selected_circle) == 0:
+                        selected_circle.append((x, y))
+                    elif len(selected_circle) > 0 and p1.circles in selected_circle and (int(x),int(y)) in p1.circles:
+                        selected_circle.append((x, y))
+                    elif len(selected_circle) > 0 and p2.circles in selected_circle and (int(x),int(y)) in p2.circles:
+                        selected_circle.append((x, y))
+
 
                 elif key[pygame.K_SPACE] and \
                 (x, y) in selected_circle:
