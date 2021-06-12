@@ -60,6 +60,8 @@ class Jeu:
             for env in pygame.event.get():
                 if env.type == pygame.QUIT:
                     sys.exit()
+
+"""
 <<<<<<< HEAD
 =======
                 if evenement.type == pygame.MOUSEBUTTONDOWN and self.bouton_coord.collidepoint(evenement.pos):
@@ -86,7 +88,7 @@ class Jeu:
                 self.ecran.blit(self.regle, (15, 120, 100, 50))
                 pygame.display.flip()
 >>>>>>> 3e1f040bdc5d71d1ca5e0af6706804c93ff5323a
-
+"""
                 if env.type == pygame.MOUSEBUTTONDOWN and self.bouton_coord.collidepoint(env.pos):
                     self.accueil = btn_state == 0
                     self.ecran_regle = btn_state == 1
