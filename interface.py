@@ -52,67 +52,62 @@ class Jeu:
         self.liste_joueur = ["1", "2", "3", "4"]
 
     def master(self):
+        btn_state = 0
 
-        while self.accueil:
-            self.ecran.blit(self.fond, (0, 0))
-            for evenement in pygame.event.get():
-                if evenement.type == pygame.QUIT:
+        while btn_state < 4:
+            self.ecran.blit(self.fond, (0,0))
+            for env in pygame.event.get():
+                if env.type == pygame.QUIT:
                     sys.exit()
-                if evenement.type == pygame.MOUSEBUTTONDOWN and self.bouton_coord.collidepoint(evenement.pos):
-                    self.accueil = False
-                    self.ecran_regle = True
-                self.message("grande", "WELCOME TO ABALONE ", (30, 220, 100, 50), (255, 255, 255))
-                self.ecran.blit(self.image_modif, (350, 280, 100, 50))
-                self.ecran.blit(self.bouton, self.bouton_coord)
-                pygame.display.flip()
 
-        while self.ecran_regle:
-            self.ecran.blit(self.fond, (0, 0))
-            for evenement in pygame.event.get():
-                if evenement.type == pygame.QUIT:
-                    sys.exit()
-                if evenement.type == pygame.MOUSEBUTTONDOWN and self.suivant_coord.collidepoint(evenement.pos):
-                    self.ecran_regle = False
-                    self.ecran_debut = True
-                self.message("moyenne", "Règles", (300, 50, 100, 50), (255, 255, 255))
-                self.ecran.blit(self.suivant, self.suivant_coord)
-                self.ecran.blit(self.img_livre, (460, 48, 100, 50))
-                self.ecran.blit(self.regle, (15, 120, 100, 50))
-                pygame.display.flip()
+                if env.type == pygame.MOUSEBUTTONDOWN and self.bouton_coord.collidepoint(env.pos):
+                    self.accueil = btn_state == 0
+                    self.ecran_regle = btn_state == 1
+                    self.ecran_debut = btn_state == 2
 
-        while self.ecran_debut:
-            self.ecran.blit(self.fond, (0, 0))
-            pygame.draw.rect(self.ecran,(157,99,61,255), (15, 120, 768, 550))
-            for evenement in pygame.event.get():
-                if evenement.type == pygame.QUIT:
-                    sys.exit()
-                self.message("moyenne", "Configuration", (160, 50, 100, 50), (255, 255, 255))
-                self.message("petite", "Number of players", (350, 140, 100, 50), "black")
-                self.message("petite", "configuration table", (350, 300, 100, 50), "black")
-                self.ecran.blit(self.jouer, self.jouer_coord)
-                self.ecran.blit(self.parametre, (550, 30, 100, 50))
+                    env = None
+                    btn_state +=1
+                    continue
 
-                # checkbox for player
-                k = 0
-                for i in range(0, 300, 60):
-                    pygame.draw.rect(self.ecran, "WHITE", (340 + i, 200, 15, 15))
-                    self.message("petite", self.liste_joueur[k], (341 + i, 220, 100, 50), "black")
-                    k += 1
-                    if k == len(self.liste_joueur):
-                        break
+                if self.accueil:
+                    self.message("grande", "WELCOME TO ABALONE ", (30, 220, 100, 50), (255, 255, 255))
+                    self.ecran.blit(self.image_modif, (350, 280, 100, 50))
+                    self.ecran.blit(self.bouton, self.bouton_coord)
+                    pygame.display.flip()
 
-                # checkbox for table
-                k = 0
-                for i in range(0, 600, 300):
-                    for j in range(0, 300, 50):
-                        pygame.draw.rect(self.ecran, "WHITE", (200 + i, 363 + j, 15, 15))
-                        self.message("petite", self.liste_configuration[k], (220 + i, 360 + j, 100, 50), "black")
+                elif self.ecran_regle:
+                    self.message("moyenne", "règles", (300, 50, 100, 50), (255, 255, 255))
+                    self.ecran.blit(self.suivant, self.suivant_coord)
+                    self.ecran.blit(self.img_livre, (460, 48, 100, 50))
+                    self.ecran.blit(self.regle, (15, 120, 100, 50))
+                    pygame.display.flip()
+                else:
+                    self.message("moyenne", "Configuration", (160, 50, 100, 50), (255, 255, 255))
+                    self.message("petite", "Number of players", (350, 140, 100, 50), "black")
+                    self.message("petite", "configuration table", (350, 300, 100, 50), "black")
+                    self.ecran.blit(self.jouer, self.jouer_coord)
+                    self.ecran.blit(self.parametre, (550, 30, 100, 50))
+
+                    #checkbox for player
+                    k = 0
+                    for i in range(0, 300, 60):
+                        pygame.draw.rect(self.ecran, "WHITE", (340 + i, 200, 15, 15))
+                        self.message("petite", self.liste_joueur[k], (341 + i, 220, 100, 50), "black")
                         k += 1
-                        if k == len(self.liste_configuration):
+                        if k == len(self.liste_joueur):
                             break
-                if evenement.type == pygame.MOUSEBUTTONDOWN and self.jouer_coord.collidepoint(evenement.pos):
-                    self.ecran_debut = False
+
+                    # checkbox for table
+                    k = 0
+                    for i in range(0, 600, 300):
+                        for j in range(0, 300, 50):
+                            pygame.draw.rect(self.ecran, "WHITE", (200 + i, 363 + j, 15, 15))
+                            self.message("petite", self.liste_configuration[k], (220 + i, 360 + j, 100, 50), "black")
+                            k += 1
+                            if k == len(self.liste_configuration):
+                                break
                 pygame.display.flip()
+
 
 
     def message(self, font, message, message_rectangle, couleur):
