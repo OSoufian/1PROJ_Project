@@ -10,7 +10,7 @@ class Jeu:
         self.ecran_regle = False
 
         self.image = pygame.image.load("./Menu/abalone.png")
-        self.image_modif = pygame.transform.scale(self.image, (150, 150))
+        self.image_modif = pygame.transform.scale(self.image, (200, 200))
 
         # l'image bouton
         self.bouton = pygame.image.load('./Menu/play.png')
@@ -30,7 +30,8 @@ class Jeu:
         self.suivant_coord.y = 700
 
         # l' image regle
-        self.regle = pygame.image.load("./Menu/rule.png")
+
+        self.regle = pygame.image.load("./Menu/regle.png")
 
 
         # image bouton jouer (configuration)
@@ -59,6 +60,32 @@ class Jeu:
             for env in pygame.event.get():
                 if env.type == pygame.QUIT:
                     sys.exit()
+<<<<<<< HEAD
+=======
+                if evenement.type == pygame.MOUSEBUTTONDOWN and self.bouton_coord.collidepoint(evenement.pos):
+                    self.accueil = False
+                    self.ecran_regle = True
+                self.message("grande", "WELCOME TO ABALONE ", (30, 220, 100, 50), (255, 255, 255))
+
+                self.ecran.blit(self.image_modif, (320, 280, 100, 50))
+
+                self.ecran.blit(self.bouton, self.bouton_coord)
+                pygame.display.flip()
+
+        while self.ecran_regle:
+            self.ecran.blit(self.fond, (0, 0))
+            for evenement in pygame.event.get():
+                if evenement.type == pygame.QUIT:
+                    sys.exit()
+                if evenement.type == pygame.MOUSEBUTTONDOWN and self.suivant_coord.collidepoint(evenement.pos):
+                    self.ecran_regle = False
+                    self.ecran_debut = True
+                self.message("moyenne", "Règles", (300, 50, 100, 50), (255, 255, 255))
+                self.ecran.blit(self.suivant, self.suivant_coord)
+                self.ecran.blit(self.img_livre, (460, 48, 100, 50))
+                self.ecran.blit(self.regle, (15, 120, 100, 50))
+                pygame.display.flip()
+>>>>>>> 3e1f040bdc5d71d1ca5e0af6706804c93ff5323a
 
                 if env.type == pygame.MOUSEBUTTONDOWN and self.bouton_coord.collidepoint(env.pos):
                     self.accueil = btn_state == 0
