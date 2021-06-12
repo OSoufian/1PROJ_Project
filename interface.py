@@ -10,7 +10,7 @@ class Jeu:
         self.ecran_regle = False
 
         self.image = pygame.image.load("./Menu/abalone.png")
-        self.image_modif = pygame.transform.scale(self.image, (200, 200))
+        self.image_modif = pygame.transform.scale(self.image, (150, 150))
 
         # l'image bouton
         self.bouton = pygame.image.load('./Menu/play.png')
@@ -30,8 +30,7 @@ class Jeu:
         self.suivant_coord.y = 700
 
         # l' image regle
-
-        self.regle = pygame.image.load("./Menu/regle.png")
+        self.regle = pygame.image.load("./Menu/rule.png")
 
 
         # image bouton jouer (configuration)
@@ -68,9 +67,7 @@ class Jeu:
                     self.accueil = False
                     self.ecran_regle = True
                 self.message("grande", "WELCOME TO ABALONE ", (30, 220, 100, 50), (255, 255, 255))
-
-                self.ecran.blit(self.image_modif, (320, 280, 100, 50))
-
+                self.ecran.blit(self.image_modif, (350, 280, 100, 50))
                 self.ecran.blit(self.bouton, self.bouton_coord)
                 pygame.display.flip()
 
