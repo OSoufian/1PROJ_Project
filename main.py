@@ -73,10 +73,8 @@ where = lenX//2
 
 selected_circle = []
 
-
 def get_coordinates(x, y):
     return coordinates[y][x]
-
 
 while running:
     for event in pygame.event.get():
