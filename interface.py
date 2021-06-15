@@ -30,6 +30,7 @@ class Jeu:
         self.suivant_coord.y = 700
 
         # l' image regle
+
         self.regle = pygame.image.load("./Menu/regle.png")
 
 
@@ -62,7 +63,9 @@ class Jeu:
                     self.accueil = False
                     self.ecran_regle = True
                 self.message("grande", "WELCOME TO ABALONE ", (30, 220, 100, 50), (255, 255, 255))
+
                 self.ecran.blit(self.image_modif, (320, 280, 100, 50))
+
                 self.ecran.blit(self.bouton, self.bouton_coord)
                 pygame.display.flip()
 
