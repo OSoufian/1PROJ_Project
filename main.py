@@ -29,8 +29,11 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
+board = "Standard" 
+
 p1 = Player()
 p1.circles = []
+
 p1.name = "Toto"
 p1.color = "white"
 
@@ -43,6 +46,17 @@ players = [p1, p2]
 nPlayers = len(players)
 
 play = 0
+
+
+if board == "Standard":
+    p1_circles = [(295, 216), (348, 216), (401, 216), (454, 216), (507,216),\
+                  (269, 262), (322, 262), (375, 262), (428, 262), (481, 262), (534, 262),\
+                  (348, 308), (401, 308), (454, 308)]
+
+    p2_circles = [(348, 492), (401, 492), (454, 492),\
+                  (269, 538), (322, 538), (375, 538), (428, 538), (481, 538), (534, 538),\
+                  (295, 584), (348, 584), (401, 584), (454, 584), (507,584)]
+
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 middle = coordinates[len(list_coo_x)//2]
@@ -67,27 +81,36 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            clicked_sprites = [s for
-                               s in sprites
-                               if s.collidepoint(pygame.mouse.get_pos())]
+        # if event.type == pygame.MOUSEBUTTONDOWN:
+        #     clicked_sprites = [s for
+        #                        s in sprites
+        #                        if s.collidepoint(pygame.mouse.get_pos())]
 
-            coordinate_circle = clicked_sprites[0].center
+        #     coordinate_circle = clicked_sprites[0].center
 
-            player = players[play % nPlayers]
+        #     player = players[play % nPlayers]
 
-            while len(clicked_sprites) >= 1 and\
-                    len(players[play % nPlayers].circles) < 14 and \
-                    not any(p.circles for
-                            p in players if coordinate_circle in p.circles):
+        #     while len(clicked_sprites) >= 1 and\
+        #             len(players[play % nPlayers].circles) < 14 and \
+        #             not any(p.circles for
+        #                     p in players if coordinate_circle in p.circles):
 
-                player.circles.append(coordinate_circle)
-                pygame.draw.circle(screen,
-                                   player.color,
-                                   coordinate_circle,
-                                   radius-3)
+        #         player.circles.append(coordinate_circle)
+        #         pygame.draw.circle(screen,
+        #                            player.color,
+        #                            coordinate_circle,
+        #                            radius-3)
 
-                play += 1
+        #         play += 1
+
+
+
+        for circle in p1_circles:
+            pygame.draw.circle(screen, p1.color, circle, radius-3)
+
+        for circle in p2_circles:
+            pygame.draw.circle(screen, p2.color, circle, radius-3)
+
         # len([p for p in players if len(p.circles)==14]) == nPlayers
         if True:
             for circle in \
