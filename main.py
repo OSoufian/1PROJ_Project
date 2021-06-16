@@ -1,7 +1,8 @@
 import pygame
 from Abalone import CreateBoard
-from Players import Player
-from Marble import Marble
+import Players
+from Players import Player_v2
+import Marble
 from interface import Jeu
 import time
 
@@ -33,29 +34,43 @@ coordinates = board.coordinates
 
 board = "Standard" 
 
-p1 = Player()
-p1.circles = []
+# p1 = Player()
+# p1.circles = []
 
-p1.name = "Toto"
-p1.color = "white"
+# p1.name = "Toto"
+# p1.color = "white"
 
-p2 = Player()
-p2.circles = []
-p2.name = "Hercule"
-p2.color = "black"
+# p2 = Player()
+# p2.circles = []
+# p2.name = "Hercule"
+# p2.color = "black"
+
+p1 = Player_v2("white", "Soufian")
+p2 = Player_v2("black", "Lounes")
 
 players = [p1, p2]
 nPlayers = len(players)
 
-play = 0
+
+
+# if board == "Standard":
+#     p1.set_marbles([Marble_v2((295, 216), 0, 0, p1), Marble_v2((348, 216), 0, 1, p1), Marble_v2((401, 216), 0, 2, p1), Marble_v2((454, 216), 0, 3, p1), Marble_v2((507,216), 0, 4, p1),\
+#                   Marble_v2((269, 262), 1, 0, p1), Marble_v2((322, 262), 1, 1, p1), Marble_v2((375, 262), 1, 2, p1), Marble_v2((428, 262), 1, 3, p1), Marble_v2((481, 262), 1, 4, p1), Marble_v2((534, 262), 1, 5, p1),\
+#                   Marble_v2((348, 308), 2, 0, p1), Marble_v2((401, 308), 2, 1, p1), Marble_v2((454, 308), 2, 2, p1)])
+
+#     p2.set_marbles([Marble_v2((348, 492), 2, 0, p2), Marble_v2((401, 492), 2, 1, p2), Marble_v2((454, 492), 2, 2, p2),\
+#                   Marble_v2((269, 538), 1, 0, p2), Marble_v2((322, 538), 1, 1, p2), Marble_v2((375, 538), 1, 2, p2), Marble_v2((428, 538), 1, 3, p2), Marble_v2((481, 538), 1, 4, p2), Marble_v2((534, 538), 1, 5, p2),\
+#                   Marble_v2((295, 584), 0, 0, p2), Marble_v2((348, 584), 0, 1, p2), Marble_v2((401, 584), 0, 2, p2), Marble_v2((454, 584), 0, 3, p2), Marble_v2((507,584), 0, 4, p2)])
+
+
 
 
 if board == "Standard":
-    p1_circles = [(295, 216), (348, 216), (401, 216), (454, 216), (507,216),\
+    p1_marbles = [(295, 216), (348, 216), (401, 216), (454, 216), (507,216),\
                   (269, 262), (322, 262), (375, 262), (428, 262), (481, 262), (534, 262),\
                   (348, 308), (401, 308), (454, 308)]
 
-    p2_circles = [(348, 492), (401, 492), (454, 492),\
+    p2_marbles = [(348, 492), (401, 492), (454, 492),\
                   (269, 538), (322, 538), (375, 538), (428, 538), (481, 538), (534, 538),\
                   (295, 584), (348, 584), (401, 584), (454, 584), (507,584)]
 
@@ -105,11 +120,19 @@ while running:
 
 
 
-        for circle in p1_circles:
-            pygame.draw.circle(screen, p1.color, circle, radius-3)
+        # for circle in p1.get_marbles():
+        #     for coordinates in circle.get_coordinates():
+        #         pygame.draw.circle(screen, p1.get_color(), circle, radius-3)
 
-        for circle in p2_circles:
-            pygame.draw.circle(screen, p2.color, circle, radius-3)
+        # for circle in p2.get_marbles():
+        #     for coordinates in circle.get_coordinates():
+        #         pygame.draw.circle(screen, p2.get_color(), circle, radius-3)
+
+        for circle in p1_marbles:
+            pygame.draw.circle(screen, p1.get_color(), circle, radius-3)
+
+        for circle in p2_marbles:
+            pygame.draw.circle(screen, p2.get_color(), circle, radius-3)
 
         # len([p for p in players if len(p.circles)==14]) == nPlayers
         if True:
@@ -156,11 +179,18 @@ while running:
                         indice_y += 1
 
 
-                print(len(p1.circles))
-
                 pygame.draw.circle(screen, (180, 50, 0), (x, y), radius, 2)
                 x, y = get_coordinates(indice_x, indice_y)
                 pygame.display.update()                
+
+                # if key[pygame.K_SPACE] and \
+                # (x, y) not in selected_circle and \
+                # len(selected_circle) < 3 \
+                # and ((int(x),int(y)) in p1.get_marbles() or (int(x),int(y)) in p2.get_marbles()):
+                #     if len(selected_circle) == 0:
+                #         selected_circle.append((int(x), int(y)))
+                #     elif len(selected_circle) > 0 and (int(x),int(y)) in p1.get_marbles() and p2.get_marbles() not in selected_circle:
+                #         selected_circle.append((int(x), int(y)))
 
                 if key[pygame.K_SPACE] and \
                 (x, y) not in selected_circle and \
@@ -170,17 +200,17 @@ while running:
                     selected_circle.append((x, y))
                     if len(selected_circle) == 0:
                         selected_circle.append((x, y))
-                    elif len(selected_circle) > 0 and p1.circles in selected_circle and (int(x),int(y)) in p1.circles:
+                    elif len(selected_circle) > 0 and p1_circles in selected_circle and (int(x),int(y)) in p1_circles:
                         selected_circle.append((x, y))
-                    elif len(selected_circle) > 0 and p2.circles in selected_circle and (int(x),int(y)) in p2.circles:
+                    elif len(selected_circle) > 0 and p2_circles in selected_circle and (int(x),int(y)) in p2_circles:
                         selected_circle.append((x, y))
 
+                
+                    
 
                 elif key[pygame.K_SPACE] and \
                 (x, y) in selected_circle:
-                    selected_circle.remove((x, y))
-
-                
+                    selected_circle.remove((x, y))          
 
     
                           
@@ -197,3 +227,4 @@ while running:
 
 
 pygame.quit()
+
