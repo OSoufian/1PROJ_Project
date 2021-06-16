@@ -1,15 +1,4 @@
-class Players:
-    __players = []
-
-    def new_player(self):
-        self.__players = Player()
-
-    @classmethod
-    def getPlayers(cls) -> list:
-        return cls.__players
-
-
-class Player(object):
+class Player:
     __player = {}
 
     def __init__(self, **kwargs):
@@ -19,20 +8,6 @@ class Player(object):
                 del kwargs[k]
 
         self.__player = kwargs
-
-    @property
-    def circles(self) -> list:
-        return self.__player["circles"] if "circles" in self.__player else []
-
-    @circles.setter
-    def circles(self, circles, remove=False):
-        if "circles" not in self.__player:
-            self.__player["circles"] = []
-            remove = False
-        if remove:
-            self.__player["circles"].remove(circles)
-        if circles != []:
-            self.__player["circles"].append(circles)
 
     @property
     def marbles(self) -> list:
