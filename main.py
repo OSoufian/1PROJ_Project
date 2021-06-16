@@ -178,24 +178,13 @@ while running:
                 if key[pygame.K_SPACE] and \
                 (x, y) not in selected_circle and \
                 len(selected_circle) < 3 \
-                and ((int(x),int(y)) in p1.marbles[0] \
-                or (int(x),int(y)) in p2.marbles[0]):
-                    selected_circle.append((x, y))
-                    # if len(selected_circle) == 0:
-                    #     selected_circle.append((x, y))
-                    # elif len(selected_circle) > 0 and p1.marbles[0] in selected_circle and (int(x),int(y)) in p1.marbles[0]:
-                    #     selected_circle.append((x, y))
-                    # elif len(selected_circle) > 0 and p2.marbles[0] in selected_circle and (int(x),int(y)) in p2.marbles[0]:
-                    #     selected_circle.append((x, y))
-
-                
+                and ((int(x),int(y)) in current_player.marbles[0]):
+                    selected_circle.append((x, y))                
                     
 
                 elif key[pygame.K_SPACE] and \
                 (x, y) in selected_circle:
-                    selected_circle.remove((x, y))          
-
-    
+                    selected_circle.remove((x, y))    
                           
 
 
