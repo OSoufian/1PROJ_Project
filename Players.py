@@ -15,12 +15,15 @@ class Player:
 
     @marbles.setter
     def marbles(self, marbles, remove=False):
-        if "marbles" not in self.__player:
+        if isinstance(marbles, list):
+                self.__player["marbles"] = marbles
+
+        elif "marbles" not in self.__player:
             self.__player["marbles"] = []
             remove = False
         if remove:
             self.__player["marbles"].remove(marbles)
-        if marbles != []:
+        if marbles != []:            
             self.__player["marbles"].append(marbles)
 
     @property

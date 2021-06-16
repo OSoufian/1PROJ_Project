@@ -73,7 +73,7 @@ class Jeu:
         player_boxes = boxes_config = []
         conditonal = 0
 
-        while conditonal < 3:
+        while conditonal < 2:
 
             self.screen.blit(self.fond, (0,0))
 

@@ -30,7 +30,7 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-board = "Standard" 
+board = "Standard"
 
 p1 = Player()
 p1.circles = []
@@ -50,13 +50,18 @@ turn = 0
 current_player = players[turn%nPlayers]
 
 if board == "Standard":
-    p1.marbles = (295, 216), (348, 216), (401, 216), (454, 216), (507,216),\
-                  (269, 262), (322, 262), (375, 262), (428, 262), (481, 262), (534, 262),\
-                  (348, 308), (401, 308), (454, 308)
+    p1.marbles = (295.5258238486492, 216.52582384864922), (348.5774715459477, 216.52582384864922), (401.6291192432461, 216.52582384864922), \
+        (454.6807669405446, 216.52582384864922), (507.732414637843, 216.52582384864922), (269.0, 262.5774715459477), \
+            (322.05164769729845, 262.5774715459477), (375.1032953945969, 262.5774715459477), (428.15494309189535, 262.5774715459477), \
+                (481.2065907891938, 262.5774715459477), (534.2582384864922, 262.5774715459477), (348.5774715459477, 308.6291192432461), \
+                    (401.6291192432461, 308.6291192432461), (454.6807669405446, 308.6291192432461)
 
-    p2.marbles = (348, 492), (401, 492), (454, 492),\
-                  (269, 538), (322, 538), (375, 538), (428, 538), (481, 538), (534, 538),\
-                  (295, 584), (348, 584), (401, 584), (454, 584), (507,584)
+    p2.marbles = (348.5774715459477, 492.8357100324399), (401.6291192432461, 492.8357100324399), (454.6807669405446, 492.8357100324399), \
+        (269.0, 538.8873577297384), (322.05164769729845, 538.8873577297384), (375.1032953945969, 538.8873577297384), \
+            (428.15494309189535, 538.8873577297384), (481.2065907891938, 538.8873577297384), (534.2582384864922, 538.8873577297384), \
+                (295.5258238486492, 584.9390054270368), (348.5774715459477, 584.9390054270368), (401.6291192432461, 584.9390054270368), \
+                    (454.6807669405446, 584.9390054270368), (507.732414637843, 584.9390054270368)
+
 
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
@@ -70,46 +75,39 @@ lenX = len(list_coo_x)
 lenCo = len(coordinates)
 where = lenX//2
 
-selected_circle = []
+Marble.selected = []
 
 def get_coordinates(x, y):
     return coordinates[y][x]
 
-# def create_table():
-#     if event.type == pygame.MOUSEBUTTONDOWN:
-#             clicked_sprites = [s for
-#                                s in sprites
-#                                if s.collidepoint(pygame.mouse.get_pos())]
+def create_table():
+    play = 0
+    if event.type == pygame.MOUSEBUTTONDOWN:
+            clicked_sprites = [s for
+                               s in sprites
+                               if s.collidepoint(pygame.mouse.get_pos())]
 
-#             coordinate_circle = clicked_sprites[0].center
+            coordinate_circle = clicked_sprites[0].center
 
-#             player = players[play % nPlayers]
+            player = players[play % nPlayers]
 
-#             while len(clicked_sprites) >= 1 and\
-#                     len(players[play % nPlayers].circles) < 14 and \
-#                     not any(p.circles for
-#                             p in players if coordinate_circle in p.circles):
+            while len(clicked_sprites) >= 1 and\
+                    len(players[play % nPlayers].circles) < 14 and \
+                    not any(p.circles for
+                            p in players if coordinate_circle in p.circles):
 
-#                 player.circles.append(coordinate_circle)
-#                 pygame.draw.circle(screen,
-#                                    player.color,
-#                                    coordinate_circle,
-#                                    radius-3)
+                player.circles.append(coordinate_circle)
+                pygame.draw.circle(screen,
+                                   player.color,
+                                   coordinate_circle,
+                                   radius-3)
 
-#                 play += 1
+                play += 1
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-        # for circle in p1.get_marbles():
-        #     for coordinates in circle.get_coordinates():
-        #         pygame.draw.circle(screen, p1.get_color(), circle, radius-3)
-
-        # for circle in p2.get_marbles():
-        #     for coordinates in circle.get_coordinates():
-        #         pygame.draw.circle(screen, p2.get_color(), circle, radius-3)
 
         for circle in p1.marbles[0]:
             pygame.draw.circle(screen, p1.color, circle, radius-3)
@@ -119,12 +117,10 @@ while running:
 
         # len([p for p in players if len(p.circles)==14]) == nPlayers
         if True:
-            for circle in \
-                    Marble(screen, coordinates, players).neighbor((x, y)):
+            for circle in Marble(screen, coordinates, players).neighbor((x, y)):
                 pygame.draw.circle(screen, (180, 50, 0), circle, radius, 2)
 
-            selector = \
-                pygame.draw.circle(screen, (255, 255, 255), (x, y), radius, 2)
+            selector = pygame.draw.circle(screen, (255, 255, 255), (x, y), radius, 2)
 
             if event.type == pygame.KEYDOWN:
                 key = pygame.key.get_pressed()
@@ -144,8 +140,7 @@ while running:
                 if key[pygame.K_UP]:
                     if indice_y == 0:
                         continue
-                    elif indice_y <= 4 and \
-                            indice_x == len(coordinates[indice_y])-1:
+                    elif indice_y <= 4 and indice_x == len(coordinates[indice_y])-1:
                         indice_y -= 1
                         indice_x -= 1
                     else:
@@ -154,49 +149,50 @@ while running:
                 if key[pygame.K_DOWN]:
                     if indice_y == 8:
                         continue
-                    elif indice_y >= 4 and \
-                            indice_x == len(coordinates[indice_y])-1:
+                    elif indice_y >= 4 and indice_x == len(coordinates[indice_y])-1:
                         indice_y += 1
                         indice_x -= 1
                     else:
                         indice_y += 1
 
 
-                pygame.draw.circle(screen, (180, 50, 0), (x, y), radius, 2)
+                pygame.draw.circle(screen, (180, 50, 0), (int(x), int(y)), radius, 2)
                 x, y = get_coordinates(indice_x, indice_y)
                 pygame.display.update()                
 
-                # if key[pygame.K_SPACE] and \
-                # (x, y) not in selected_circle and \
-                # len(selected_circle) < 3 \
-                # and ((int(x),int(y)) in p1.get_marbles() or (int(x),int(y)) in p2.get_marbles()):
-                #     if len(selected_circle) == 0:
-                #         selected_circle.append((int(x), int(y)))
-                #     elif len(selected_circle) > 0 and (int(x),int(y)) in p1.get_marbles() and p2.get_marbles() not in selected_circle:
-                #         selected_circle.append((int(x), int(y)))
+                if key[pygame.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3 \
+                and ((x, y) in current_player.marbles[0]):
+                    if Marble.selected == []:
+                        Marble.selected.append((x, y))
+                        print(Marble.selected)
+                    elif len(Marble.selected) == 1 and Marble.selected[0] in Marble(screen, coordinates, players).neighbor((x, y)):
+                        Marble.selected.append((x, y))
+                        print(Marble.selected)
+                    # else:
+                    #     for sub in coordinates:
+                    #        if all(l for l in player.marbles if l in sub) :
 
-                if key[pygame.K_SPACE] and \
-                (x, y) not in selected_circle and \
-                len(selected_circle) < 3 \
-                and ((int(x),int(y)) in current_player.marbles[0]):
-                    selected_circle.append((x, y))                
-                    
+                    """
+                    Pour flat une list
 
-                elif key[pygame.K_SPACE] and \
-                (x, y) in selected_circle:
-                    selected_circle.remove((x, y))    
+                    ma liste à flat est test
+
+                    test =[l for sub in]
+                    """
+
+
+                elif key[pygame.K_SPACE] and (x, y) in Marble.selected:
+                    Marble.selected.remove((x, y))    
                           
 
 
-            for circle in\
-                    Marble(screen, coordinates, players).neighbor((x, y)):
+            for circle in Marble(screen, coordinates, players).neighbor((x, y)):
                 pygame.draw.circle(screen, (255, 255, 255), circle, radius, 2)
 
-            for circle in selected_circle:
+            for circle in Marble.selected:
                 pygame.draw.circle(screen, (255, 0, 255), circle, radius, 2)
 
     pygame.display.flip()
-
 
 pygame.quit()
 
