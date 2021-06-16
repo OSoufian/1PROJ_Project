@@ -1,7 +1,33 @@
 import sys
 import pygame as pg
+import typing
 import os
 
+
+class CheckBox:
+    
+    def __init__(self, font: pg.font.Font, positions: typing.List[pg.Rect], labels: typing.List[str]):
+        self.checked = None
+        self.positions = positions
+        self.font = font
+        self.list_surfaces = [font.render(text, False, "black") for text in labels]
+    
+    def draw(self, screen):
+        i = 0
+        for pos, label in zip(self.positions, self.list_surfaces):
+            pg.draw.rect(screen, "white", pos)
+            screen.blit(label, (pos.x + 40, pos.y))
+            if i == self.checked:
+                pg.draw.circle(screen, "black", pos.center, 7)
+            i += 1
+    
+    def click(self, mouse_pos):
+        i = 0
+        for pos in self.positions:
+            if pos.collidepoint(mouse_pos):
+                self.checked = i
+                break
+            i += 1
 
 class Jeu:
     def __init__(self, screen, x, y, idnum, caption="", text_shift=(20, 1)):
@@ -105,32 +131,7 @@ class Jeu:
                 # play page
                 else:
                     print("yeah")
-
-                #     for k , i in zip(range(len(self.gamer_list)), range(0, 300, 60)):
-                #         button = Jeu(pg.display.set_mode([800, 800]), (340 + i), 200, k, caption=self.gamer_list[k])
-                #         self.message("petite", self.gamer_list[k], (341 + i, 220, 100, 50), "black")
-                #         player_boxes.append(button)                        
-                        
-                #     for k, (i, j) in zip(range(len(self.configuration_list)),  zip(range(0, 600, 300), range(0, 300, 50))):
-                #         button_config = Jeu(pg.display.set_mode([800, 800]), (200 + i), (363 + j), k, caption=self.configuration_list[k])
-                #         self.message("petite", self.configuration_list[k], (220 + i, 360 + j, 100, 50), "black")
-                #         boxes_config.append(button_config)
-                            
-                #     for box in player_boxes:
-                #         box.update_box(evenement)
-                #         if box.check:
-                #             for b, b2 in zip(player_boxes,  boxes_config):
-                #                 b2.update_box(evenement)
-                #                 b.check = b == box
-                #                 if b2.check:
-                #                     for b in boxes_config:
-                #                         b.check = b == box
-                                                                
-                #         for b1, b2 in zip(player_boxes, boxes_config):
-                #             b1.render_box()
-                #             b2.render_box()
-
-                #         pg.display.flip()
+                #     check = CheckBox()
 
                 # self.screen.blit(self.fond, (0, 0))
                 # pg.draw.rect(self.screen, (157, 99, 61, 255), (15, 120, 768, 550))

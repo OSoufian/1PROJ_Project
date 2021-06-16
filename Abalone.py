@@ -43,5 +43,4 @@ class CreateBoard:
             sprites.append(pygame.draw.circle(surface, color, center, radius_circle))
             pygame.draw.circle(surface, (180, 50, 0), center, radius_circle, 3)
             
-        # self.coordinates.append(radius_circle)
         return radius_circle, sprites

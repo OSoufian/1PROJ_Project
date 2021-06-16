@@ -1,13 +1,13 @@
+from typing import Counter
+
+
 class Player:
     __player = {}
 
-    def __init__(self, **kwargs):
-        players_data = ["circles", "color", "points", "name", "marbles"]
-        for k in kwargs.keys():
-            if k not in players_data:
-                del kwargs[k]
-
-        self.__player = kwargs
+    def __init__(self, color, name, marbles = []):
+        self.name = name
+        self.color = color
+        self.points = 0
 
     @property
     def marbles(self) -> list:

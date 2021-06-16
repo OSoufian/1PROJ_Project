@@ -30,18 +30,11 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-board = "Standard"
+board1 = "Standard"
 
-p1 = Player()
-p1.circles = []
+p1 = Player("white", "Toto")
 
-p1.name = "Toto"
-p1.color = "white"
-
-p2 = Player()
-p2.circles = []
-p2.name = "Hercule"
-p2.color = "black"
+p2 = Player("black", "Hercule")
 
 players = [p1, p2]
 nPlayers = len(players)
@@ -49,7 +42,7 @@ nPlayers = len(players)
 turn = 0
 current_player = players[turn%nPlayers]
 
-if board == "Standard":
+if board1 == "Standard":
     p1.marbles = (295.5258238486492, 216.52582384864922), (348.5774715459477, 216.52582384864922), (401.6291192432461, 216.52582384864922), \
         (454.6807669405446, 216.52582384864922), (507.732414637843, 216.52582384864922), (269.0, 262.5774715459477), \
             (322.05164769729845, 262.5774715459477), (375.1032953945969, 262.5774715459477), (428.15494309189535, 262.5774715459477), \
@@ -165,12 +158,12 @@ while running:
                     if Marble.selected == []:
                         Marble.selected.append((x, y))
                         print(Marble.selected)
+                        old_x, old_y = indice_x, indice_y
+                        
                     elif len(Marble.selected) == 1 and Marble.selected[0] in Marble(screen, coordinates, players).neighbor((x, y)):
                         Marble.selected.append((x, y))
                         print(Marble.selected)
-                    # else:
-                    #     for sub in coordinates:
-                    #        if all(l for l in player.marbles if l in sub) :
+                    # elif :
 
                     """
                     Pour flat une list

@@ -16,8 +16,8 @@ class Marble:
 
     def neighbor(self, xy):
         var = [e for e in self.coordinates if xy in e][0]
-        indice_y = int(self.coordinates.index(var))
-        indice_x = int(var.index(xy))
+        indice_y = self.coordinates.index(var)
+        indice_x = var.index(xy)
         neighbor = []
         
         if indice_y-1 < len(self.coordinates) and 0 <= indice_y-1:
@@ -36,7 +36,7 @@ class Marble:
                 
                 if indice_x == 0 and indice_y<4:
                     neighbor.append(self.coordinates[indice_y+1][indice_x+1])
-                    
+
             if indice_x-1 < len(self.coordinates[indice_y+1]) and 0 <= indice_x-1:
                 neighbor.append(self.coordinates[indice_y+1][indice_x+1 if indice_y<4 else indice_x-1])
 
@@ -57,8 +57,7 @@ class Marble:
             pass
         raise Exception("Todo")
 
-    def selected(self, x, y):
-        self.clicked.append((x,y))
+    def selected(self):
         return self.clicked
 
     def count(self, pieces, player):
