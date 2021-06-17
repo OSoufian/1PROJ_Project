@@ -30,9 +30,7 @@ class CheckBox:
 
 class Jeu:
     def __init__(self, screen):
-        self.screen = screen
-        pg.display.set_caption("Abalone")
-        
+        self.screen = screen        
         self.image = pg.transform.scale(pg.image.load("./Menu/abalone.png"), (400, 500))
         self.parametre = pg.transform.scale(pg.image.load('./Menu/parametre.png'), (80, 80)) # l'image paramètre (regle)     
         self.next = pg.transform.scale(pg.image.load("./Menu/suivant.png"), (50, 50)) # l'image next (regle)
@@ -57,15 +55,14 @@ class Jeu:
     def master(self):
         conditonal = 0
         check_player = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(300 + i * 100, 200, 20, 20) for i in range(4)], [f"{i}" for i in range(2, 5)])
-
         check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (250 if i >= 6 else 0), 350 + i * 50 % 300, 20, 20) for i in range(12)], (f"{i}" for i in self.mode))
+        
         while conditonal < 3:
 
             self.screen.blit(self.fond, (0,0))
 
-            for evenement in pg.event.get():
-                if evenement.type == pg.QUIT: sys.exit()                    
-                
+            for evenement in pg.event.get():   
+                if pg.QUIT == evenement.type: sys.exit()     
                 if evenement.type == pg.MOUSEBUTTONDOWN and self.button_coord.collidepoint(evenement.pos):
                     conditonal += 1
                 if evenement.type == pg.MOUSEBUTTONDOWN:
@@ -101,7 +98,7 @@ class Jeu:
                     check_player.draw(self.screen)
                     check_mode.draw(self.screen)
                     pg.display.flip()
-                
+
     def message(self, police, message, message_rectangle, couleur):
         if police == "petite":
             police = pg.font.SysFont('Times New Roman', 20, False)
