@@ -37,10 +37,8 @@ nPlayers = len(players)
 
 turn = 0
 current_player = players[turn]
-
-for player, circle in zip(players,readBoard("santard")):
-    player.marbles = circle
-
+for player, circle in zip(players, readBoard("santard")):
+    player.marbles = [*map(tuple, circle)]
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
             list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
@@ -146,9 +144,11 @@ while running:
 
                 pg.draw.circle(screen, (180, 50, 0), (int(x), int(y)), radius, 2)
                 x, y = get_coordinates(indice_x, indice_y)
-
-                if key[pg.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3 \
-                and ((x, y) in current_player.marbles):
+                print(x, y)
+                print((x, y) in current_player.marbles)
+                if (key[pg.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3
+                and ((x, y) in current_player.marbles)):
+                    print("akito")
                     if Marble.selected == []:
                         Marble.selected.append((x, y))
                         

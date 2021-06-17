@@ -6,7 +6,6 @@ def readBoard(name):
         boards = json.loads(js.read())
         if name in boards:
             return boards[name]
-        return []
 
 def saveBoard(name, board):
     with open("./savedBoard.json", "w+") as js:
