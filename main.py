@@ -57,6 +57,8 @@ if board1 == "Standard":
         player.marbles = circle 
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
+list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9))\
+        , list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
 middle = coordinates[len(list_coo_x)//2]
 
 indice_x = coordinates.index(middle)
@@ -69,8 +71,17 @@ where = lenX//2
 
 Marble.selected = []
 
+# Prends en paramètres des index dans le board et retourne des coordonnées
 def get_coordinates(x, y):
     return coordinates[y][x]
+
+
+# Prends en paramètres des coordonnées et retourne les index dans le board
+def get_index(xy):    
+    for row in range(9):
+        for column in list_x[row]:
+            if coordinates[row][column] == xy:
+                return row, column
 
 def create_table():
     play = 0
@@ -139,7 +150,7 @@ while running:
                 if key[pg.K_DOWN]:
                     if indice_y == 8:
                         continue
-                    elif indice_y >= 4 and indice_x == len(coordinates[indice_y])-1:
+                    elif indice_y >= 4 and indice_x == len(coordinates[indice_y]) - 1:
                         indice_y += 1
                         indice_x -= 1
                     else:
@@ -157,8 +168,21 @@ while running:
                         
                     elif len(Marble.selected) == 1 and Marble.selected[0] in Marble(screen, coordinates, players).neighbor((x, y)):
                         Marble.selected.append((x, y))
-                        print(Marble.selected)
-            
+
+                    elif len(Marble.selected) == 2:
+                        row, column = get_index((x, y))
+                        row1, column1 = get_index(Marble.selected[0])
+                        row2, column2 = get_index(Marble.selected[1])
+                        row3 = row1 - row2
+                        column3 = column1 - column2
+
+                        if (row == row1 + row3 and column == column1 + column3) or \
+                        (row == row1 - row3 and column == column1 - column3) or \
+                        (row == row2 + row3 and column == column2 + column3) or \
+                        (row == row2 - row3 and column == column2 - column3):
+                           Marble.selected.append((x, y))
+
+
                 elif key[pg.K_SPACE] and (x, y) in Marble.selected:
                     Marble.selected.remove((x, y))    
                           
