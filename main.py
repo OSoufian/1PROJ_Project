@@ -4,6 +4,7 @@ from Players import Player
 from Marble import Marble
 from interface import Jeu
 import time
+from  saveBoard import readBoard, saveBoard
 
 pg.init()
 size = [800, 800]
@@ -30,35 +31,19 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-board1 = "Standard"
-
 players = [Player("white", "Toto"),  Player("black", "Hercule")]
 
 nPlayers = len(players)
 
 turn = 0
-current_player = players[turn%nPlayers]
+current_player = players[turn]
 
-if board1 == "Standard":
-
-    circles = [(295.5258238486492, 216.52582384864922), (348.5774715459477, 216.52582384864922), (401.6291192432461, 216.52582384864922), \
-        (454.6807669405446, 216.52582384864922), (507.732414637843, 216.52582384864922), (269.0, 262.5774715459477), \
-            (322.05164769729845, 262.5774715459477), (375.1032953945969, 262.5774715459477), (428.15494309189535, 262.5774715459477), \
-                (481.2065907891938, 262.5774715459477), (534.2582384864922, 262.5774715459477), (348.5774715459477, 308.6291192432461), \
-                    (401.6291192432461, 308.6291192432461), (454.6807669405446, 308.6291192432461)],\
-                    [
-                        (348.5774715459477, 492.8357100324399), (401.6291192432461, 492.8357100324399), (454.6807669405446, 492.8357100324399), \
-                        (269.0, 538.8873577297384), (322.05164769729845, 538.8873577297384), (375.1032953945969, 538.8873577297384), \
-            (428.15494309189535, 538.8873577297384), (481.2065907891938, 538.8873577297384), (534.2582384864922, 538.8873577297384), \
-                (295.5258238486492, 584.9390054270368), (348.5774715459477, 584.9390054270368), (401.6291192432461, 584.9390054270368), \
-                    (454.6807669405446, 584.9390054270368), (507.732414637843, 584.9390054270368)]
-    
-    for player, circle in zip(players, circles):
-        player.marbles = circle 
+for player, circle in zip(players,readBoard("santard")):
+    player.marbles = circle
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9))\
-        , list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
+list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
+            list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
 middle = coordinates[len(list_coo_x)//2]
 
 indice_x = coordinates.index(middle)
@@ -166,8 +151,6 @@ while running:
                 and ((x, y) in current_player.marbles):
                     if Marble.selected == []:
                         Marble.selected.append((x, y))
-                        print(Marble.selected)
-                        old_x, old_y = indice_x, indice_y
                         
                     elif len(Marble.selected) == 1 and Marble.selected[0] in Marble(screen, coordinates, players).neighbor((x, y)):
                         Marble.selected.append((x, y))
