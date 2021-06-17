@@ -1,4 +1,4 @@
-import pygame
+import pygame as pg
 
 
 class Marble:
@@ -7,12 +7,12 @@ class Marble:
         self.coordinates = coordinates
         self.surface = surface
         self.players = players
-        self.clicked = []
+        self.selected = []
 
     def draw_clickable(self, coordinate_ceil, color=(255, 255, 255)):
         assert coordinate_ceil in self.coordinates, "Coordiante outside shape"
         
-        pygame.draw.circle(self.surface, color, coordinate_ceil, coordinate_ceil[-1])
+        pg.draw.circle(self.surface, color, coordinate_ceil, coordinate_ceil[-1])
 
     def neighbor(self, xy):
         var = [e for e in self.coordinates if xy in e][0]
@@ -56,9 +56,6 @@ class Marble:
         if self.can_move(old_coordinate, new_coordinate):
             pass
         raise Exception("Todo")
-
-    def selected(self):
-        return self.clicked
 
     def count(self, pieces, player):
         return sum(n for n in pieces[player])
