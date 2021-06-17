@@ -13,6 +13,7 @@ class CreateBoard:
     def draw_regular_polygon(self, surface, color, outline=0):    
         pygame.draw.polygon(surface, color, [(round(self.x + self.radius * cos(2 * pi * i / 6)), round(self.y + self.radius * sin(2 * pi * i / 6))) for i in range(6)], outline)
 
+
     def draw_ceil(self, surface, color, outline):
         list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
         radius_circle = self.radius / (pi * (6 / 2))

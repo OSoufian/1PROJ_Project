@@ -76,9 +76,7 @@ def get_coordinates(x, y):
 def create_table():
     play = 0
     if event.type == pg.MOUSEBUTTONDOWN:
-            clicked_sprites = [s for
-                               s in sprites
-                               if s.collidepoint(pg.mouse.get_pos())]
+            clicked_sprites = [s for s in sprites if s.collidepoint(pg.mouse.get_pos())]
 
             coordinate_circle = clicked_sprites[0].center
 
@@ -86,14 +84,10 @@ def create_table():
 
             while len(clicked_sprites) >= 1 and\
                     len(players[play % nPlayers].circles) < 14 and \
-                    not any(p.circles for
-                            p in players if coordinate_circle in p.circles):
+                    not any(p.circles for p in players if coordinate_circle in p.circles):
 
                 player.circles.append(coordinate_circle)
-                pg.draw.circle(screen,
-                                   player.color,
-                                   coordinate_circle,
-                                   radius-3)
+                pg.draw.circle(screen, player.color, coordinate_circle, radius-3)
 
                 play += 1
 

@@ -2,9 +2,6 @@ import sys
 import pygame as pg
 import typing
 
-from pygame import event
-from pygame.constants import MOUSEBUTTONDOWN
-
 
 class CheckBox:
     
@@ -20,7 +17,7 @@ class CheckBox:
             pg.draw.rect(screen, "white", pos)
             screen.blit(label, (pos.x + 40, pos.y))
             if i == self.checked:
-                pg.draw.circle(screen, "black", pos.center, 13)
+                pg.draw.circle(screen, "black", pos.center, 10)
             i += 1
     
     def click(self, mouse_pos):
@@ -28,7 +25,7 @@ class CheckBox:
         for pos in self.positions:
             if pos.collidepoint(mouse_pos):
                 self.checked = i
-                break
+                return i
             i += 1
 
 class Jeu:
@@ -51,13 +48,17 @@ class Jeu:
         self.next_coord.x= self.next_coord.y = 700
 
         self.play_coord = self.play.get_rect()
-        self.play_coord.x, self.play_coord.y = 320, 680 
+        self.play_coord.x, self.play_coord.y = 320, 680
+
+        self.mode = ["Standard", "Domanation", "Face à Face", "Fujiyama", "Infiltration",
+                "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
+                "Marguerite suisse", "Pyramide", "Snake variante", "Personnalisé"]
 
     def master(self):
         conditonal = 0
-        check_player = CheckBox(pg.font.SysFont('Times New Roman', 15), [pg.Rect(300 + i * 100, 200, 20, 20) for i in range(4)], [f"{i}" for i in range(2, 5)])
-        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 15), [pg.Rect(100 + i * 100, 400, 20, 20) for i in range(6)], [f"{i}" for i in range(15)])
+        check_player = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(300 + i * 100, 200, 20, 20) for i in range(4)], [f"{i}" for i in range(2, 5)])
 
+        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (250 if i >= 6 else 0), 350 + i * 50 % 300, 20, 20) for i in range(12)], (f"{i}" for i in self.mode))
         while conditonal < 3:
 
             self.screen.blit(self.fond, (0,0))
@@ -67,8 +68,9 @@ class Jeu:
                 
                 if evenement.type == pg.MOUSEBUTTONDOWN and self.button_coord.collidepoint(evenement.pos):
                     conditonal += 1
-                if evenement == pg.MOUSEBUTTONDOWN and conditonal > 2:
-                    check_player.click(event.pos)
+                if evenement.type == pg.MOUSEBUTTONDOWN:
+                    check_player.click(evenement.pos)
+                    check_mode.click(evenement.pos)
 
                 # welcome page
                 elif conditonal == 0:
@@ -89,7 +91,6 @@ class Jeu:
                 # play page
                 else:
                     self.button_coord = self.play_coord
-
                     self.screen.blit(self.fond, (0, 0))
                     pg.draw.rect(self.screen, (157, 99, 61, 255), (15, 120, 768, 550))
                     self.message("moyenne", "Configuration", (160, 50, 100, 50), (255, 255, 255))

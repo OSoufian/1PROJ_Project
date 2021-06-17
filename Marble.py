@@ -10,8 +10,7 @@ class Marble:
         self.selected = []
 
     def draw_clickable(self, coordinate_ceil, color=(255, 255, 255)):
-        assert coordinate_ceil in self.coordinates, "Coordiante outside shape"
-        
+        assert coordinate_ceil in self.coordinates, "Coordiante outside shape"  
         pg.draw.circle(self.surface, color, coordinate_ceil, coordinate_ceil[-1])
 
     def neighbor(self, xy):
