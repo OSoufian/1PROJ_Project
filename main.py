@@ -83,6 +83,9 @@ def get_index(xy):
             if coordinates[row][column] == xy:
                 return row, column
 
+get_index((348.5774715459477, 216.52582384864922))
+
+
 def create_table():
     play = 0
     if event.type == pg.MOUSEBUTTONDOWN:
@@ -180,11 +183,21 @@ while running:
                         (row == row1 - row3 and column == column1 - column3) or \
                         (row == row2 + row3 and column == column2 + column3) or \
                         (row == row2 - row3 and column == column2 - column3):
-                           Marble.selected.append((x, y))
+                           Marble.selected.append((x, y))              
 
 
                 elif key[pg.K_SPACE] and (x, y) in Marble.selected:
-                    Marble.selected.remove((x, y))    
+                    Marble.selected.remove((x, y))   
+
+
+            # if key[pg.K_RETURN] and len(Marble.selected) == 1:
+            #     while True :
+            #         if key[pg.K_SPACE] and (x, y) in Marble(screen, coordinates, players).neighbor(Marble.selected[0]) and ((x, y) not in current_player.marbles):
+            #             for coordinates in current_player.marbles:
+            #                 if coordinates == Marble.selected[0]:
+            #                     current_player.marbles.pop(coordinates)
+            #                     current_player.marbles.append((x, y))
+            #                     break 
                           
             for circle in Marble(screen, coordinates, players).neighbor((x, y)):
                 pg.draw.circle(screen, (255, 255, 255), circle, radius, 2)
