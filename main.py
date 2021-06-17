@@ -32,30 +32,29 @@ coordinates = board.coordinates
 
 board1 = "Standard"
 
-p1 = Player("white", "Toto")
+players = [Player("white", "Toto"),  Player("black", "Hercule")]
 
-p2 = Player("black", "Hercule")
-
-players = [p1, p2]
 nPlayers = len(players)
 
 turn = 0
 current_player = players[turn%nPlayers]
 
 if board1 == "Standard":
-    p1.marbles = (295.5258238486492, 216.52582384864922), (348.5774715459477, 216.52582384864922), (401.6291192432461, 216.52582384864922), \
+
+    circles = [(295.5258238486492, 216.52582384864922), (348.5774715459477, 216.52582384864922), (401.6291192432461, 216.52582384864922), \
         (454.6807669405446, 216.52582384864922), (507.732414637843, 216.52582384864922), (269.0, 262.5774715459477), \
             (322.05164769729845, 262.5774715459477), (375.1032953945969, 262.5774715459477), (428.15494309189535, 262.5774715459477), \
                 (481.2065907891938, 262.5774715459477), (534.2582384864922, 262.5774715459477), (348.5774715459477, 308.6291192432461), \
-                    (401.6291192432461, 308.6291192432461), (454.6807669405446, 308.6291192432461)
-
-    p2.marbles = (348.5774715459477, 492.8357100324399), (401.6291192432461, 492.8357100324399), (454.6807669405446, 492.8357100324399), \
-        (269.0, 538.8873577297384), (322.05164769729845, 538.8873577297384), (375.1032953945969, 538.8873577297384), \
+                    (401.6291192432461, 308.6291192432461), (454.6807669405446, 308.6291192432461)],\
+                    [
+                        (348.5774715459477, 492.8357100324399), (401.6291192432461, 492.8357100324399), (454.6807669405446, 492.8357100324399), \
+                        (269.0, 538.8873577297384), (322.05164769729845, 538.8873577297384), (375.1032953945969, 538.8873577297384), \
             (428.15494309189535, 538.8873577297384), (481.2065907891938, 538.8873577297384), (534.2582384864922, 538.8873577297384), \
                 (295.5258238486492, 584.9390054270368), (348.5774715459477, 584.9390054270368), (401.6291192432461, 584.9390054270368), \
-                    (454.6807669405446, 584.9390054270368), (507.732414637843, 584.9390054270368)
-
-
+                    (454.6807669405446, 584.9390054270368), (507.732414637843, 584.9390054270368)]
+    
+    for player, circle in zip(players, circles):
+        player.marbles = circle 
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 middle = coordinates[len(list_coo_x)//2]
@@ -76,7 +75,9 @@ def get_coordinates(x, y):
 def create_table():
     play = 0
     if event.type == pg.MOUSEBUTTONDOWN:
-            clicked_sprites = [s for s in sprites if s.collidepoint(pg.mouse.get_pos())]
+            clicked_sprites = [s for
+                               s in sprites
+                               if s.collidepoint(pg.mouse.get_pos())]
 
             coordinate_circle = clicked_sprites[0].center
 
@@ -84,10 +85,14 @@ def create_table():
 
             while len(clicked_sprites) >= 1 and\
                     len(players[play % nPlayers].circles) < 14 and \
-                    not any(p.circles for p in players if coordinate_circle in p.circles):
+                    not any(p.circles for
+                            p in players if coordinate_circle in p.circles):
 
                 player.circles.append(coordinate_circle)
-                pg.draw.circle(screen, player.color, coordinate_circle, radius-3)
+                pg.draw.circle(screen,
+                                   player.color,
+                                   coordinate_circle,
+                                   radius-3)
 
                 play += 1
 
@@ -95,12 +100,10 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-
-        for circle in p1.marbles:
-            pg.draw.circle(screen, p1.color, circle, radius-3)
-
-        for circle in p2.marbles:
-            pg.draw.circle(screen, p2.color, circle, radius-3)
+        
+        for player in players:
+            for circle in player.marbles:
+                pg.draw.circle(screen, player.color, circle, radius-3)
 
         # len([p for p in players if len(p.circles)==14]) == nPlayers
         if True:
@@ -142,7 +145,6 @@ while running:
                     else:
                         indice_y += 1
 
-
                 pg.draw.circle(screen, (180, 50, 0), (int(x), int(y)), radius, 2)
                 x, y = get_coordinates(indice_x, indice_y)
 
@@ -156,8 +158,7 @@ while running:
                     elif len(Marble.selected) == 1 and Marble.selected[0] in Marble(screen, coordinates, players).neighbor((x, y)):
                         Marble.selected.append((x, y))
                         print(Marble.selected)
-                    # elif :
-
+            
                 elif key[pg.K_SPACE] and (x, y) in Marble.selected:
                     Marble.selected.remove((x, y))    
                           

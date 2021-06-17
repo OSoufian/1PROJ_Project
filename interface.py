@@ -1,7 +1,5 @@
-import sys
-import pygame as pg
 import typing
-
+import pygame as pg
 
 class CheckBox:
     
@@ -62,7 +60,7 @@ class Jeu:
             self.screen.blit(self.fond, (0,0))
 
             for evenement in pg.event.get():   
-                if pg.QUIT == evenement.type: sys.exit()     
+                if pg.QUIT == evenement.type: pg.quit()    
                 if evenement.type == pg.MOUSEBUTTONDOWN and self.button_coord.collidepoint(evenement.pos):
                     conditonal += 1
                 if evenement.type == pg.MOUSEBUTTONDOWN:
