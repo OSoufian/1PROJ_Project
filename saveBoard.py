@@ -15,4 +15,4 @@ def saveBoard(name, board):
             json.dump(boards, js)
 
 if __name__ == "__main__":
-    print(readBoard("Domination"))
+    print(readBoard("Standard - 6 joueurs"))
