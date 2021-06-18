@@ -1,4 +1,3 @@
-from typing import Match
 import pygame as pg
 from Abalone import CreateBoard
 from Players import Player
@@ -37,6 +36,7 @@ players = [Player("white", "Toto"),  Player("black", "Hercule")]
 
 for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
+
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
             list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
@@ -138,7 +138,6 @@ while running:
                 else:
                     indice_y += 1
 
-            pg.draw.circle(screen, (180, 50, 0), (int(x), int(y)), radius, 3)
             x, y = get_coordinates(indice_x, indice_y)
             if (key[pg.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3
             and ((x, y) in current_player.marbles)):
@@ -162,26 +161,42 @@ while running:
                         Marble.selected.append((x, y))              
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
-                Marble.selected.remove((x, y))
-
+                if not (len(Marble.selected) == 3 and Marble.selected[-1] != Marble.selected[1] and (x, y) == Marble.selected[1]):
+                    Marble.selected.remove((x, y))
+                continue
+                
             if key[pg.K_RETURN] and (x, y) not in Marble.selected:
-                if Marble.selected == []:
+                if Marble.selected:
                     continue
-                Marble.move(current_player, Marble.selected[-1], (x, y))
-                pg.draw.circle(screen, (180, 50, 0), Marble.selected[-1], radius, 3)
-                turn += 1
-                Marble.selected = []
+                if len(Marble.selected) == 1:
+                    if Marble.move(current_player, Marble.selected[-1], (x, y)):
+                        turn += 1
+                    pg.draw.circle(screen, (180, 50, 0), Marble.selected[-1], radius, 3)
+                    Marble.selected = []
+
 
         for circle in [i for i in coordinate if i not in [(c, d) for player in players for c, d in player.marbles]]:
                 pg.draw.circle(screen, (250, 159, 122), circle, radius-5)
 
-        for circle in Marble.neighbor((x, y)):
-            pg.draw.circle(screen, (255, 255, 255), circle, radius, 2)
-
         for circle in Marble.selected:
             pg.draw.circle(screen, (255, 0, 255), circle, radius, 2)
-            for circle in Marble.possibility(Marble.selected[-1]) + Marble.possibility(Marble.selected[0]):
+
+        if Marble.selected:
+            if len(Marble.selected) == 1:
+                for circle in Marble.possibility(Marble.selected[-1]):
                     pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
+            elif len(Marble.selected) == 2:
+                row1, column1 = get_index(Marble.selected[0])
+                row2, column2 = get_index(Marble.selected[1])
+                row3 = row1 - row2
+                column3 = column1 - column2
+                a = ((row1 + row3, column1 + column3),
+                    (row1 - row3, column1 - column3), 
+                    (row2 + row3, column2 + column3),
+                    (row2 - row3, column2 - column3))
+                for xx, yy in a:
+                    if coordinates[xx][yy] not in current_player.marbles:
+                        pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
 
     pg.display.flip()
 

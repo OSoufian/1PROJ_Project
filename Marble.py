@@ -53,15 +53,14 @@ class Marble:
         deffault = set((x, y) for x, y in self.neighbor(xy))
         return tuple(deffault.difference(coordinates))
 
-    def can_move(self, xy) -> bool:
-        return not any(circle for player in self.players for circle in player.marbles if circle in self.possibility(xy))
+    def can_move(self, xy, player) -> bool:
+        return not any(circle for circle in player.marbles if circle in self.possibility(xy))
         
     def move(self, player, old_coordinate, new_coordinate):
-        if self.can_move(new_coordinate) and new_coordinate in self.possibility(old_coordinate):
+        if self.can_move(new_coordinate, player) and new_coordinate in self.possibility(old_coordinate):
             player.marbles.remove(old_coordinate)
             player.marbles.append(new_coordinate)
-        else:
-            pass
+            return True
 
     def count(self, pieces, player):
         return sum(n for n in pieces[player])
