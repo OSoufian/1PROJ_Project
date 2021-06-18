@@ -32,19 +32,16 @@ class Jeu:
         self.image = pg.transform.scale(pg.image.load("./Menu/abalone.png"), (400, 500))
         self.parametre = pg.transform.scale(pg.image.load('./Menu/parametre.png'), (80, 80)) # l'image paramètre (regle)     
         self.next = pg.transform.scale(pg.image.load("./Menu/suivant.png"), (50, 50)) # l'image next (regle)
-        self.regle = pg.image.load("./Menu/regle.png") # l' image regle
+        self.regle = pg.image.load("./Menu/regle.png").convert() # l' image regle
         self.book_image = pg.transform.scale(pg.image.load("Menu/rule.png"), (50, 50)) # image button play (configuration)
         self.play = pg.transform.scale(pg.image.load('./Menu/play.png'), (200, 100))        
         self.fond = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), self.screen.get_size()) # image de fond screen
 
-        self.button_coord = self.play.get_rect()
-        self.button_coord.x, self.button_coord.y = 300, 480
+        self.button_coord = self.play.get_rect(x=300, y=480)
 
-        self.next_coord = self.next.get_rect()
-        self.next_coord.x= self.next_coord.y = 700
+        self.next_coord = self.next.get_rect(x=700, y=700)
 
-        self.play_coord = self.play.get_rect()
-        self.play_coord.x, self.play_coord.y = 320, 680
+        self.play_coord = self.play.get_rect(x=320, y=680)
 
         self.mode = ["Standard", "Domanation", "Face à Face", "Fujiyama", "Infiltration",
                 "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
