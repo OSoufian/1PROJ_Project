@@ -45,12 +45,13 @@ class Jeu:
 
         self.mode = ["Standard", "Domanation", "Face à Face", "Fujiyama", "Infiltration",
                 "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
-                "Marguerite suisse", "Pyramide", "Snake variante", "Personnalisé"]
+                "Marguerite suisse", "Pyramide", "Snakes", "The wall", "Alliances", "Araignee",
+                "Forcage", "Centrifugeuse", "Mosaique", "Personnalisé"]
 
     def master(self):
         conditonal = 0
-        check_player = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(300 + i * 100, 200, 20, 20) for i in range(4)], [f"{i}" for i in range(2, 5)])
-        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (250 if i >= 6 else 0), 350 + i * 50 % 300, 20, 20) for i in range(12)], (f"{i}" for i in self.mode))
+        check_player = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(200 + i * 100, 200, 20, 20) for i in range(7)], [f"{i}" for i in range(2, 7)])
+        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (500 if i >= 12 else (250 if i >= 6 else 0)), 350 + i * 50 % 300, 20, 20) for i in range(18)], (f"{i}" for i in self.mode))
         
         while conditonal < 3:
 

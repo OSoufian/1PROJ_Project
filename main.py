@@ -31,17 +31,15 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-# players = [Player("white", "Toto"),  Player("black", "Hercule")]
+players = [Player("white", "Toto"),  Player("black", "Hercule")]
 # players = [Player("white", "Soufian"),  Player("black", "Lounes"), Player("grey", "Akito")] #test 3 joueurs
 # players = [Player("cyan2", "Soufian"),  Player("chartreuse4", "Lounes"), Player("darkolivegreen3", "Akito"), Player("blue4", "Marceljordan")] #test 4 joueurs
 # players = [Player("red3", "Soufian"),  Player("gold", "Lounes"), Player("darkorchid", "Akito"), Player("chartreuse3", "Marceljordan"), Player("blue4", "Lucas")] #test 5 joueurs
-players = [Player("cyan2", "Soufian"),  Player("springgreen4", "Lounes"), Player("orchid2", "Akito"), Player("dodgerblue4", "Marceljordan"), Player("darkolivegreen2", "Lucas"), Player("darkorchid3", "Cyprien")] #test 6 joueurs
+# players = [Player("cyan2", "Soufian"),  Player("springgreen4", "Lounes"), Player("orchid2", "Akito"), Player("dodgerblue4", "Marceljordan"), Player("darkolivegreen2", "Lucas"), Player("darkorchid3", "Cyprien")] #test 6 joueurs
 
-
-nPlayers = len(players)
 turn = 0
-current_player = players[turn]
-for player, circle in zip(players, readBoard("Standard - 6 joueurs")):
+current_player = players[turn%len(players)]
+for player, circle in zip(players, readBoard("Standard")):
     player.marbles = [*map(tuple, circle)]
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
@@ -78,10 +76,10 @@ def create_table():
 
             coordinate_circle = clicked_sprites[0].center
 
-            player = players[play % nPlayers]
+            player = players[play % len(players)]
 
             while (len(clicked_sprites) >= 1 and
-                    len(players[play % nPlayers].circles) < 14 and 
+                    len(players[play % len(players)].circles) < 14 and 
                     not any(p.circles for
                             p in players if coordinate_circle in p.circles)):
 
@@ -92,21 +90,20 @@ def create_table():
                                    radius-3)
 
                 play += 1
+
 coordinate = [coordinates[i][j] for i in range(len(coordinates)) for j in range(len(coordinates[i]))]
-print(coordinate)
+# print(coordinate)
 liste = [i for i in coordinate if i not in [(c, d) for player in players for c, d in player.marbles]]
-print(len(liste))
+# print(len(liste))
 while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
         
 
-        # len([p for p in players if len(p.circles)==14]) == nPlayers
-        # if True:
         for circle in Marble.neighbor((x, y)):
             pg.draw.circle(screen, (250, 159, 122), circle, radius)
-            pg.draw.circle(screen, (180, 50, 0), circle, radius, 2)
+            pg.draw.circle(screen, (180, 50, 0), circle, radius, 3)
 
         pg.draw.circle(screen, (255, 255, 255), (x, y), radius, 2)
         for i in players:
@@ -146,7 +143,7 @@ while running:
                 else:
                     indice_y += 1
 
-            pg.draw.circle(screen, (180, 50, 0), (int(x), int(y)), radius, 2)
+            pg.draw.circle(screen, (180, 50, 0), (int(x), int(y)), radius, 3)
             x, y = get_coordinates(indice_x, indice_y)
             if (key[pg.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3
             and ((x, y) in current_player.marbles)):
@@ -172,15 +169,14 @@ while running:
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
                 Marble.selected.remove((x, y))
-            # if key[pg.K_SPACE]:
-            #     print(Marble.possibility((x, y)))
+                
+            if key[pg.K_RETURN] and len(Marble.selected) == 1:
+                for circle in Marble.possibility(Marble.selected[-1]):
+                    pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
 
-        for circle in liste:
-            pg.draw.circle(screen, (250, 159, 122), circle, radius-10)
+        # for circle in liste:
+        #     pg.draw.circle(screen, (250, 159, 122), circle, radius-5)
 
-        if len(Marble.selected) == 1:
-            for circle in Marble.possibility(Marble.selected[-1]):
-                pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
                         
         for circle in Marble.neighbor((x, y)):
             pg.draw.circle(screen, (255, 255, 255), circle, radius, 2)
