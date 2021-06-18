@@ -36,13 +36,11 @@ players = [Player("white", "Toto"),  Player("black", "Hercule")]
 nPlayers = len(players)
 turn = 0
 current_player = players[turn]
-for player, circle in zip(players, readBoard("Domination")):
+for player, circle in zip(players, readBoard("Mosaique")):
     player.marbles = [*map(tuple, circle)]
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
             list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
-
 middle = coordinates[len(list_coo_x)//2]
 
 indice_x = coordinates.index(middle)
