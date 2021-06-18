@@ -31,13 +31,17 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-players = [Player("white", "Toto"),  Player("black", "Hercule")]
-# players = [Player("white", "Soufian"),  Player("black", "Lounes"), Player("grey", "Akito")]
+# players = [Player("white", "Toto"),  Player("black", "Hercule")]
+# players = [Player("white", "Soufian"),  Player("black", "Lounes"), Player("grey", "Akito")] #test 3 joueurs
+# players = [Player("cyan2", "Soufian"),  Player("chartreuse4", "Lounes"), Player("darkolivegreen3", "Akito"), Player("blue4", "Marceljordan")] #test 4 joueurs
+# players = [Player("red3", "Soufian"),  Player("gold", "Lounes"), Player("darkorchid", "Akito"), Player("chartreuse3", "Marceljordan"), Player("blue4", "Lucas")] #test 5 joueurs
+players = [Player("cyan2", "Soufian"),  Player("springgreen4", "Lounes"), Player("orchid2", "Akito"), Player("dodgerblue4", "Marceljordan"), Player("darkolivegreen2", "Lucas"), Player("darkorchid3", "Cyprien")] #test 6 joueurs
+
 
 nPlayers = len(players)
 turn = 0
 current_player = players[turn]
-for player, circle in zip(players, readBoard("Standard")):
+for player, circle in zip(players, readBoard("Standard - 6 joueurs")):
     player.marbles = [*map(tuple, circle)]
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
