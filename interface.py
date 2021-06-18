@@ -4,10 +4,11 @@ import pygame as pg
 class CheckBox:
     
     def __init__(self, font: pg.font.Font, positions: typing.List[pg.Rect], labels: typing.List[str]):
-        self.checked = None
+        self.checked = 0
         self.positions = positions
         self.font = font
         self.list_surfaces = [font.render(text, False, "black") for text in labels]
+        self.labels = list(labels)
     
     def draw(self, screen):
         i = 0
@@ -28,7 +29,8 @@ class CheckBox:
 
 class Jeu:
     def __init__(self, screen):
-        self.screen = screen        
+        self.screen = screen   
+        self.mod_player = None     
         self.image = pg.transform.scale(pg.image.load("./Menu/abalone.png"), (400, 500))
         self.parametre = pg.transform.scale(pg.image.load('./Menu/parametre.png'), (80, 80)) # l'image paramètre (regle)     
         self.next = pg.transform.scale(pg.image.load("./Menu/suivant.png"), (50, 50)) # l'image next (regle)
@@ -43,10 +45,10 @@ class Jeu:
 
         self.play_coord = self.play.get_rect(x=320, y=680)
 
-        self.mode = ["Standard", "Domanation", "Face à Face", "Fujiyama", "Infiltration",
+        self.mode = ["Standard", "Domination", "Face a Face", "Fujiyama", "Infiltration",
                 "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
                 "Marguerite suisse", "Pyramide", "Snakes", "The wall", "Alliances", "Araignee",
-                "Forcage", "Centrifugeuse", "Mosaique", "Personnalisé"]
+                "Forcage", "Centrifugeuse", "Mosaique", "Personnalise"]
 
     def master(self):
         conditonal = 0
@@ -94,7 +96,8 @@ class Jeu:
                     check_player.draw(self.screen)
                     check_mode.draw(self.screen)
                     pg.display.flip()
-
+            self.mod_player= self.mode[check_mode.checked], check_player.labels[check_player.checked]
+            
     def message(self, police, message, message_rectangle, couleur):
         if police == "petite":
             police = pg.font.SysFont('Times New Roman', 20, False)

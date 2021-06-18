@@ -1,18 +1,16 @@
 import json
 
 
-def readBoard(name):
+def readBoard(nb_player, name):
     with open("./savedBoard.json", "r+") as js:
         boards = json.loads(js.read())
-        if name in boards:
-            return boards[name]
+        if int(nb_player) > 1 and int(nb_player) < 7: 
+            if name in boards[nb_player]:
+                return boards[nb_player][name]
 
-def saveBoard(name, board):
+def saveBoard(nb_player, name, board):
     with open("./savedBoard.json", "w+") as js:
         boards = json.loads(js)
         if name not in boards:
-            boards[name] = boards
+            boards[nb_player][name] = boards
             json.dump(boards, js)
-
-# if __name__ == "__main__":
-#     print(readBoard("Standard - 6 joueurs"))

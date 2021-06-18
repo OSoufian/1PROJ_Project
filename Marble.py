@@ -58,10 +58,9 @@ class Marble:
             return True
         return False
 
-    def move(self, old_coordinate, new_coordinate):
-        if self.can_move(old_coordinate, new_coordinate):
-            pass
-        raise Exception("Todo")
+    # def move(self, old_coordinate, new_coordinate):
+    #     if self.can_move(old_coordinate, new_coordinate):
+            
 
     def count(self, pieces, player):
         return sum(n for n in pieces[player])

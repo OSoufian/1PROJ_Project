@@ -13,6 +13,8 @@ screen = pg.display.set_mode(size)
 Begin = Jeu(screen)
 Begin.master()
 
+mod, nb_player = Begin.mod_player
+
 screen.fill((180, 50, 0))
 
 background = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), size)
@@ -39,7 +41,7 @@ players = [Player("white", "Toto"),  Player("black", "Hercule")]
 
 turn = 0
 current_player = players[turn%len(players)]
-for player, circle in zip(players, readBoard("Standard")):
+for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
@@ -95,11 +97,14 @@ coordinate = [coordinates[i][j] for i in range(len(coordinates)) for j in range(
 # print(coordinate)
 liste = [i for i in coordinate if i not in [(c, d) for player in players for c, d in player.marbles]]
 # print(len(liste))
+bool = False
+select_next = 0
+bool2 = True
 while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-        
+        # if select_next ==0:
 
         for circle in Marble.neighbor((x, y)):
             pg.draw.circle(screen, (250, 159, 122), circle, radius)
@@ -170,9 +175,18 @@ while running:
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
                 Marble.selected.remove((x, y))
                 
-            if key[pg.K_RETURN] and len(Marble.selected) == 1:
-                for circle in Marble.possibility(Marble.selected[-1]):
-                    pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
+            if key[pg.K_RETURN] and bool:
+                player.marbles.remove(Marble.selected[-1] if Marble.selected[-1] in player.marbles else Marble.selected[0])
+                player.marbles.append((x, y))
+                print(key[pg.K_SPACE] and all((x, y) in Marble.possibility(caca := Marble.selected[i]) for i in range(len(caca))))
+            
+            if key[pg.K_RETURN] and len(Marble.selected) >= 1:
+                bool = not bool
+                
+
+            if key[pg.K_SPACE] and (x, y) in Marble.possibility(Marble.selected[-1]):
+                print("lol")
+                bool2 = not bool2
 
         # for circle in liste:
         #     pg.draw.circle(screen, (250, 159, 122), circle, radius-5)
@@ -183,8 +197,17 @@ while running:
 
         for circle in Marble.selected:
             pg.draw.circle(screen, (255, 0, 255), circle, radius, 2)
-        
-        
+
+        if bool:
+            for circle in Marble.possibility(Marble.selected[-1]) + Marble.possibility(Marble.selected[0]):
+                    pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
+
+        # if bool2 and bool:# and all(circle in Marble.possibility(Marble.selected[i]) for i in range(len(Marble.selected)))
+        #     print(Marble.selected)
+        #     player.marbles.remove(Marble.selected[-1] if Marble.selected[-1] in player.marbles else Marble.selected[0])
+        #     player.marbles.append((x, y))
+        #     print(Marble.selected)
+        #     # Marble.selected, (x, y)
 
     pg.display.flip()
 
