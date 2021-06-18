@@ -49,18 +49,19 @@ class Marble:
         return neighbor
     
     def possibility(self, xy):
-        coordinates = set([(round(c), round(d)) for player in self.players for c, d in player.marbles])
-        deffault = set(tuple(map(round, (x, y))) for x, y in self.neighbor(xy))
+        coordinates = set([(c, d) for player in self.players for c, d in player.marbles])
+        deffault = set((x, y) for x, y in self.neighbor(xy))
         return tuple(deffault.difference(coordinates))
 
     def can_move(self, xy) -> bool:
-        if not any(circle for player in self.players for circle in player.marbles if circle in self.neighbor(xy)):
-            return True
-        return False
-
-    # def move(self, old_coordinate, new_coordinate):
-    #     if self.can_move(old_coordinate, new_coordinate):
-            
+        return not any(circle for player in self.players for circle in player.marbles if circle in self.possibility(xy))
+        
+    def move(self, player, old_coordinate, new_coordinate):
+        if self.can_move(new_coordinate) and new_coordinate in self.possibility(old_coordinate):
+            player.marbles.remove(old_coordinate)
+            player.marbles.append(new_coordinate)
+        else:
+            pass
 
     def count(self, pieces, player):
         return sum(n for n in pieces[player])
