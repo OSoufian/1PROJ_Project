@@ -32,11 +32,12 @@ radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
 players = [Player("white", "Toto"),  Player("black", "Hercule")]
+# players = [Player("white", "Soufian"),  Player("black", "Lounes"), Player("grey", "Akito")]
 
 nPlayers = len(players)
 turn = 0
 current_player = players[turn]
-for player, circle in zip(players, readBoard("Mosaique")):
+for player, circle in zip(players, readBoard("Standard")):
     player.marbles = [*map(tuple, circle)]
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
@@ -63,9 +64,6 @@ def get_index(xy):
         for column in list_x[row]:
             if coordinates[row][column] == xy:
                 return row, column
-
-get_index((348.5774715459477, 216.52582384864922))
-
 
 def create_table():
     play = 0
@@ -148,7 +146,7 @@ while running:
             x, y = get_coordinates(indice_x, indice_y)
             if (key[pg.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3
             and ((x, y) in current_player.marbles)):
-                if Marble.selected == []:
+                if not Marble.selected:
                     Marble.selected.append((x, y))
                     
                 elif len(Marble.selected) == 1 and Marble.selected[0] in Marble.neighbor((x, y)):
@@ -170,8 +168,8 @@ while running:
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
                 Marble.selected.remove((x, y))
-            if key[pg.K_SPACE]:
-                print(Marble.possibility((x, y)))
+            # if key[pg.K_SPACE]:
+            #     print(Marble.possibility((x, y)))
 
         for circle in liste:
             pg.draw.circle(screen, (250, 159, 122), circle, radius-10)
