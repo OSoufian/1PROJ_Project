@@ -64,7 +64,6 @@ def get_index(xy):
             if coordinates[row][column] == xy:
                 return row, column
 
-
 def create_table():
     play = 0
     if event.type == pg.MOUSEBUTTONDOWN:
@@ -105,11 +104,22 @@ def possible_move_len_2() -> list:
                 if xx >= 0 and yy >= 0 and bolou not in current_player.marbles:
                     if coordinates[xx][yy] in Marble.selected and v.x >= 0 and v.y >= 0:
                         liste.append(bolou)
-                    if coordinates[xx][yy] not in current_player.marbles and v.y <= 6:
+                    if coordinates[xx][yy] not in current_player.marbles and v.y <= 8 and v.y >= 0:
                         liste.append(bolou)
-
             except IndexError:
                 pass
+    for i in Marble.selected:
+        index = get_index(i)
+        a = [j for j in Marble.selected if get_index(j)[0] == 4]
+        if index[0] == 4 and len(a) != 2:
+            for i in range(len(liste)):
+                index_ = get_index(liste[i])
+                coordn = coordinates[index_[0]][index_[1] - 1]
+                if index_[0] == 5 and coordn not in Marble.selected:
+                    liste[i] = coordn
+                if index_[0] == 3 and coordn not in Marble.selected:
+                    liste[i] = coordn
+        
     return liste
 
 
@@ -117,7 +127,6 @@ def sum_list(iterable: typing.List[object], name):
     for i in iterable:
         for j in i.__getattribute__(name):
             yield j
-
 
 coordinate = [
     coordinates[i][j]
