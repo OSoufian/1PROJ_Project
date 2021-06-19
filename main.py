@@ -4,6 +4,7 @@ from Players import Player
 from Marble import Marble
 from interface import Jeu
 from  saveBoard import readBoard, saveBoard
+from vector import Vector2
 
 pg.init()
 size = [800, 800]
@@ -165,9 +166,7 @@ while running:
                     Marble.selected.remove((x, y))
                 continue
                 
-            if key[pg.K_RETURN] and (x, y) not in Marble.selected:
-                if Marble.selected:
-                    continue
+            if key[pg.K_a] and (x, y) not in Marble.selected:
                 if len(Marble.selected) == 1:
                     if Marble.move(current_player, Marble.selected[-1], (x, y)):
                         turn += 1
@@ -185,18 +184,24 @@ while running:
             if len(Marble.selected) == 1:
                 for circle in Marble.possibility(Marble.selected[-1]):
                     pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
+
             elif len(Marble.selected) == 2:
-                row1, column1 = get_index(Marble.selected[0])
-                row2, column2 = get_index(Marble.selected[1])
-                row3 = row1 - row2
-                column3 = column1 - column2
-                a = ((row1 + row3, column1 + column3),
-                    (row1 - row3, column1 - column3), 
-                    (row2 + row3, column2 + column3),
-                    (row2 - row3, column2 - column3))
+                choice1, choice2 = Marble.selected
+                choice1_index = get_index(choice1)
+                choice2_index = get_index(choice2)
+                vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
+                mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
+                mix = []
+                for i in mixx:
+                    if not mixx.count(i) > 1:
+                        mix.append(i)
+                # mix = [i for i in mix if not mix.count(i) > 1]
+                a = [get_index(i) for i in mix]
                 for xx, yy in a:
-                    if coordinates[xx][yy] not in current_player.marbles:
-                        pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
+                    if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
+                        v = vector.convert(xx, yy)
+                        if coordinates[v.x][v.y] not in current_player.marbles or coordinates[v.x][v.y] in Marble.selected:
+                            pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
 
     pg.display.flip()
 

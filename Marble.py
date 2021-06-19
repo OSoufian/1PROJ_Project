@@ -61,6 +61,7 @@ class Marble:
             player.marbles.remove(old_coordinate)
             player.marbles.append(new_coordinate)
             return True
+        return False
 
     def count(self, pieces, player):
         return sum(n for n in pieces[player])
