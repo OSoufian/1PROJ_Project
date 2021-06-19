@@ -19,6 +19,12 @@ class Vector2:
     
     def __str__(self):
         return f"Vector(x = {self.x}, y = {self.y}, lenght={self.lenght})"
+    
+    def __neg__(self):
+        return Vector2((-self.x, -self.y), self.lenght)
+    
+    def __mul__(self, nbr):
+        return Vector2((self.x * nbr, self.y * nbr), self.lenght)
 
 if __name__ == "__main__":
     print(Vector2((0, 0), 1) > Vector2((-1, 0), 2))
