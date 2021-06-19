@@ -39,7 +39,7 @@ for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)), 
+list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)),
             list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
 middle = coordinates[len(list_coo_x)//2]
 
@@ -56,8 +56,8 @@ Marble = Marble(screen, coordinates, players)
 def get_coordinates(x, y):
     return coordinates[y][x]
 
-# Prends en paramètres des coordonnées et retourne les index dans le board
-def get_index(xy):    
+# Prends en paramètres des coordonnées et retourne les index dans le tableau
+def get_index(xy):
     for row in range(9):
         for column in list_x[row]:
             if coordinates[row][column] == xy:
@@ -75,7 +75,7 @@ def create_table():
             player = players[play % len(players)]
 
             while (len(clicked_sprites) >= 1 and
-                    len(players[play % len(players)].circles) < 14 and 
+                    len(players[play % len(players)].circles) < 14 and
                     not any(p.circles for
                             p in players if coordinate_circle in p.circles)):
 
@@ -156,16 +156,16 @@ while running:
                     column3 = column1 - column2
 
                     if ((row == row1 + row3 and column == column1 + column3) or
-                    (row == row1 - row3 and column == column1 - column3) or 
-                    (row == row2 + row3 and column == column2 + column3) or 
+                    (row == row1 - row3 and column == column1 - column3) or
+                    (row == row2 + row3 and column == column2 + column3) or
                     (row == row2 - row3 and column == column2 - column3)):
-                        Marble.selected.append((x, y))              
+                        Marble.selected.append((x, y))
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
                 if not (len(Marble.selected) == 3 and Marble.selected[-1] != Marble.selected[1] and (x, y) == Marble.selected[1]):
                     Marble.selected.remove((x, y))
                 continue
-                
+
             if key[pg.K_a] and (x, y) not in Marble.selected:
                 if len(Marble.selected) == 1:
                     if Marble.move(current_player, Marble.selected[-1], (x, y)):
