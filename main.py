@@ -87,6 +87,26 @@ def create_table():
 
             play += 1
 
+
+def function():
+    liste = []
+    choice1, choice2 = Marble.selected
+    choice1_index = get_index(choice1)
+    choice2_index = get_index(choice2)
+    vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
+    mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
+    mix = []
+    for i in mixx:
+        if not mixx.count(i) > 1:
+            mix.append(i)
+    # mix = [i for  pygame.K_BACKSPACi in mix if not mix.count(i) > 1]
+    a = [get_index(i) for i in mix]
+    for xx, yy in a:
+        if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
+            v = vector.convert(xx, yy)
+            if coordinates[v.x][v.y] not in current_player.marbles or coordinates[v.x][v.y] in Marble.selected:
+                yield coordinates[xx][yy]
+
 coordinate = [coordinates[i][j] for i in range(len(coordinates)) for j in range(len(coordinates[i]))]
 bool = False
 turn = 0
@@ -186,22 +206,8 @@ while running:
                     pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
 
             elif len(Marble.selected) == 2:
-                choice1, choice2 = Marble.selected
-                choice1_index = get_index(choice1)
-                choice2_index = get_index(choice2)
-                vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
-                mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
-                mix = []
-                for i in mixx:
-                    if not mixx.count(i) > 1:
-                        mix.append(i)
-                # mix = [i for i in mix if not mix.count(i) > 1]
-                a = [get_index(i) for i in mix]
-                for xx, yy in a:
-                    if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
-                        v = vector.convert(xx, yy)
-                        if coordinates[v.x][v.y] not in current_player.marbles or coordinates[v.x][v.y] in Marble.selected:
-                            pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
+                for xx, yy in function():
+                    pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
 
     pg.display.flip()
 
