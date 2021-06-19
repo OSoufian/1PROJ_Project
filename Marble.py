@@ -1,5 +1,6 @@
 import pygame as pg
 from pygame.draw import circle
+from vector import Vector2
 
 
 class Marble:
@@ -9,6 +10,7 @@ class Marble:
         self.surface = surface
         self.players = players
         self.selected = []
+       
 
     def draw_clickable(self, coordinate_ceil, color=(255, 255, 255)):
         assert coordinate_ceil in self.coordinates, "Coordiante outside shape"
@@ -56,8 +58,12 @@ class Marble:
     def can_move(self, xy, player) -> bool:
         return not any(circle for circle in player.marbles if circle in self.possibility(xy))
         
-    def move(self, player, old_coordinate, new_coordinate):
-        if self.can_move(new_coordinate, player) and new_coordinate in self.possibility(old_coordinate):
+    def move(self, player, old_coordinate, new_coordinate, len):
+        if len == 1 and new_coordinate in self.possibility(old_coordinate):
+            player.marbles.remove(old_coordinate)
+            player.marbles.append(new_coordinate)
+            return True
+        if len == 2:
             player.marbles.remove(old_coordinate)
             player.marbles.append(new_coordinate)
             return True

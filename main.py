@@ -24,7 +24,7 @@ pg.display.flip()
 
 clock = pg.time.Clock()
 
-clock.tick(8)
+clock.tick(60)
 
 running = True
 
@@ -40,17 +40,13 @@ for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)),
-          list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
+list_x = [[*range(0, i)] for i in list_coo_x]
 middle = coordinates[len(list_coo_x)//2]
 
 indice_x = coordinates.index(middle)
 indice_y = middle.index(middle[len(middle)//2])
 x, y = middle[len(middle)//2]
 
-lenX = len(list_coo_x)
-lenCo = len(coordinates)
-where = lenX//2
 Marble = Marble(screen, coordinates, players)
 
 # Prends en paramètres des index dans le board et retourne des coordonnées
@@ -81,6 +77,34 @@ def create_table():
                                    coordinate_circle,
                                    radius-3)
                 play += 1
+
+
+def possible_move_len_2():
+    liste = []
+    choice1, choice2 = Marble.selected
+    choice1_index = get_index(choice1)
+    choice2_index = get_index(choice2)
+    vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
+    mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
+    mix = [*Marble.selected]
+    for i in mixx:
+        if mixx.count(i) > 1 and i not in mix:
+            mix.append(i)
+    clack_cypt = [get_index(i) for i in mix]
+    for xx, yy in clack_cypt:
+        for i in range(-1, 2, 2):
+            try:
+                vectory = vector * i
+                v = vectory.convert(xx, yy)
+                bolou = coordinates[v.x][v.y]
+                if xx >= 0 and yy >= 0 and bolou not in current_player.marbles:
+                    if coordinates[xx][yy] in Marble.selected and v.x >= 0 and v.y >= 0:
+                        liste.append(bolou)
+                    if coordinates[xx][yy] not in current_player.marbles and v.y <= 6:
+                        liste.append(bolou)
+            except IndexError:
+                pass
+    return liste        
 
 def sum_list(iterable: typing.List[object], name):
     for i in iterable:
@@ -154,20 +178,24 @@ while running:
                     if ((row == row1 + row3 and column == column1 + column3) or
                     (row == row1 - row3 and column == column1 - column3) or 
                     (row == row2 + row3 and column == column2 + column3) or 
-                    (row == row2 - row3 and column == column2 - column3)):
-                        Marble.selected.append((x, y))
+                    (row == row2 - row3 and column == column2 - column3)):Marble.selected.append((x, y))
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
-                if not (len(Marble.selected) == 3 and ((x, y) == Marble.selected[0] or (x, y) == Marble.selected[1])):
+                if len([c for c in Marble.neighbor((x,y)) if c in Marble.selected]) < 2 or len(Marble.selected) < 3:
                     Marble.selected.remove((x, y))
-                continue
 
-            if key[pg.K_a] and (x, y) not in Marble.selected:
+            elif key[pg.K_RETURN] and (x, y) not in Marble.selected:
                 if len(Marble.selected) == 1:
-                    if Marble.move(current_player, Marble.selected[-1], (x, y)):
+                    if Marble.move(current_player, Marble.selected[-1], (x, y), len(Marble.selected)):
                         turn += 1
                     pg.draw.circle(screen, (180, 50, 0), Marble.selected[-1], radius, 3)
                     Marble.selected = []
+
+                if len(Marble.selected) == 2:
+                    vector = Vector2((get_index(Marble.selected[1][1])-get_index((x, y)[1]),get_index(Marble.selected[1][0])-get_index((x, y)[1])))
+                    liste = possible_move_len_2()
+                    for i in range(len(Marble.selected)):
+                       Marble.move(current_player, Marble.selected[i], vector.convert(x, y), len(Marble.selected))
 
 
         for circle in [i for i in coordinate if i not in [(c, d) for player in players for c, d in player.marbles]]:
@@ -182,40 +210,9 @@ while running:
                     pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
 
             elif len(Marble.selected) == 2:
-                row1, column1 = get_index(Marble.selected[0])
-                row2, column2 = get_index(Marble.selected[1])
-                row3 = row1 - row2
-                column3 = column1 - column2
-                a = ((row1 + row3, column1 + column3),
-                    (row1 - row3, column1 - column3), 
-                    (row2 + row3, column2 + column3),
-                    (row2 - row3, column2 - column3))
-                try:
-                    for xx, yy in a:
-                        if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
-                            pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
-                except:
-                    pass
-                choice1, choice2 = Marble.selected
-                choice1_index = get_index(choice1)
-                choice2_index = get_index(choice2)
-                vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
-                mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
-                mix = []
-                for i in mixx:
-                    if mixx.count(i) > 1 and i not in mix:
-                        mix.append(i)
-                clack_cypt = [get_index(i) for i in mix]
-                for xx, yy in clack_cypt:
-                    for i in range(-1, 2, 2):
-                        vectory = vector * i
-                        try:
-                            v = vectory.convert(xx, yy)
-                            bolou = coordinates[v.x][v.y]
-                            if xx > 0 and yy >= 0 and bolou not in current_player.marbles and coordinates[xx][yy] not in current_player.marbles:
-                                pg.draw.circle(screen, (158, 240, 78), bolou, radius - 10)
-                        except IndexError:
-                            pass
+                liste = possible_move_len_2()
+                for (xx, yy) in liste:
+                    pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
 
             elif len(Marble.selected) == 3:
                 pass

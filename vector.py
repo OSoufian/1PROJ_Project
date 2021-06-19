@@ -1,15 +1,11 @@
 class Vector2:
 
     def __init__(self, coordnates, lenght=1) -> None:
-        x, y = coordnates
-        self.x = x
-        self.y = y
+        self.x, self.y = coordnates
         self.lenght = lenght
     
     def convert(self, x, y):
-        x = x + self.x
-        y = y + self.y
-        return Vector2((x, y), 1)
+        return Vector2((x+self.x, y+self.y), 1)
     
     def __eq__(self, vecteur) -> bool:
         return self.lenght == vecteur.lenght
