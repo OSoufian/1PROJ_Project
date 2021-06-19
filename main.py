@@ -87,30 +87,6 @@ def sum_list(iterable: typing.List[object], name):
         for j in i.__getattribute__(name):
             yield j
 
-# def function():
-#     choice1, choice2 = Marble.selected
-#     choice1_index = get_index(choice1)
-#     choice2_index = get_index(choice2)
-#     vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
-#     mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
-#     mix = []
-#     for i in mixx:
-#         if not mixx.count(i) > 1:
-#             mix.append(i)
-#     # mix = [i for  pygame.K_BACKSPACi in mix if not mix.count(i) > 1]
-#     a = [get_index(i) for i in mix]
-#     all_moves = [*sum_list(Marble.players, "marbles")]
-#     print(len(all_moves))
-#     for xx, yy in a:
-#         if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in all_moves:
-#             print(xx, yy)
-#             if coordinates[xx][yy] not in current_player.marbles: v = vector.convert(xx, yy) 
-#             try:
-#                 if coordinates[v.x][v.y] not in all_moves or coordinates[v.x][v.y] in Marble.selected:
-#                     yield coordinates[xx][yy]
-#             except IndexError:
-#                 yield coordinates[xx][yy]
-
 coordinate = [coordinates[i][j] for i in range(len(coordinates)) for j in range(len(coordinates[i]))]
 bool = False
 turn = 0
@@ -215,7 +191,7 @@ while running:
                     (row2 + row3, column2 + column3),
                     (row2 - row3, column2 - column3))
                 for xx, yy in a:
-                    if coordinates[xx][yy] not in current_player.marbles:
+                    if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
                         pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
                 choice1, choice2 = Marble.selected
                 choice1_index = get_index(choice1)
@@ -226,16 +202,18 @@ while running:
                 for i in mixx:
                     if mixx.count(i) > 1 and i not in mix:
                         mix.append(i)
-                # mix = [i for  pygame.K_BACKSPACi in mix if not mix.count(i) > 1]
                 clack_cypt = [get_index(i) for i in mix]
                 for xx, yy in clack_cypt:
                     for i in range(-1, 2, 2):
-                        vectori = vector * i
-                        v = vectori.convert(xx, yy)
-                        bolou = coordinates[v.x][v.y]
-                        if xx >= 0 and yy >= 0 and bolou not in current_player.marbles and coordinates[xx][yy] not in current_player.marbles:
-                            pg.draw.circle(screen, (158, 240, 78), bolou, radius - 10)
-                
+                        vectory = vector * i
+                        try:
+                            v = vectory.convert(xx, yy)
+                            bolou = coordinates[v.x][v.y]
+                            if xx > 0 and yy >= 0 and bolou not in current_player.marbles and coordinates[xx][yy] not in current_player.marbles:
+                                pg.draw.circle(screen, (158, 240, 78), bolou, radius - 10)
+                        except IndexError:
+                            pass
+
             elif len(Marble.selected) == 3:
                 pass
 
