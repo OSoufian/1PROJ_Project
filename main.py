@@ -1,3 +1,4 @@
+import typing
 import pygame as pg
 from Abalone import CreateBoard
 from Players import Player
@@ -23,7 +24,7 @@ pg.display.flip()
 
 clock = pg.time.Clock()
 
-clock.tick(10)
+clock.tick(8)
 
 running = True
 
@@ -66,46 +67,25 @@ def get_index(xy):
 def create_table():
     play = 0
     if event.type == pg.MOUSEBUTTONDOWN:
-        clicked_sprites = [s for
-                           s in sprites
-                           if s.collidepoint(pg.mouse.get_pos())]
+            clicked_sprites = [s for s in sprites if s.collidepoint(pg.mouse.get_pos())]
+            coordinate_circle = clicked_sprites[0].center
+            player = players[play % len(players)]
+            while (len(clicked_sprites) >= 1 and
+                    len(players[play % len(players)].circles) < 14 and 
+                    not any(p.circles for
+                            p in players if coordinate_circle in p.circles)):
 
-        coordinate_circle = clicked_sprites[0].center
+                player.circles.append(coordinate_circle)
+                pg.draw.circle(screen,
+                                   player.color,
+                                   coordinate_circle,
+                                   radius-3)
+                play += 1
 
-        player = players[play % len(players)]
-
-        while (len(clicked_sprites) >= 1 and
-               len(players[play % len(players)].circles) < 14 and
-               not any(p.circles for
-                       p in players if coordinate_circle in p.circles)):
-
-            player.circles.append(coordinate_circle)
-            pg.draw.circle(screen,
-                           player.color,
-                           coordinate_circle,
-                           radius-3)
-
-            play += 1
-
-
-def function():
-    liste = []
-    choice1, choice2 = Marble.selected
-    choice1_index = get_index(choice1)
-    choice2_index = get_index(choice2)
-    vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
-    mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
-    mix = []
-    for i in mixx:
-        if not mixx.count(i) > 1:
-            mix.append(i)
-    # mix = [i for  pygame.K_BACKSPACi in mix if not mix.count(i) > 1]
-    a = [get_index(i) for i in mix]
-    for xx, yy in a:
-        if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
-            v = vector.convert(xx, yy)
-            if coordinates[v.x][v.y] not in current_player.marbles or coordinates[v.x][v.y] in Marble.selected:
-                yield coordinates[xx][yy]
+def sum_list(iterable: typing.List[object], name):
+    for i in iterable:
+        for j in i.__getattribute__(name):
+            yield j
 
 coordinate = [coordinates[i][j] for i in range(len(coordinates)) for j in range(len(coordinates[i]))]
 bool = False
@@ -130,15 +110,11 @@ while running:
             key = pg.key.get_pressed()
 
             if key[pg.K_LEFT]:
-                if indice_x == 0:
-                    pass
-                else:
+                if not indice_x == 0:
                     indice_x -= 1
 
             if key[pg.K_RIGHT]:
-                if indice_x == len(coordinates[indice_y])-1:
-                    pass
-                else:
+                if not indice_x == len(coordinates[indice_y])-1:
                     indice_x += 1
 
             if key[pg.K_UP]:
@@ -176,13 +152,13 @@ while running:
                     column3 = column1 - column2
 
                     if ((row == row1 + row3 and column == column1 + column3) or
-                            (row == row1 - row3 and column == column1 - column3) or
-                            (row == row2 + row3 and column == column2 + column3) or
-                            (row == row2 - row3 and column == column2 - column3)):
+                    (row == row1 - row3 and column == column1 - column3) or 
+                    (row == row2 + row3 and column == column2 + column3) or 
+                    (row == row2 - row3 and column == column2 - column3)):
                         Marble.selected.append((x, y))
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
-                if not (len(Marble.selected) == 3 and Marble.selected[-1] != Marble.selected[1] and (x, y) == Marble.selected[1]):
+                if not (len(Marble.selected) == 3 and ((x, y) == Marble.selected[0] or (x, y) == Marble.selected[1])):
                     Marble.selected.remove((x, y))
                 continue
 
@@ -198,7 +174,7 @@ while running:
             pg.draw.circle(screen, (250, 159, 122), circle, radius-5)
 
         for circle in Marble.selected:
-            pg.draw.circle(screen, (255, 0, 255), circle, radius, 2)
+            pg.draw.circle(screen, (155, 155, 155), circle, radius-3)
 
         if Marble.selected:
             if len(Marble.selected) == 1:
@@ -206,8 +182,43 @@ while running:
                     pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
 
             elif len(Marble.selected) == 2:
-                for xx, yy in function():
-                    pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
+                row1, column1 = get_index(Marble.selected[0])
+                row2, column2 = get_index(Marble.selected[1])
+                row3 = row1 - row2
+                column3 = column1 - column2
+                a = ((row1 + row3, column1 + column3),
+                    (row1 - row3, column1 - column3), 
+                    (row2 + row3, column2 + column3),
+                    (row2 - row3, column2 - column3))
+                try:
+                    for xx, yy in a:
+                        if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
+                            pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
+                except:
+                    pass
+                choice1, choice2 = Marble.selected
+                choice1_index = get_index(choice1)
+                choice2_index = get_index(choice2)
+                vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
+                mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
+                mix = []
+                for i in mixx:
+                    if mixx.count(i) > 1 and i not in mix:
+                        mix.append(i)
+                clack_cypt = [get_index(i) for i in mix]
+                for xx, yy in clack_cypt:
+                    for i in range(-1, 2, 2):
+                        vectory = vector * i
+                        try:
+                            v = vectory.convert(xx, yy)
+                            bolou = coordinates[v.x][v.y]
+                            if xx > 0 and yy >= 0 and bolou not in current_player.marbles and coordinates[xx][yy] not in current_player.marbles:
+                                pg.draw.circle(screen, (158, 240, 78), bolou, radius - 10)
+                        except IndexError:
+                            pass
+
+            elif len(Marble.selected) == 3:
+                pass
 
     pg.display.flip()
 
