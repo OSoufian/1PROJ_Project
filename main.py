@@ -190,9 +190,12 @@ while running:
                     (row1 - row3, column1 - column3), 
                     (row2 + row3, column2 + column3),
                     (row2 - row3, column2 - column3))
-                for xx, yy in a:
-                    if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
-                        pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
+                try:
+                    for xx, yy in a:
+                        if xx >= 0 and yy >= 0 and coordinates[xx][yy] not in current_player.marbles:
+                            pg.draw.circle(screen, (158, 240, 78), coordinates[xx][yy], radius - 10)
+                except:
+                    pass
                 choice1, choice2 = Marble.selected
                 choice1_index = get_index(choice1)
                 choice2_index = get_index(choice2)
