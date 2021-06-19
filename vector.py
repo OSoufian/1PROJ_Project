@@ -19,5 +19,9 @@ class Vector2:
     def __mul__(self, nbr):
         return Vector2((self.x * nbr, self.y * nbr), self.lenght)
 
+    @property
+    def indice(self):
+        return (self.x, self.y)
+
 if __name__ == "__main__":
     print(Vector2((0, 0), 1) > Vector2((-1, 0), 2))

@@ -79,7 +79,7 @@ def create_table():
                 play += 1
 
 
-def possible_move_len_2():
+def possible_move_len_2() -> list:
     liste = []
     choice1, choice2 = Marble.selected
     choice1_index = get_index(choice1)
@@ -104,7 +104,7 @@ def possible_move_len_2():
                         liste.append(bolou)
             except IndexError:
                 pass
-    return liste        
+    return liste
 
 def sum_list(iterable: typing.List[object], name):
     for i in iterable:
@@ -192,14 +192,12 @@ while running:
                     Marble.selected = []
 
                 if len(Marble.selected) == 2:
-                    vector = Vector2((get_index(Marble.selected[1][1])-get_index((x, y)[1]),get_index(Marble.selected[1][0])-get_index((x, y)[1])))
-                    liste = possible_move_len_2()
-                    for i in range(len(Marble.selected)):
-                       Marble.move(current_player, Marble.selected[i], vector.convert(x, y), len(Marble.selected))
-
+                    if Marble.move(current_player, (0, 0), (x, y), len(Marble.selected), possible_move_len_2, get_index):
+                        turn += 1
+                    Marble.selected = []
 
         for circle in [i for i in coordinate if i not in [(c, d) for player in players for c, d in player.marbles]]:
-            pg.draw.circle(screen, (250, 159, 122), circle, radius-5)
+            pg.draw.circle(screen, (250, 159, 122), circle, radius-3)
 
         for circle in Marble.selected:
             pg.draw.circle(screen, (155, 155, 155), circle, radius-3)

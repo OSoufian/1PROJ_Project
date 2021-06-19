@@ -54,18 +54,25 @@ class Marble:
         coordinates = set([(c, d) for player in self.players for c, d in player.marbles])
         deffault = set((x, y) for x, y in self.neighbor(xy))
         return tuple(deffault.difference(coordinates))
-
-    def can_move(self, xy, player) -> bool:
-        return not any(circle for circle in player.marbles if circle in self.possibility(xy))
         
-    def move(self, player, old_coordinate, new_coordinate, len):
+    def move(self, player, old_coordinate, new_coordinate, len, funclen2=None, get_index=None):
         if len == 1 and new_coordinate in self.possibility(old_coordinate):
             player.marbles.remove(old_coordinate)
             player.marbles.append(new_coordinate)
             return True
-        if len == 2:
-            player.marbles.remove(old_coordinate)
-            player.marbles.append(new_coordinate)
+        if len == 2 and new_coordinate in funclen2():
+            for i in self.neighbor(new_coordinate):
+                if i in self.selected:
+                    break
+            new_index = get_index(new_coordinate)
+            old_index = get_index(i)
+            v = Vector2((new_index[0] - old_index[0], new_index[1] - old_index[1]))
+            for i in self.selected:
+                xx, yy = get_index(i)
+                vector_converted = v.convert(xx, yy)
+                player.marbles.remove(i)
+                player.marbles.append(self.coordinates[vector_converted.x][vector_converted.y])
+                print(vector_converted)
             return True
         return False
 
