@@ -40,7 +40,7 @@ for player, circle in zip(players, readBoard(nb_player, mod)):
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [list(range(0, 5)), list(range(0, 6)), list(range(0, 7)), list(range(0, 8)), list(range(0, 9)),
-            list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
+          list(range(0, 8)), list(range(0, 7)), list(range(0, 6)), list(range(0, 5))]
 middle = coordinates[len(list_coo_x)//2]
 
 indice_x = coordinates.index(middle)
@@ -66,26 +66,26 @@ def get_index(xy):
 def create_table():
     play = 0
     if event.type == pg.MOUSEBUTTONDOWN:
-            clicked_sprites = [s for
-                               s in sprites
-                               if s.collidepoint(pg.mouse.get_pos())]
+        clicked_sprites = [s for
+                           s in sprites
+                           if s.collidepoint(pg.mouse.get_pos())]
 
-            coordinate_circle = clicked_sprites[0].center
+        coordinate_circle = clicked_sprites[0].center
 
-            player = players[play % len(players)]
+        player = players[play % len(players)]
 
-            while (len(clicked_sprites) >= 1 and
-                    len(players[play % len(players)].circles) < 14 and
-                    not any(p.circles for
-                            p in players if coordinate_circle in p.circles)):
+        while (len(clicked_sprites) >= 1 and
+               len(players[play % len(players)].circles) < 14 and
+               not any(p.circles for
+                       p in players if coordinate_circle in p.circles)):
 
-                player.circles.append(coordinate_circle)
-                pg.draw.circle(screen,
-                                   player.color,
-                                   coordinate_circle,
-                                   radius-3)
+            player.circles.append(coordinate_circle)
+            pg.draw.circle(screen,
+                           player.color,
+                           coordinate_circle,
+                           radius-3)
 
-                play += 1
+            play += 1
 
 coordinate = [coordinates[i][j] for i in range(len(coordinates)) for j in range(len(coordinates[i]))]
 bool = False
@@ -141,7 +141,7 @@ while running:
 
             x, y = get_coordinates(indice_x, indice_y)
             if (key[pg.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3
-            and ((x, y) in current_player.marbles)):
+                    and ((x, y) in current_player.marbles)):
                 if not Marble.selected:
                     Marble.selected.append((x, y))
 
@@ -156,9 +156,9 @@ while running:
                     column3 = column1 - column2
 
                     if ((row == row1 + row3 and column == column1 + column3) or
-                    (row == row1 - row3 and column == column1 - column3) or
-                    (row == row2 + row3 and column == column2 + column3) or
-                    (row == row2 - row3 and column == column2 - column3)):
+                            (row == row1 - row3 and column == column1 - column3) or
+                            (row == row2 + row3 and column == column2 + column3) or
+                            (row == row2 - row3 and column == column2 - column3)):
                         Marble.selected.append((x, y))
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
@@ -175,7 +175,7 @@ while running:
 
 
         for circle in [i for i in coordinate if i not in [(c, d) for player in players for c, d in player.marbles]]:
-                pg.draw.circle(screen, (250, 159, 122), circle, radius-5)
+            pg.draw.circle(screen, (250, 159, 122), circle, radius-5)
 
         for circle in Marble.selected:
             pg.draw.circle(screen, (255, 0, 255), circle, radius, 2)
