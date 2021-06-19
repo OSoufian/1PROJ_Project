@@ -4,7 +4,7 @@ from Abalone import CreateBoard
 from Players import Player
 from Marble import Marble
 from interface import Jeu
-from  saveBoard import readBoard, saveBoard
+from saveBoard import readBoard
 from vector import Vector2
 
 pg.init()
@@ -34,49 +34,52 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-players = [Player("white", "Toto"),  Player("black", "Hercule")]
+players = [Player("white", "Toto"), Player("black", "Hercule")]
 
 for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [[*range(0, i)] for i in list_coo_x]
-middle = coordinates[len(list_coo_x)//2]
+middle = coordinates[len(list_coo_x) // 2]
 
 indice_x = coordinates.index(middle)
-indice_y = middle.index(middle[len(middle)//2])
-x, y = middle[len(middle)//2]
+indice_y = middle.index(middle[len(middle) // 2])
+x, y = middle[len(middle) // 2]
 
 Marble = Marble(screen, coordinates, players)
-
 # Prends en paramètres des index dans le board et retourne des coordonnées
+
+
 def get_coordinates(x, y):
     return coordinates[y][x]
 
+
 # Prends en paramètres des coordonnées et retourne les index dans le tableau
+
+
 def get_index(xy):
     for row in range(9):
         for column in list_x[row]:
             if coordinates[row][column] == xy:
                 return row, column
 
+
 def create_table():
     play = 0
     if event.type == pg.MOUSEBUTTONDOWN:
-            clicked_sprites = [s for s in sprites if s.collidepoint(pg.mouse.get_pos())]
-            coordinate_circle = clicked_sprites[0].center
-            player = players[play % len(players)]
-            while (len(clicked_sprites) >= 1 and
-                    len(players[play % len(players)].circles) < 14 and 
-                    not any(p.circles for
-                            p in players if coordinate_circle in p.circles)):
+        clicked_sprites = [s for s in sprites if s.collidepoint(pg.mouse.get_pos())]
+        coordinate_circle = clicked_sprites[0].center
+        player = players[play % len(players)]
+        while (
+            len(clicked_sprites) >= 1
+            and len(players[play % len(players)].circles) < 14
+            and not any(p.circles for p in players if coordinate_circle in p.circles)
+        ):
 
-                player.circles.append(coordinate_circle)
-                pg.draw.circle(screen,
-                                   player.color,
-                                   coordinate_circle,
-                                   radius-3)
-                play += 1
+            player.circles.append(coordinate_circle)
+            pg.draw.circle(screen, player.color, coordinate_circle, radius - 3)
+            play += 1
 
 
 def possible_move_len_2() -> list:
@@ -84,7 +87,9 @@ def possible_move_len_2() -> list:
     choice1, choice2 = Marble.selected
     choice1_index = get_index(choice1)
     choice2_index = get_index(choice2)
-    vector = Vector2((choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1]))
+    vector = Vector2(
+        (choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1])
+    )
     mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
     mix = [*Marble.selected]
     for i in mixx:
@@ -102,21 +107,28 @@ def possible_move_len_2() -> list:
                         liste.append(bolou)
                     if coordinates[xx][yy] not in current_player.marbles and v.y <= 6:
                         liste.append(bolou)
+
             except IndexError:
                 pass
     return liste
+
 
 def sum_list(iterable: typing.List[object], name):
     for i in iterable:
         for j in i.__getattribute__(name):
             yield j
 
-coordinate = [coordinates[i][j] for i in range(len(coordinates)) for j in range(len(coordinates[i]))]
+
+coordinate = [
+    coordinates[i][j]
+    for i in range(len(coordinates))
+    for j in range(len(coordinates[i]))
+]
 bool = False
 turn = 0
 
 while running:
-    current_player = players[turn%len(players)]
+    current_player = players[turn % len(players)]
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
@@ -138,13 +150,13 @@ while running:
                     indice_x -= 1
 
             if key[pg.K_RIGHT]:
-                if not indice_x == len(coordinates[indice_y])-1:
+                if not indice_x == len(coordinates[indice_y]) - 1:
                     indice_x += 1
 
             if key[pg.K_UP]:
                 if indice_y == 0:
                     pass
-                elif indice_y <= 4 and indice_x == len(coordinates[indice_y])-1:
+                elif indice_y <= 4 and indice_x == len(coordinates[indice_y]) - 1:
                     indice_y -= 1
                     indice_x -= 1
                 else:
@@ -160,12 +172,18 @@ while running:
                     indice_y += 1
 
             x, y = get_coordinates(indice_x, indice_y)
-            if (key[pg.K_SPACE] and (x, y) not in Marble.selected and len(Marble.selected) < 3
-                    and ((x, y) in current_player.marbles)):
+            if (
+                key[pg.K_SPACE]
+                and (x, y) not in Marble.selected
+                and len(Marble.selected) < 3
+                and ((x, y) in current_player.marbles)
+            ):
                 if not Marble.selected:
                     Marble.selected.append((x, y))
 
-                elif len(Marble.selected) == 1 and Marble.selected[0] in Marble.neighbor((x, y)):
+                elif len(Marble.selected) == 1 and Marble.selected[
+                    0
+                ] in Marble.neighbor((x, y)):
                     Marble.selected.append((x, y))
 
                 elif len(Marble.selected) == 2:
@@ -175,32 +193,55 @@ while running:
                     row3 = row1 - row2
                     column3 = column1 - column2
 
-                    if ((row == row1 + row3 and column == column1 + column3) or
-                    (row == row1 - row3 and column == column1 - column3) or 
-                    (row == row2 + row3 and column == column2 + column3) or 
-                    (row == row2 - row3 and column == column2 - column3)):Marble.selected.append((x, y))
+                    if (
+                        (row == row1 + row3 and column == column1 + column3)
+                        or (row == row1 - row3 and column == column1 - column3)
+                        or (row == row2 + row3 and column == column2 + column3)
+                        or (row == row2 - row3 and column == column2 - column3)
+                    ):
+                        Marble.selected.append((x, y))
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
-                if len([c for c in Marble.neighbor((x,y)) if c in Marble.selected]) < 2 or len(Marble.selected) < 3:
+                if (
+                    len([c for c in Marble.neighbor((x, y)) if c in Marble.selected])
+                    < 2
+                    or len(Marble.selected) < 3
+                ):
                     Marble.selected.remove((x, y))
 
             elif key[pg.K_RETURN] and (x, y) not in Marble.selected:
                 if len(Marble.selected) == 1:
-                    if Marble.move(current_player, Marble.selected[-1], (x, y), len(Marble.selected)):
+                    if Marble.move(
+                        current_player,
+                        Marble.selected[-1],
+                        (x, y),
+                        len(Marble.selected),
+                    ):
                         turn += 1
                     pg.draw.circle(screen, (180, 50, 0), Marble.selected[-1], radius, 3)
                     Marble.selected = []
 
                 if len(Marble.selected) == 2:
-                    if Marble.move(current_player, (0, 0), (x, y), len(Marble.selected), possible_move_len_2, get_index):
+                    if Marble.move(
+                        current_player,
+                        (0, 0),
+                        (x, y),
+                        len(Marble.selected),
+                        possible_move_len_2,
+                        get_index,
+                    ):
                         turn += 1
                     Marble.selected = []
 
-        for circle in [i for i in coordinate if i not in [(c, d) for player in players for c, d in player.marbles]]:
-            pg.draw.circle(screen, (250, 159, 122), circle, radius-3)
+        for circle in [
+            i
+            for i in coordinate
+            if i not in [(c, d) for player in players for c, d in player.marbles]
+        ]:
+            pg.draw.circle(screen, (250, 159, 122), circle, radius - 3)
 
         for circle in Marble.selected:
-            pg.draw.circle(screen, (155, 155, 155), circle, radius-3)
+            pg.draw.circle(screen, (155, 155, 155), circle, radius - 3)
 
         if Marble.selected:
             if len(Marble.selected) == 1:
