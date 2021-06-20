@@ -39,11 +39,11 @@ class Jeu:
         self.play = pg.transform.scale(pg.image.load('./Menu/play.png'), (200, 100)).convert_alpha()       
         self.fond = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), self.screen.get_size()).convert_alpha() # image de fond screen
 
-        self.button_coord = self.play.get_rect(x=300, y=480)
+        self.button_coord = self.play.get_rect(x=300, y=580)
 
         self.next_coord = self.next.get_rect(x=700, y=700)
 
-        self.play_coord = self.play.get_rect(x=320, y=680)
+        self.play_coord = self.play.get_rect(x=320, y=700)
 
         self.mode = ["Standard", "Domination", "Face a Face", "Fujiyama", "Infiltration",
                 "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
@@ -70,7 +70,7 @@ class Jeu:
                 # welcome page
                 elif conditonal == 0:
 
-                    self.message("grande", "WELCOME TO ABALONE", (30, 80, 100, 50), (255, 255, 255))
+                    self.message("grande", "WELCOME TO ABALONE", (160, 80, 100, 50), (255, 255, 255))
                     self.screen.blit(self.image, (190, 100, 100, 50)) and self.screen.blit(self.play, self.button_coord)
                     pg.display.flip()
 
