@@ -71,8 +71,12 @@ class Marble:
                 xx, yy = get_index(i)
                 vector_converted = v.convert(xx, yy)
                 player.marbles.remove(i)
-                player.marbles.append(self.coordinates[vector_converted.x][vector_converted.y])
+                if new_index[0] in (3, 5) and (xx, yy) != old_index and not all([get_index(i)[0] == 4 for i in self.selected]):
+                    player.marbles.append(self.coordinates[vector_converted.x][vector_converted.y + 1])
+                else:
+                    player.marbles.append(self.coordinates[vector_converted.x][vector_converted.y])
                 print(vector_converted)
+
             return True
         return False
 

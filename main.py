@@ -190,11 +190,6 @@ coordinate = [
     for j in range(len(coordinates[i]))
 ]
 
-dico_func = {
-    2: possible_move_len_2, 
-    3: possible_mov_len_3
-}
-
 bool = False
 turn = 0
 
