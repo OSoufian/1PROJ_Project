@@ -60,7 +60,7 @@ class Marble:
             player.marbles.remove(old_coordinate)
             player.marbles.append(new_coordinate)
             return True
-        if len == 2 and new_coordinate in funclen2():
+        if len in (2, 3) and new_coordinate in funclen2():
             for i in self.neighbor(new_coordinate):
                 if i in self.selected:
                     break

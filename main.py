@@ -189,6 +189,12 @@ coordinate = [
     for i in range(len(coordinates))
     for j in range(len(coordinates[i]))
 ]
+
+dico_func = {
+    2: possible_move_len_2, 
+    3: possible_mov_len_3
+}
+
 bool = False
 turn = 0
 
@@ -297,6 +303,18 @@ while running:
                     ):
                         turn += 1
                     Marble.selected = []
+                
+                if len(Marble.selected) == 3:
+                    if Marble.move(
+                        current_player,
+                        (0, 0),
+                        (x, y),
+                        len(Marble.selected),
+                        possible_mov_len_3,
+                        get_index,
+                    ):
+                        turn += 1
+                    Marble.selected = []
 
         for circle in [
             i
@@ -304,7 +322,7 @@ while running:
             if i not in [(c, d) for player in players for c, d in player.marbles]
         ]:
             pg.draw.circle(screen, (250, 159, 122), circle, radius - 3)
-
+        
         for circle in Marble.selected:
             pg.draw.circle(screen, (155, 155, 155), circle, radius - 3)
 
