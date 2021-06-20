@@ -102,7 +102,7 @@ def possible_move_len_2() -> list:
                 if xx >= 0 and yy >= 0 and bolou not in current_player.marbles:
                     if coordinates[xx][yy] in Marble.selected and v.x >= 0 and v.y >= 0:
                         liste.append(bolou)
-                    if coordinates[xx][yy] not in current_player.marbles and v.y <= 8 and v.y >= 0:
+                    if coordinates[xx][yy] not in [(c, d) for player in players for c, d in player.marbles] and coordinates[v.x][v.y] not in [(c, d) for player in players for c, d in player.marbles] and v.y <= 8 and v.y >= 0:
                         liste.append(bolou)
             except IndexError:
                 pass
@@ -117,7 +117,10 @@ def possible_move_len_2() -> list:
                     liste[i] = coordn
                 if index_[0] == 3 and coordn not in Marble.selected:
                     liste[i] = coordn
-        
+    for i in liste:
+        if i in current_player.marbles:
+            while i in liste:
+                liste.remove(i)
     return liste
 
 def possible_mov_len_3():
@@ -141,7 +144,7 @@ def possible_mov_len_3():
                 if xx >= 0 and yy >= 0 and bolou not in current_player.marbles:
                     if coordinates[xx][yy] in Marble.selected and v.x >= 0 and v.y >= 0:
                         liste.append(bolou)
-                    if coordinates[xx][yy] not in current_player.marbles and v.y <= 8 and v.y >= 0 and bolou not in mix:
+                    if coordinates[xx][yy] not in [(c, d) for player in players for c, d in player.marbles] and v.y <= 8 and v.y >= 0 and bolou not in mix:
                         liste.append(bolou)
             except IndexError:
                 pass
@@ -174,6 +177,11 @@ def possible_mov_len_3():
                     liste[i] = coordn
                 if index_[0] == 3 and coordn not in Marble.selected:
                     liste[i] = coordn
+
+    for i in liste:
+        if i in current_player.marbles:
+            while i in liste:
+                liste.remove(i)
     return liste
 
 coordinate = [
