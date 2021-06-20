@@ -35,7 +35,8 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-players = [Player("white", "Toto"), Player("black", "Hercule")]
+#players = [Player("white", "Toto"), Player("black", "Hercule")]
+players = [Player("white", "Soufian"), Player("black", "Akito")]
 
 for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
@@ -256,11 +257,6 @@ while running:
                     row, column = get_index((x, y))
                     row1, column1 = get_index(Marble.selected[0])
                     row2, column2 = get_index(Marble.selected[1])
-                    # for i in Marble.neighbor((x, y)):
-                    #     if i in Marble.selected:
-                    #         break
-                    # if row in (3, 5) and (xx, yy) != get_index(i) and not all([get_index(i)[0] == 4 for i in Marble.selected]):
-                    #     pass
                     row3 = row1 - row2
                     column3 = column1 - column2
 
