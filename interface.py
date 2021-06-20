@@ -31,13 +31,13 @@ class Jeu:
     def __init__(self, screen):
         self.screen = screen   
         self.mod_player = None     
-        self.image = pg.transform.scale(pg.image.load("./Menu/abalone.png"), (400, 500))
-        self.parametre = pg.transform.scale(pg.image.load('./Menu/parametre.png'), (80, 80)) # l'image paramètre (regle)     
-        self.next = pg.transform.scale(pg.image.load("./Menu/suivant.png"), (50, 50)) # l'image next (regle)
-        self.regle = pg.image.load("./Menu/regle.png").convert() # l' image regle
-        self.book_image = pg.transform.scale(pg.image.load("Menu/rule.png"), (50, 50)) # image button play (configuration)
-        self.play = pg.transform.scale(pg.image.load('./Menu/play.png'), (200, 100))        
-        self.fond = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), self.screen.get_size()) # image de fond screen
+        self.image = pg.transform.scale(pg.image.load("./Menu/abalone.png"), (400, 500)).convert_alpha()
+        self.parametre = pg.transform.scale(pg.image.load('./Menu/parametre.png'), (80, 80)).convert_alpha() # l'image paramètre (regle)     
+        self.next = pg.transform.scale(pg.image.load("./Menu/suivant.png"), (50, 50)).convert_alpha() # l'image next (regle)
+        self.regle = pg.image.load("./Menu/regle.png").convert_alpha() # l' image regle
+        self.book_image = pg.transform.scale(pg.image.load("Menu/rule.png"), (50, 50)).convert_alpha() # image button play (configuration)
+        self.play = pg.transform.scale(pg.image.load('./Menu/play.png'), (200, 100)).convert_alpha()       
+        self.fond = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), self.screen.get_size()).convert_alpha() # image de fond screen
 
         self.button_coord = self.play.get_rect(x=300, y=480)
 
