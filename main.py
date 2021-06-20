@@ -88,6 +88,7 @@ def possible_move_len_2() -> list:
     choice1, choice2 = Marble.selected
     choice1_index = get_index(choice1)
     choice2_index = get_index(choice2)
+
     vector = Vector2(
         (choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1])
     )
@@ -103,10 +104,28 @@ def possible_move_len_2() -> list:
                 if xx >= 0 and yy >= 0 and bolou not in current_player.marbles:
                     if coordinates[xx][yy] in Marble.selected and v.x >= 0 and v.y >= 0:
                         liste.append(bolou)
-                    if coordinates[xx][yy] not in [(c, d) for player in players for c, d in player.marbles] and coordinates[v.x][v.y] not in [(c, d) for player in players for c, d in player.marbles] and v.y <= 8 and v.y >= 0:
+                    if coordinates[xx][yy] not in [(c, d) for player in players for c, d in player.marbles] and v.y <= 8 and v.y >= 0 and bolou not in mix:
                         liste.append(bolou)
             except IndexError:
                 pass
+    
+    for i in liste:
+        neighbor_i = Marble.neighbor(i)
+        index_i = get_index(i)
+        try:
+            selected_i = get_index([ii for ii in neighbor_i if ii in Marble.selected][0])
+            vector = Vector2((index_i[0] - selected_i[0], index_i[1] - selected_i[1]))
+            for j in Marble.selected:
+                index_j = get_index(j)
+                vector_converted = vector.convert(*index_j)
+                image = coordinates[vector_converted.x][vector_converted.y]
+                if image in current_player.marbles and image not in Marble.selected:
+                    while i in liste:
+                        liste.remove(i)
+                    break
+        except:
+            pass
+
     for i in Marble.selected:
         index = get_index(i)
         a = [j for j in Marble.selected if get_index(j)[0] == 4]
@@ -118,6 +137,7 @@ def possible_move_len_2() -> list:
                     liste[i] = coordn
                 if index_[0] == 3 and coordn not in Marble.selected:
                     liste[i] = coordn
+
     for i in liste:
         if i in current_player.marbles:
             while i in liste:
@@ -259,7 +279,12 @@ while running:
                     row2, column2 = get_index(Marble.selected[1])
                     row3 = row1 - row2
                     column3 = column1 - column2
-
+                    for i in Marble.neighbor((x, y)):
+                        if i in Marble.selected:
+                            break
+                    old_index = get_index(i)
+                    if row in (3, 5) and (xx, yy) != old_index and not all([get_index(i)[0] == 4 for i in Marble.selected]) and any([get_index(i)[0] == 4 for i in Marble.selected]):
+                        column += 1
                     if (
                         (row == row1 + row3 and column == column1 + column3)
                         or (row == row1 - row3 and column == column1 - column3)
