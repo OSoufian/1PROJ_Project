@@ -225,7 +225,7 @@ while running:
             pg.draw.circle(screen, (250, 159, 122), circle, radius)
             pg.draw.circle(screen, (180, 50, 0), circle, radius, 3)
 
-        # pg.draw.circle(screen, (255, 255, 255), (x, y), radius, 2)
+        pg.draw.circle(screen, (255, 255, 255), (x, y), radius, 2)
         for i in players:
             for j in i.marbles:
                 pg.draw.circle(screen, i.color, j, radius - 3)

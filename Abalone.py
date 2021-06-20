@@ -19,7 +19,6 @@ class CreateBoard:
         radius_circle = self.radius / (pi * 3 )
         x = round(self.x + self.radius * cos(pi * 2 / 3)) + radius_circle - 6      
         y = round(self.y + self.radius * sin(pi * 4/ 3)) + radius_circle + 7
-        print(x, y)
         sub = []
         
         for n, i in enumerate(list_coo_x):            
