@@ -6,6 +6,9 @@ class Vector2:
     
     def convert(self, x, y):
         return Vector2((x+self.x, y+self.y), 1)
+
+    def __neg__(self):
+        return Vector2((self.x * - 1, self.y * -1), self.lenght)
     
     def __eq__(self, vecteur) -> bool:
         return self.lenght == vecteur.lenght
@@ -18,6 +21,9 @@ class Vector2:
 
     def __mul__(self, nbr):
         return Vector2((self.x * nbr, self.y * nbr), self.lenght)
+
+    def __truediv__(self, nbr):
+        return Vector2((self.x // nbr, self.y // nbr), self.lenght)
 
     @property
     def indice(self):

@@ -6,6 +6,7 @@ from Marble import Marble
 from interface import Jeu
 from saveBoard import readBoard
 from vector import Vector2
+from math import hypot
 
 pg.init()
 size = [800, 800]
@@ -91,11 +92,8 @@ def possible_move_len_2() -> list:
     )
     mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2)
     mix = [*Marble.selected]
-    for i in mixx:
-        if mixx.count(i) > 1 and i not in mix:
-            mix.append(i)
-    clack_cypt = [get_index(i) for i in mix]
-    for xx, yy in clack_cypt:
+    mix += [i for i in mixx if mixx.count(i) > 1]
+    for xx, yy in [get_index(i) for i in mix]:
         for i in range(-1, 2, 2):
             try:
                 vectory = vector * i
@@ -122,11 +120,47 @@ def possible_move_len_2() -> list:
         
     return liste
 
+def possible_mov_len_3():
+    liste = []
+    choice1, choice2, choice3 = Marble.selected
+    choice1_index = get_index(choice1)
+    choice2_index = get_index(choice2)
 
-def sum_list(iterable: typing.List[object], name):
-    for i in iterable:
-        for j in i.__getattribute__(name):
-            yield j
+    vector = Vector2(
+        (choice2_index[0] - choice1_index[0], choice2_index[1] - choice1_index[1])
+    )
+    mixx = Marble.neighbor(choice1) + Marble.neighbor(choice2) + Marble.neighbor(choice3)
+    mix = [*Marble.selected]
+    mix += [i for i in mixx if mixx.count(i) > 1]
+    for xx, yy in [get_index(i) for i in mix]:
+        for i in range(-1, 2, 2):
+            try:
+                vectory = vector * i
+                v = vectory.convert(xx, yy)
+                bolou = coordinates[v.x][v.y]
+                if xx >= 0 and yy >= 0 and bolou not in current_player.marbles:
+                    if coordinates[xx][yy] in Marble.selected and v.x >= 0 and v.y >= 0:
+                        liste.append(bolou)
+                    if coordinates[xx][yy] not in current_player.marbles and v.y <= 8 and v.y >= 0 and bolou not in mix:
+                        liste.append(bolou)
+            except IndexError:
+                pass
+    
+    for i in liste:
+        neighbor_i = Marble.neighbor(i)
+        index_i = get_index(i)
+        selected_i = get_index([ii for ii in neighbor_i if ii in Marble.selected][0])
+        vector = Vector2((index_i[0] - selected_i[0], index_i[1] - selected_i[1]))
+        for j in Marble.selected:
+            index_j = get_index(j)
+            vector_converted = vector.convert(*index_j)
+            image = coordinates[vector_converted.x][vector_converted.y]
+            if image in current_player.marbles and image not in Marble.selected:
+                while i in liste:
+                    liste.remove(i)
+                break
+
+    return liste
 
 coordinate = [
     coordinates[i][j]
@@ -263,7 +297,8 @@ while running:
                     pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
 
             elif len(Marble.selected) == 3:
-                pass
+                for xx, yy in possible_mov_len_3():
+                    pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
 
     pg.display.flip()
 
