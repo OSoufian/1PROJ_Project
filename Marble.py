@@ -98,12 +98,3 @@ class Marble:
 
             return True
         return False
-
-    def count(self, pieces, player):
-        return sum(n for n in pieces[player])
-
-    def win(self, pieces_left) -> bool:
-        return pieces_left < 1
-
-    # def remove_pieces(self, pieces) -> dict:
-    #     raise

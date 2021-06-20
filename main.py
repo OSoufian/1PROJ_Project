@@ -101,41 +101,42 @@ def possible_move_len_2() -> list:
                 vectory = vector * i
                 v = vectory.convert(xx, yy)
                 bolou = coordinates[v.x][v.y]
-                if xx >= 0 and yy >= 0 and bolou not in current_player.marbles:
+                if xx >= 0 and yy >= 0 and bolou not in Marble.selected:
                     if coordinates[xx][yy] in Marble.selected and v.x >= 0 and v.y >= 0:
                         liste.append(bolou)
-                    if coordinates[xx][yy] not in [(c, d) for player in players for c, d in player.marbles] and v.y <= 8 and v.y >= 0 and bolou not in mix:
+                    if coordinates[xx][yy] not in [(c, d) for player in players for c, d in player.marbles] and v.y <= 8 and v.y >= 0:
                         liste.append(bolou)
             except IndexError:
                 pass
     
-    for i in liste:
-        neighbor_i = Marble.neighbor(i)
-        index_i = get_index(i)
-        try:
-            selected_i = get_index([ii for ii in neighbor_i if ii in Marble.selected][0])
-            vector = Vector2((index_i[0] - selected_i[0], index_i[1] - selected_i[1]))
-            for j in Marble.selected:
-                index_j = get_index(j)
-                vector_converted = vector.convert(*index_j)
-                image = coordinates[vector_converted.x][vector_converted.y]
-                if image in current_player.marbles and image not in Marble.selected:
-                    while i in liste:
-                        liste.remove(i)
-                    break
-        except:
-            pass
+    # for i in liste:
+    #     neighbor_i = Marble.neighbor(i)
+    #     index_i = get_index(i)
+    #     try:
+    #         selected_i = get_index([ii for ii in neighbor_i if ii in Marble.selected][0])
+    #         vector = Vector2((index_i[0] - selected_i[0], index_i[1] - selected_i[1]))
+    #         for j in Marble.selected:
+    #             index_j = get_index(j)
+    #             vector_converted = vector.convert(*index_j)
+    #             image = coordinates[vector_converted.x][vector_converted.y]
+    #             if image in current_player.marbles and image not in Marble.selected:
+    #                 while i in liste:
+    #                     liste.remove(i)
+    #                 break
+    #     except:
+    #         pass
 
     for i in Marble.selected:
         index = get_index(i)
         a = [j for j in Marble.selected if get_index(j)[0] == 4]
+        b = [j for j in Marble.selected if get_index(j)[0] != 4]
         if index[0] == 4 and len(a) != 2:
             for i in range(len(liste)):
                 index_ = get_index(liste[i])
                 coordn = coordinates[index_[0]][index_[1] - 1]
-                if index_[0] == 5 and coordn not in Marble.selected:
+                if index_[0] == 5 and coordn not in [(c, d) for player in players for c, d in player.marbles]:
                     liste[i] = coordn
-                if index_[0] == 3 and coordn not in Marble.selected:
+                elif index_[0] == 3 and coordn not in [(c, d) for player in players for c, d in player.marbles]:
                     liste[i] = coordn
 
     for i in liste:
@@ -224,7 +225,7 @@ while running:
             pg.draw.circle(screen, (250, 159, 122), circle, radius)
             pg.draw.circle(screen, (180, 50, 0), circle, radius, 3)
 
-        pg.draw.circle(screen, (255, 255, 255), (x, y), radius, 2)
+        # pg.draw.circle(screen, (255, 255, 255), (x, y), radius, 2)
         for i in players:
             for j in i.marbles:
                 pg.draw.circle(screen, i.color, j, radius - 3)
@@ -283,6 +284,7 @@ while running:
                         if i in Marble.selected:
                             break
                     old_index = get_index(i)
+                    print(row, column)
                     if row in (3, 5) and (xx, yy) != old_index and not all([get_index(i)[0] == 4 for i in Marble.selected]) and any([get_index(i)[0] == 4 for i in Marble.selected]):
                         column += 1
                     if (
