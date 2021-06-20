@@ -1,6 +1,6 @@
 import typing
 import pygame as pg
-
+import platform
 class CheckBox:
     
     def __init__(self, font: pg.font.Font, positions: typing.List[pg.Rect], labels: typing.List[str]):
@@ -70,7 +70,7 @@ class Jeu:
                 # welcome page
                 elif conditonal == 0:
 
-                    self.message("grande", "WELCOME TO ABALONE", (160, 80, 100, 50), (255, 255, 255))
+                    self.message("moyenne", "WELCOME TO ABALONE", (160, 80, 100, 50), (255, 255, 255))
                     self.screen.blit(self.image, (190, 100, 100, 50)) and self.screen.blit(self.play, self.button_coord)
                     pg.display.flip()
 
