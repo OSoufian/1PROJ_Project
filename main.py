@@ -149,17 +149,31 @@ def possible_mov_len_3():
     for i in liste:
         neighbor_i = Marble.neighbor(i)
         index_i = get_index(i)
-        selected_i = get_index([ii for ii in neighbor_i if ii in Marble.selected][0])
-        vector = Vector2((index_i[0] - selected_i[0], index_i[1] - selected_i[1]))
-        for j in Marble.selected:
-            index_j = get_index(j)
-            vector_converted = vector.convert(*index_j)
-            image = coordinates[vector_converted.x][vector_converted.y]
-            if image in current_player.marbles and image not in Marble.selected:
-                while i in liste:
-                    liste.remove(i)
-                break
+        try:
+            selected_i = get_index([ii for ii in neighbor_i if ii in Marble.selected][0])
+            vector = Vector2((index_i[0] - selected_i[0], index_i[1] - selected_i[1]))
+            for j in Marble.selected:
+                index_j = get_index(j)
+                vector_converted = vector.convert(*index_j)
+                image = coordinates[vector_converted.x][vector_converted.y]
+                if image in current_player.marbles and image not in Marble.selected:
+                    while i in liste:
+                        liste.remove(i)
+                    break
+        except:
+            pass
 
+    for i in Marble.selected:
+        index = get_index(i)
+        a = [j for j in Marble.selected if get_index(j)[0] == 4]
+        if index[0] == 4 and len(a) != 2:
+            for i in range(len(liste)):
+                index_ = get_index(liste[i])
+                coordn = coordinates[index_[0]][index_[1] - 1]
+                if index_[0] == 5 and coordn not in Marble.selected:
+                    liste[i] = coordn
+                if index_[0] == 3 and coordn not in Marble.selected:
+                    liste[i] = coordn
     return liste
 
 coordinate = [
