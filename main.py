@@ -169,7 +169,7 @@ def possible_mov_len_3():
     for i in Marble.selected:
         index = get_index(i)
         a = [j for j in Marble.selected if get_index(j)[0] == 4]
-        if index[0] == 4 and len(a) != 2:
+        if index[0] == 4 and len(a) != 3:
             for i in range(len(liste)):
                 index_ = get_index(liste[i])
                 coordn = coordinates[index_[0]][index_[1] - 1]
