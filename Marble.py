@@ -87,7 +87,7 @@ class Marble:
                 yield i
 
     def move(
-        self, player, old_coordinate, new_coordinate, len, args:tuple=None, get_index=None
+        self, player, new_coordinate, len, args:tuple=None, old_coordinate=None
     ):
         if len == 1 and new_coordinate in self.possibility(old_coordinate):
             player.marbles.remove(old_coordinate)
@@ -97,26 +97,13 @@ class Marble:
             for i in self.neighbor(new_coordinate):
                 if i in self.selected:
                     break
-            new_index = get_index(new_coordinate)
-            old_index = get_index(i)
-            v = Vector2((new_index[0] - old_index[0], new_index[1] - old_index[1]))
+            old_coordinate = i
+            vector = Vector2((new_coordinate[0] - old_coordinate[0], new_coordinate[1] - old_coordinate[1]))
             for i in self.selected:
-                xx, yy = get_index(i)
-                vector_converted = v.convert(xx, yy)
+                converted = vector.convert(*i).indice
                 player.marbles.remove(i)
-                if (
-                    new_index[0] in (3, 5)
-                    and (xx, yy) != old_index
-                    and not all([get_index(i)[0] == 4 for i in self.selected])
-                    and any([get_index(i)[0] == 4 for i in self.selected])
-                ):
-                    player.marbles.append(
-                        self.coordinates[vector_converted.x][vector_converted.y + 1]
-                    )
-                else:
-                    player.marbles.append(
-                        self.coordinates[vector_converted.x][vector_converted.y]
-                    )
-
+                player.marbles.append(converted)
+                
             return True
+
         return False

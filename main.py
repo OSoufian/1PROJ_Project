@@ -179,9 +179,10 @@ while running:
                 if len(Marble.selected) == 1:
                     if Marble.move(
                         current_player,
-                        Marble.selected[-1],
                         (x, y),
                         len(Marble.selected),
+                        None,
+                        Marble.selected[-1],
                     ):
                         turn += 1
                     pg.draw.circle(screen, (180, 50, 0), Marble.selected[-1], radius, 3)
@@ -190,11 +191,9 @@ while running:
                 if len(Marble.selected) in (2, 3):
                     if Marble.move(
                         current_player,
-                        (0, 0),
                         (x, y),
                         len(Marble.selected),
                         (coordinate, current_player),
-                        get_index,
                     ):
                         turn += 1
                     Marble.selected = []
