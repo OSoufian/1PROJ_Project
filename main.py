@@ -148,23 +148,15 @@ while running:
                     Marble.selected.append((x, y))
 
                 elif len(Marble.selected) == 2:
-                    row, column = get_index((x, y))
-                    row1, column1 = get_index(Marble.selected[0])
-                    row2, column2 = get_index(Marble.selected[1])
-                    row3 = row1 - row2
-                    column3 = column1 - column2
-                    for i in Marble.neighbor((x, y)):
-                        if i in Marble.selected:
-                            break
-                    old_index = get_index(i)
-                    if row in (3, 5) and (xx, yy) != old_index and not all([get_index(i)[0] == 4 for i in Marble.selected]) and any([get_index(i)[0] == 4 for i in Marble.selected]):
-                        column += 1
-                    if (
-                        (row == row1 + row3 and column == column1 + column3)
-                        or (row == row1 - row3 and column == column1 - column3)
-                        or (row == row2 + row3 and column == column2 + column3)
-                        or (row == row2 - row3 and column == column2 - column3)
-                    ):
+                    selected = sorted(Marble.selected)
+                    abs1, abs2 = selected
+                    vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
+                    converted = vector.convert(*abs1).indice
+                    if (x, y) == converted:
+                        Marble.selected.append((x, y))
+                    vector = -vector
+                    converted = vector.convert(*selected[-1]).indice
+                    if (x, y) == converted:
                         Marble.selected.append((x, y))
 
             elif key[pg.K_SPACE] and (x, y) in Marble.selected:
