@@ -19,10 +19,11 @@ Begin.master()
 mod, nb_player = Begin.mod_player
 
 screen.fill((180, 50, 0))
-
+iterator = iter(["white", "black", "grey", "cyan2", "springgreen4", "orchid2"])
+print(nb_player)
 background = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), size)
 
-players = [Player("white", pg.Rect((200, 100), (140, 40))), Player("black", pg.Rect((600, 100), (140, 40)))]
+players = [Player(next(iterator)) for _ in range(int(nb_player))]
 player_interface = PlayerInterface()
 player_interface.run(screen, players)
 
