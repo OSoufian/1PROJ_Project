@@ -45,7 +45,7 @@ class Jeu:
 
         self.play_coord = self.play.get_rect(x=320, y=700)
 
-        self.mode = ["Domination", "Face a Face", "Fujiyama", "Infiltration",
+        self.mode = ["Standard","Domination", "Face a Face", "Fujiyama", "Infiltration",
                 "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
                 "Marguerite suisse", "Pyramide", "Snakes", "The wall", "Alliances", "Araignee",
                 "Forcage", "Centrifugeuse", "Mosaique", "Personnalise"]
@@ -54,7 +54,7 @@ class Jeu:
         conditonal = 0
         check_player = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(200 + i * 100, 200, 20, 20) for i in range(7)], [f"{i}" for i in range(2, 7)])
         check_standard = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50, 350, 20, 20)], ("Standard",))
-        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (500 if i >= 11 else (250 if i >= 5 else 0)), (400 if i < 5 else 350) + i * 50 % 300, 20, 20) for i in range(17)], (f"{i}" for i in self.mode))
+        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (500 if i >= 12 else (250 if i >= 6 else 0)), 350 + i * 50 % 300, 20, 20) for i in range(18)], (f"{i}" for i in self.mode))
         while conditonal < 3:
 
             self.screen.blit(self.fond, (0,0))
@@ -94,8 +94,10 @@ class Jeu:
                     self.screen.blit(self.play, self.play_coord)
                     self.screen.blit(self.parametre, (550, 30, 100, 50))
                     check_player.draw(self.screen)
-                    check_standard.draw(self.screen)
-                    check_mode.draw(self.screen)
+                    if check_player.checked > 0:
+                        check_standard.draw(self.screen)
+                    else:
+                        check_mode.draw(self.screen)
                     pg.display.flip()
             self.mod_player= self.mode[check_mode.checked], check_player.labels[check_player.checked]
             
