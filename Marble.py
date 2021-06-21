@@ -93,7 +93,7 @@ class Marble:
             player.marbles.remove(old_coordinate)
             player.marbles.append(new_coordinate)
             return True
-        if len in (2, 3) and new_coordinate in self.can_move(*args):
+        if len >= 2 and new_coordinate in self.can_move(*args):
             for i in self.neighbor(new_coordinate):
                 if i in self.selected:
                     break
@@ -107,3 +107,13 @@ class Marble:
             return True
 
         return False
+
+    # def push(self, neighbours, selected,__push=[]):
+    #     if neighbours_at(direction):
+    #         if len(selected) < len(__push) or len(__push) < 3:
+    #             __push.append(direction)
+    #             push(neighbours, selected, __push)
+    #         else: 
+    #             return __push
+    #     else:
+    #         return __push
