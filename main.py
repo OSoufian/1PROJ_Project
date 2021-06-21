@@ -1,6 +1,7 @@
 import typing
 import pygame as pg
 from Abalone import CreateBoard
+from playerInterface import PlayerInterface
 from Players import Player
 from Marble import Marble
 from interface import Jeu
@@ -21,6 +22,10 @@ screen.fill((180, 50, 0))
 
 background = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), size)
 
+players = [Player("white", pg.Rect((200, 100), (140, 40))), Player("black", pg.Rect((600, 100), (140, 40)))]
+player_interface = PlayerInterface()
+player_interface.run(screen, players)
+
 pg.display.flip()
 
 clock = pg.time.Clock()
@@ -36,7 +41,7 @@ radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
 #players = [Player("white", "Toto"), Player("black", "Hercule")]
-players = [Player("white", "Soufian"), Player("black", "Akito")]
+
 
 for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
