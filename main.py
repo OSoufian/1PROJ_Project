@@ -40,9 +40,6 @@ board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates
 
-#players = [Player("white", "Toto"), Player("black", "Hercule")]
-
-
 for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
 
@@ -56,15 +53,10 @@ x, y = middle[len(middle) // 2]
 
 Marble = Marble(screen, coordinates, players)
 # Prends en paramètres des index dans le board et retourne des coordonnées
-
-
 def get_coordinates(x, y):
     return coordinates[y][x]
 
-
 # Prends en paramètres des coordonnées et retourne les index dans le tableau
-
-
 def get_index(xy):
     for row in range(9):
         for column in list_x[row]:
@@ -92,29 +84,6 @@ coordinate = [
     for i in range(len(coordinates))
     for j in range(len(coordinates[i]))
 ]
-
-def possible_move_len():
-    selected = sorted(Marble.selected)
-    abs1, abs2, *abs3 = selected
-    vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
-    converted = vector.convert(*abs1).indice
-    if converted in coordinate and converted not in current_player.marbles:
-        yield converted
-    vector = -vector
-    converted = vector.convert(*selected[-1]).indice
-    if converted in coordinate and converted not in current_player.marbles:
-        yield converted
-    mixx = Marble.neighbor(abs1) + Marble.neighbor(abs2) + (Marble.neighbor(*abs3) if abs3 else [])
-    mix = [i for i in mixx if mixx.count(i) <= 1 and i not in [(c, d) for player in players for c, d in player.marbles]]
-    for i in mix:
-        nearest_value, *_ = [i for i in Marble.neighbor(i) if i in selected]
-        vector_2 = Vector2((i[0] - nearest_value[0], i[1] - nearest_value[1]))
-        for j in selected:
-            coordina = vector_2.convert(*j)
-            if coordina.indice in [(c, d) for player in players for c, d in player.marbles]:
-                break
-        else:
-            yield i
 
 bool = False
 turn = 0
@@ -224,13 +193,12 @@ while running:
                         (0, 0),
                         (x, y),
                         len(Marble.selected),
-                        possible_move_len,
+                        (coordinate, current_player),
                         get_index,
                     ):
                         turn += 1
                     Marble.selected = []
                 
-
         for circle in [
             i
             for i in coordinate
@@ -247,7 +215,7 @@ while running:
                     pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
 
             elif len(Marble.selected) in (2, 3):
-                liste = possible_move_len()
+                liste = Marble.can_move(coordinate, current_player)
                 for (xx, yy) in liste:
                     pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
 

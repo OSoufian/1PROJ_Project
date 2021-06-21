@@ -63,14 +63,37 @@ class Marble:
         deffault = set((x, y) for x, y in self.neighbor(xy))
         return tuple(deffault.difference(coordinates))
 
+    def can_move(self, coordinate, current_player):
+        selected = sorted(self.selected)
+        abs1, abs2, *abs3 = selected
+        vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
+        converted = vector.convert(*abs1).indice
+        if converted in coordinate and converted not in current_player.marbles:
+            yield converted
+        vector = -vector
+        converted = vector.convert(*selected[-1]).indice
+        if converted in coordinate and converted not in current_player.marbles:
+            yield converted
+        mixx = self.neighbor(abs1) + self.neighbor(abs2) + (self.neighbor(*abs3) if abs3 else [])
+        mix = [i for i in mixx if mixx.count(i) <= 1 and i not in [(c, d) for player in self.players for c, d in player.marbles]]
+        for i in mix:
+            nearest_value, *_ = [i for i in self.neighbor(i) if i in selected]
+            vector_2 = Vector2((i[0] - nearest_value[0], i[1] - nearest_value[1]))
+            for j in selected:
+                coordina = vector_2.convert(*j)
+                if coordina.indice in [(c, d) for player in self.players for c, d in player.marbles]:
+                    break
+            else:
+                yield i
+
     def move(
-        self, player, old_coordinate, new_coordinate, len, funclen2=None, get_index=None
+        self, player, old_coordinate, new_coordinate, len, args:tuple=None, get_index=None
     ):
         if len == 1 and new_coordinate in self.possibility(old_coordinate):
             player.marbles.remove(old_coordinate)
             player.marbles.append(new_coordinate)
             return True
-        if len in (2, 3) and new_coordinate in funclen2():
+        if len in (2, 3) and new_coordinate in self.can_move(*args):
             for i in self.neighbor(new_coordinate):
                 if i in self.selected:
                     break
@@ -94,7 +117,6 @@ class Marble:
                     player.marbles.append(
                         self.coordinates[vector_converted.x][vector_converted.y]
                     )
-                print(vector_converted)
 
             return True
         return False
