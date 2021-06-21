@@ -106,9 +106,8 @@ def possible_move_len():
         yield converted
     mixx = Marble.neighbor(abs1) + Marble.neighbor(abs2) + (Marble.neighbor(*abs3) if abs3 else [])
     mix = [i for i in mixx if mixx.count(i) <= 1 and i not in [(c, d) for player in players for c, d in player.marbles]]
-    print(len(mix), "ceci est len mix")
     for i in mix:
-        nearest_value, *_ = [i for i in Marble.neighbor(i)]
+        nearest_value, *_ = [i for i in Marble.neighbor(i) if i in selected]
         vector_2 = Vector2((i[0] - nearest_value[0], i[1] - nearest_value[1]))
         for j in selected:
             coordina = vector_2.convert(*j)
