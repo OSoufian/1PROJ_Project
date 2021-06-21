@@ -52,16 +52,6 @@ indice_y = middle.index(middle[len(middle) // 2])
 x, y = middle[len(middle) // 2]
 
 Marble = Marble(screen, coordinates, players)
-# Prends en paramètres des index dans le board et retourne des coordonnées
-def get_coordinates(x, y):
-    return coordinates[y][x]
-
-# Prends en paramètres des coordonnées et retourne les index dans le tableau
-def get_index(xy):
-    for row in range(9):
-        for column in list_x[row]:
-            if coordinates[row][column] == xy:
-                return row, column
 
 def create_table():
     play = 0
@@ -132,7 +122,7 @@ while running:
                 else:
                     indice_y += 1
 
-            x, y = get_coordinates(indice_x, indice_y)
+            x, y = coordinates[indice_x][indice_y]
             if (
                 key[pg.K_SPACE]
                 and (x, y) not in Marble.selected
