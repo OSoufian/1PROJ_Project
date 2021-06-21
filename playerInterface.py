@@ -15,7 +15,6 @@ class PlayerInterface():
             active_name = False
             validate = True
             input_name = pg.Rect(100, 100, 140, 40)
-            input_color = pg.Rect(100, 200, 140, 32)
             validate_input = pg.Rect(500, 100, 140, 40)
 
             while validate:
@@ -41,13 +40,13 @@ class PlayerInterface():
                         pg.quit()
 
                 pg.draw.rect(screen, "#333555", validate_input, border_radius=10)
-                pg.draw.rect(screen, "brown", input_name, border_radius=10)
+                pg.draw.rect(screen, "white", (100, 100, 350, 40), border_radius=10)
                 txt_name = font.render(name, True, "black")
                 screen.blit(render, (validate_input.x + 10, validate_input.y + 6))
                 screen.blit(txt_name, (input_name.x, input_name.y + 5))
-                pg.draw.rect(screen, "#666444", message_rect, border_radius=10)
+                pg.draw.rect(screen, (180, 50, 0), message_rect, border_radius=10)
                 screen.blit(message, message_rect)
-                pg.draw.rect(screen, "#666444", message_rect2, border_radius=10)
+                pg.draw.rect(screen, (180, 50, 0), message_rect2, border_radius=10)
                 screen.blit(message2, message_rect2)
                 pg.display.flip()
                 Nwidth = max(txt_name.get_width(), 20)
@@ -61,7 +60,7 @@ class PlayerInterface():
             name = ""
             screen.fill((180, 50, 0))
         for player in players:
-            pg.draw.rect(screen, "brown", player.name_rect, border_radius=10)
+            pg.draw.rect(screen, (180, 50, 0), player.name_rect, border_radius=10)
             screen.blit(player.name_render, (player.name_rect.x, player.name_rect.y + 6))
             pg.draw.circle(screen, player.color, (player.name_rect.x - 30, player.name_rect.y + 18), 24)
 

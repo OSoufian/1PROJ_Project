@@ -19,7 +19,7 @@ Begin.master()
 mod, nb_player = Begin.mod_player
 
 screen.fill((180, 50, 0))
-iterator = iter(["white", "black", "grey", "cyan2", "springgreen4", "orchid2"])
+iterator = iter(["white", "black", "#ff2b41", "cyan2", "springgreen4", "orchid2"])
 print(nb_player)
 background = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), size)
 
