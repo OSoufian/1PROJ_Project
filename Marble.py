@@ -138,13 +138,16 @@ class Marble:
                     break
             old_coordinate = i
             vector = Vector2((new_coordinate[0] - old_coordinate[0], new_coordinate[1] - old_coordinate[1]))
+            liste = []
             for i in self.to_move:
                 converted = vector.convert(*i).indice
                 for player in self.players:
                     if i in player.marbles and i not in current_player.marbles:
                         player.marbles.remove(i)
-                        self.to_move.remove(i)
+                        liste.append(i)
                         player.marbles.append(converted)
+            for i in liste:
+                self.to_move.remove(i)
             for i in self.selected:
                 converted = vector.convert(*i).indice
                 current_player.marbles.remove(i)
