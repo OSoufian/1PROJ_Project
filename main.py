@@ -7,7 +7,6 @@ from Marble import Marble
 from interface import Jeu
 from saveBoard import readBoard
 from vector import Vector2
-from math import hypot
 
 pg.init()
 size = [800, 800]
@@ -19,7 +18,7 @@ Begin.master()
 mod, nb_player = Begin.mod_player
 
 screen.fill((180, 50, 0))
-iterator = iter(["white", "black", "#ff2b41", "cyan2", "springgreen4", "orchid2"])
+iterator = iter(["black", "white", "#ff2b41", "cyan2", "springgreen4", "orchid2"])
 background = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), size)
 
 players = [Player(next(iterator)) for _ in range(int(nb_player))]
@@ -100,11 +99,11 @@ while running:
                 if not indice_x == 0:
                     indice_x -= 1
 
-            if key[pg.K_RIGHT]:
+            elif key[pg.K_RIGHT]:
                 if not indice_x == len(coordinates[indice_y]) - 1:
                     indice_x += 1
 
-            if key[pg.K_UP]:
+            elif key[pg.K_UP]:
                 if indice_y == 0:
                     pass
                 elif indice_y <= 4 and indice_x == len(coordinates[indice_y]) - 1:
@@ -113,7 +112,7 @@ while running:
                 else:
                     indice_y -= 1
 
-            if key[pg.K_DOWN]:
+            elif key[pg.K_DOWN]:
                 if indice_y == 8:
                     pass
                 elif indice_y >= 4 and indice_x == len(coordinates[indice_y]) - 1:
