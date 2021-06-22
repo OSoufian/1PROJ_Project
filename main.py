@@ -34,7 +34,7 @@ clock.tick(60)
 running = True
 
 board = CreateBoard([e // 2 for e in size], 250)
-board.draw_regular_polygon(screen, (250, 100, 50))
+board.draw_regular_polygon(screen, (250, 100,  50))
 board.draw_regular_polygon(screen, (0, 0, 0), 5)
 radius, sprites = board.draw_ceil(screen, (250, 159, 122), 2)
 coordinates = board.coordinates

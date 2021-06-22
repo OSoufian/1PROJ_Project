@@ -69,19 +69,22 @@ class Marble:
         selected = sorted(self.selected)
         abs1, abs2, *abs3 = selected
         vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
+        players_marble = [(c, d) for player in self.players for c, d in player.marbles]
+        other_player_marbles = [i for i in players_marble if i not in current_player.marbles]
         converted = vector.convert(*abs1).indice
         index = 1
         for _ in range(2):
             if converted in coordinate and converted not in current_player.marbles:
-                if converted in [(c, d) for player in self.players for c, d in player.marbles]:
+                if converted in players_marble:
                     converted_next = vector.convert(*converted).indice
-                    if converted_next in coordinate and converted_next in [(c, d) for player in self.players for c, d in player.marbles]:
+                    if converted_next in coordinate and converted_next in players_marble:
                         converted_next_next = vector.convert(*converted_next).indice
                         index += 1
-                        if converted_next_next in coordinate and converted_next_next in [(c, d) for player in self.players for c, d in player.marbles] or index == len(selected):
+                        if converted_next_next in coordinate and converted_next_next in players_marble or index == len(selected):
                             pass
                         else:
                             yield converted
+                            print("je yield ici", converted)
                             if to_move == []:
                                 to_move.append(converted)
                                 to_move.append(converted_next)
@@ -96,13 +99,13 @@ class Marble:
             index = 1
 
         mixx = self.neighbor(abs1) + self.neighbor(abs2) + (self.neighbor(*abs3) if abs3 else [])
-        mix = [i for i in mixx if mixx.count(i) <= 1 and i not in [(c, d) for player in self.players for c, d in player.marbles]]
+        mix = [i for i in mixx if mixx.count(i) <= 1 and i not in players_marble]
         for i in mix:
             nearest_value, *_ = [i for i in self.neighbor(i) if i in selected]
             vector_2 = Vector2((i[0] - nearest_value[0], i[1] - nearest_value[1]))
             for j in selected:
                 coordina = vector_2.convert(*j)
-                if coordina.indice in [(c, d) for player in self.players for c, d in player.marbles]:
+                if coordina.indice in players_marble:
                     break
             else:
                 yield i
