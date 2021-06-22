@@ -122,7 +122,6 @@ while running:
                     indice_y += 1
 
             x, y = coordinates[indice_y][indice_x]
-            print("x et y : ",x, y)
             if (
                 key[pg.K_SPACE]
                 and (x, y) not in Marble.selected
@@ -197,8 +196,6 @@ while running:
 
             elif len(Marble.selected) in (2, 3):
                 *liste, _ = Marble.can_move(coordinate, current_player)
-                print(_)
-                print(liste)
                 for (xx, yy) in liste:
                     pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
 

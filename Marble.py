@@ -69,10 +69,9 @@ class Marble:
         selected = sorted(self.selected)
         abs1, abs2, *abs3 = selected
         vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
-        for coef, value in zip(range(-1, 2, 2), (selected[-1], abs1)):
-            _vector = vector * coef
-            converted = _vector.convert(*value).indice
-            index = 1
+        converted = vector.convert(*abs1).indice
+        index = 1
+        for _ in range(2):
             if converted in coordinate and converted not in current_player.marbles:
                 if converted in [(c, d) for player in self.players for c, d in player.marbles]:
                     converted_next = vector.convert(*converted).indice
@@ -92,7 +91,10 @@ class Marble:
                             to_move.append(converted)
                 else:
                     yield converted
-
+            vector = -vector
+            converted = vector.convert(*selected[-1]).indice
+            index = 1
+            
         mixx = self.neighbor(abs1) + self.neighbor(abs2) + (self.neighbor(*abs3) if abs3 else [])
         mix = [i for i in mixx if mixx.count(i) <= 1 and i not in [(c, d) for player in self.players for c, d in player.marbles]]
         for i in mix:
@@ -140,6 +142,16 @@ class Marble:
             return True
 
         return False
+
+    def can_push(self, converted, vector, selected, coordinate, index, converted_next = []):
+        next_index = index
+        converted_next = converted
+        if converted_next in coordinate and converted_next in [(c, d) for player in self.players for c, d in player.marbles] and next_index < len(selected):
+            converted_next = vector.convert(*converted_next).indice
+            next_index += 1
+            return w if (w := self.can_push(converted_next, vector, selected, coordinate, next_index, converted_next)) else []
+        else:
+            return converted_next
     
     def loose(self, current_player):
         return not len(current_player.marbles)
