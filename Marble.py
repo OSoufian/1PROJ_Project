@@ -69,19 +69,16 @@ class Marble:
         abs1, abs2, *abs3 = selected
         vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
         players_marble = [(c, d) for player in self.players for c, d in player.marbles]
-        other_player_marbles = [i for i in players_marble if i not in current_player.marbles]
         converted = vector.convert(*abs1).indice
-        can_pass = False
 
         for __ in range(2):
             to_move = [converted]
-            nearest_value, *_ = [i for i in self.neighbor(converted) if i in selected]
             if converted in coordinate and converted not in current_player.marbles:
+                nearest_value, *_ = [i for i in self.neighbor(converted) if i in selected]
                 if converted not in players_marble:
                     yield converted
                 else:
-                    a = [*self._can_move(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), current_player, coordinate, players_marble)]
-                    print(a)
+                    a = [*self.can_push(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), current_player, coordinate, players_marble)]
                     if all(a) and len(selected) > len(a) + 1:
                         yield converted
             vector = -vector
@@ -109,7 +106,8 @@ class Marble:
             current_player.marbles.remove(old_coordinate)
             current_player.marbles.append(new_coordinate)
             return True
-        *can_move, to_move = self.can_move(*args)
+        if len >= 2:
+            *can_move, to_move = self.can_move(*args)
         if len >= 2 and new_coordinate in can_move:
             i, *_ = [i for i in self.neighbor(new_coordinate) if i in self.selected]
             old_coordinate = i
@@ -135,7 +133,7 @@ class Marble:
     def loose(self, current_player):
         return not len(current_player.marbles)
 
-    def _can_move(self, position, vector, lenght, current_player, coordinate, players_marbles):
+    def can_push(self, position, vector, lenght, current_player, coordinate, players_marbles):
         for i in range(1, lenght):
             case = (vector * i).convert(*position).indice
             if case in coordinate and case in players_marbles:
