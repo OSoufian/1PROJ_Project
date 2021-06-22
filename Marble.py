@@ -69,49 +69,30 @@ class Marble:
         selected = sorted(self.selected)
         abs1, abs2, *abs3 = selected
         vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
-        converted = vector.convert(*abs1).indice
-        index = 1
-        if converted in coordinate and converted not in current_player.marbles:
-            if converted in [(c, d) for player in self.players for c, d in player.marbles]:
-                converted_next = vector.convert(*converted).indice
-                if converted_next in coordinate and converted_next in [(c, d) for player in self.players for c, d in player.marbles]:
-                    converted_next_next = vector.convert(*converted_next).indice
-                    index += 1
-                    if converted_next_next in coordinate and converted_next_next in [(c, d) for player in self.players for c, d in player.marbles] or index == len(selected):
-                        pass
+        for coef, value in zip(range(-1, 2, 2), (selected[-1], abs1)):
+            _vector = vector * coef
+            converted = _vector.convert(*value).indice
+            index = 1
+            if converted in coordinate and converted not in current_player.marbles:
+                if converted in [(c, d) for player in self.players for c, d in player.marbles]:
+                    converted_next = vector.convert(*converted).indice
+                    if converted_next in coordinate and converted_next in [(c, d) for player in self.players for c, d in player.marbles]:
+                        converted_next_next = vector.convert(*converted_next).indice
+                        index += 1
+                        if converted_next_next in coordinate and converted_next_next in [(c, d) for player in self.players for c, d in player.marbles] or index == len(selected):
+                            pass
+                        else:
+                            yield converted
+                            if self.to_move == []:
+                                self.to_move.append(converted)
+                                self.to_move.append(converted_next)
                     else:
                         yield converted
                         if self.to_move == []:
                             self.to_move.append(converted)
-                            self.to_move.append(converted_next)
                 else:
                     yield converted
-                    if self.to_move == []:
-                        self.to_move.append(converted)
-            else:
-                yield converted
-        vector = -vector
-        converted = vector.convert(*selected[-1]).indice
-        index = 1
-        if converted in coordinate and converted not in current_player.marbles:
-            if converted in [(c, d) for player in self.players for c, d in player.marbles]:
-                converted_next = vector.convert(*converted).indice
-                if converted_next in coordinate and converted_next in [(c, d) for player in self.players for c, d in player.marbles]:
-                    converted_next_next = vector.convert(*converted_next).indice
-                    index += 1
-                    if converted_next_next in coordinate and converted_next_next in [(c, d) for player in self.players for c, d in player.marbles] or index == len(selected):
-                        pass
-                    else:
-                        yield converted
-                        if self.to_move == []:
-                            self.to_move.append(converted)
-                            self.to_move.append(converted_next)
-                else:
-                    yield converted
-                    if self.to_move == []:
-                        self.to_move.append(converted)
-            else:
-                yield converted
+
         mixx = self.neighbor(abs1) + self.neighbor(abs2) + (self.neighbor(*abs3) if abs3 else [])
         mix = [i for i in mixx if mixx.count(i) <= 1 and i not in [(c, d) for player in self.players for c, d in player.marbles]]
         for i in mix:
@@ -134,19 +115,19 @@ class Marble:
             return True
         if len >= 2 and new_coordinate in self.can_move(*args):
             for i in self.neighbor(new_coordinate):
-                if i in self.selected + self.to_move:
+                if i in self.selected:
                     break
             old_coordinate = i
             vector = Vector2((new_coordinate[0] - old_coordinate[0], new_coordinate[1] - old_coordinate[1]))
-            liste = []
+            queue = []
             for i in self.to_move:
                 converted = vector.convert(*i).indice
                 for player in self.players:
                     if i in player.marbles and i not in current_player.marbles:
                         player.marbles.remove(i)
-                        liste.append(i)
+                        queue.append(i)
                         player.marbles.append(converted)
-            for i in liste:
+            for i in queue:
                 self.to_move.remove(i)
             for i in self.selected:
                 converted = vector.convert(*i).indice
