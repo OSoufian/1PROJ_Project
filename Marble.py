@@ -80,7 +80,7 @@ class Marble:
                 if converted not in players_marble:
                     yield converted
                 else:
-                    a = [*self._can_move(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), other_player_marbles, coordinate)]
+                    a = [*self._can_move(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), current_player, coordinate)]
                     print(a)
                     if all(a) and len(selected) > len(a) + 1:
                         yield converted
@@ -135,8 +135,8 @@ class Marble:
     def loose(self, current_player):
         return not len(current_player.marbles)
 
-    def _can_move(self, position, vector, lenght, other_player_marbles, coordinate):
+    def _can_move(self, position, vector, lenght, current_player, coordinate):
         for i in range(1, lenght):
             case = (vector * i).convert(*position).indice
             if case in coordinate:
-                yield case in other_player_marbles
+                yield case not in current_player.marbles
