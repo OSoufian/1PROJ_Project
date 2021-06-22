@@ -80,11 +80,10 @@ class Marble:
                     if converted_next in coordinate and converted_next in players_marble:
                         converted_next_next = vector.convert(*converted_next).indice
                         index += 1
-                        if converted_next_next in coordinate and converted_next_next in players_marble or index == len(selected):
+                        if converted_next_next in coordinate or converted_next_next in players_marble or index == len(selected):
                             pass
                         else:
                             yield converted
-                            print("je yield ici", converted)
                             if to_move == []:
                                 to_move.append(converted)
                                 to_move.append(converted_next)
