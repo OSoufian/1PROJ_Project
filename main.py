@@ -196,7 +196,9 @@ while running:
                     pg.draw.circle(screen, (158, 240, 78), circle, radius - 10)
 
             elif len(Marble.selected) in (2, 3):
-                liste = Marble.can_move(coordinate, current_player)
+                *liste, _ = Marble.can_move(coordinate, current_player)
+                print(_)
+                print(liste)
                 for (xx, yy) in liste:
                     pg.draw.circle(screen, (158, 240, 78), (xx, yy), radius - 10)
 

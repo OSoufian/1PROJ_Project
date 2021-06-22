@@ -9,7 +9,6 @@ class Marble:
         self.surface = surface
         self.players = players
         self.selected = []
-        self.to_move = []
 
 
     def draw_clickable(self, coordinate_ceil, color=(255, 255, 255)):
@@ -66,6 +65,7 @@ class Marble:
         return tuple(deffault.difference(coordinates))
 
     def can_move(self, coordinate, current_player):
+        to_move = []
         selected = sorted(self.selected)
         abs1, abs2, *abs3 = selected
         vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
@@ -83,13 +83,13 @@ class Marble:
                             pass
                         else:
                             yield converted
-                            if self.to_move == []:
-                                self.to_move.append(converted)
-                                self.to_move.append(converted_next)
+                            if to_move == []:
+                                to_move.append(converted)
+                                to_move.append(converted_next)
                     else:
                         yield converted
-                        if self.to_move == []:
-                            self.to_move.append(converted)
+                        if to_move == []:
+                            to_move.append(converted)
                 else:
                     yield converted
 
@@ -104,7 +104,9 @@ class Marble:
                     break
             else:
                 yield i
-        print(self.to_move)
+
+        yield to_move
+        
 
     def move(
         self, current_player, new_coordinate, len, args:tuple=None, old_coordinate=None
@@ -113,14 +115,15 @@ class Marble:
             current_player.marbles.remove(old_coordinate)
             current_player.marbles.append(new_coordinate)
             return True
-        if len >= 2 and new_coordinate in self.can_move(*args):
+        *can_move, to_move = self.can_move(*args)
+        if len >= 2 and new_coordinate in can_move:
             for i in self.neighbor(new_coordinate):
                 if i in self.selected:
                     break
             old_coordinate = i
             vector = Vector2((new_coordinate[0] - old_coordinate[0], new_coordinate[1] - old_coordinate[1]))
             queue = []
-            for i in self.to_move:
+            for i in to_move:
                 converted = vector.convert(*i).indice
                 for player in self.players:
                     if i in player.marbles and i not in current_player.marbles:
@@ -128,7 +131,7 @@ class Marble:
                         queue.append(i)
                         player.marbles.append(converted)
             for i in queue:
-                self.to_move.remove(i)
+                to_move.remove(i)
             for i in self.selected:
                 converted = vector.convert(*i).indice
                 current_player.marbles.remove(i)
