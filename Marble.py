@@ -1,4 +1,5 @@
 import pygame as pg
+from pygame.constants import NOEVENT
 from pygame.draw import circle
 from vector import Vector2
 
@@ -65,14 +66,13 @@ class Marble:
         return tuple(deffault.difference(coordinates))
 
     def can_move(self, coordinate, current_player):
+        to_move = []
         selected = sorted(self.selected)
         abs1, abs2, *abs3 = selected
         vector = Vector2((abs1[0] - abs2[0], abs1[1] - abs2[1]))
         players_marble = [(c, d) for player in self.players for c, d in player.marbles]
         converted = vector.convert(*abs1).indice
-
         for __ in range(2):
-            to_move = [converted]
             if converted in coordinate and converted not in current_player.marbles:
                 nearest_value, *_ = [i for i in self.neighbor(converted) if i in selected]
                 if converted not in players_marble:
@@ -100,33 +100,40 @@ class Marble:
         
 
     def move(
-        self, current_player, new_coordinate, len, args:tuple=None, old_coordinate=None
-    ):
-        if len == 1 and new_coordinate in self.possibility(old_coordinate):
+        self, current_player, new_coordinate, lenght, args:tuple=None, old_coordinate=None):
+        if lenght == 1 and new_coordinate in self.possibility(old_coordinate):
             current_player.marbles.remove(old_coordinate)
             current_player.marbles.append(new_coordinate)
             return True
-        if len >= 2:
+        if lenght >= 2:
             *can_move, to_move = self.can_move(*args)
-        if len >= 2 and new_coordinate in can_move:
-            i, *_ = [i for i in self.neighbor(new_coordinate) if i in self.selected]
-            old_coordinate = i
-            vector = Vector2((new_coordinate[0] - old_coordinate[0], new_coordinate[1] - old_coordinate[1]))
+
+        if lenght >= 2 and new_coordinate in can_move:
             queue = []
-            for i in to_move:
+            players_marble = [(c, d) for player in self.players for c, d in player.marbles]
+            nearest_value, *_ = [i for i in self.neighbor(new_coordinate) if i in self.selected]
+            vector = Vector2((new_coordinate[0] - nearest_value[0], new_coordinate[1] - nearest_value[1]))
+            
+            for i in range(1, lenght):
+                case = (vector * i).convert(*nearest_value).indice
+                if case not in args[0] or case not in players_marble:
+                    break
+                else:
+                    queue.append(case)
+            copy_queue = []
+            for i in queue:
                 converted = vector.convert(*i).indice
                 for player in self.players:
                     if i in player.marbles and i not in current_player.marbles:
                         player.marbles.remove(i)
-                        queue.append(i)
+                        copy_queue.append(i)
                         player.marbles.append(converted)
-            for i in queue:
-                to_move.remove(i)
+            for i in copy_queue:
+                copy_queue.remove(i)
             for i in self.selected:
                 converted = vector.convert(*i).indice
                 current_player.marbles.remove(i)
                 current_player.marbles.append(converted)
-                
             return True
         return False
     
