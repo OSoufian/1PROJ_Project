@@ -142,16 +142,6 @@ class Marble:
             return True
 
         return False
-
-    def can_push(self, converted, vector, selected, coordinate, index, converted_next = []):
-        next_index = index
-        converted_next = converted
-        if converted_next in coordinate and converted_next in [(c, d) for player in self.players for c, d in player.marbles] and next_index < len(selected):
-            converted_next = vector.convert(*converted_next).indice
-            next_index += 1
-            return w if (w := self.can_push(converted_next, vector, selected, coordinate, next_index, converted_next)) else []
-        else:
-            return converted_next
     
     def loose(self, current_player):
         return not len(current_player.marbles)
