@@ -94,7 +94,7 @@ class Marble:
             vector = -vector
             converted = vector.convert(*selected[-1]).indice
             index = 1
-            
+
         mixx = self.neighbor(abs1) + self.neighbor(abs2) + (self.neighbor(*abs3) if abs3 else [])
         mix = [i for i in mixx if mixx.count(i) <= 1 and i not in [(c, d) for player in self.players for c, d in player.marbles]]
         for i in mix:

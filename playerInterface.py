@@ -63,5 +63,3 @@ class PlayerInterface():
             pg.draw.rect(screen, (180, 50, 0), player.name_rect, border_radius=10)
             screen.blit(player.name_render, (player.name_rect.x, player.name_rect.y + 6))
             pg.draw.circle(screen, player.color, (player.name_rect.x - 30, player.name_rect.y + 18), 24)
-
-
