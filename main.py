@@ -122,6 +122,7 @@ while running:
                     indice_y += 1
 
             x, y = coordinates[indice_y][indice_x]
+            print(x, y)
             if (
                 key[pg.K_SPACE]
                 and (x, y) not in Marble.selected
