@@ -7,6 +7,7 @@ from Marble import Marble
 from interface import Jeu
 from saveBoard import readBoard
 from vector import Vector2
+from Team import Team
 
 pg.init()
 size = [800, 800]
@@ -24,6 +25,17 @@ background = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), size)
 players = [Player(next(iterator)) for _ in range(int(nb_player))]
 player_interface = PlayerInterface()
 player_interface.run(screen, players)
+
+
+if int(nb_player)%2 == 0:
+    teams = [Team(), Team()]
+    for i in range(0, int(nb_player), 2):
+        teams[0].add_players(players[i])
+        teams[1].add_players(players[i + 1])
+else:
+    teams = [Team([player]) for player in players]
+
+print(teams[1])
 
 pg.display.flip()
 
