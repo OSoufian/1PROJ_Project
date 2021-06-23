@@ -33,7 +33,7 @@ class PlayerInterface():
                         elif event.key == pg.K_RETURN:
                             validate = False
                         else:   
-                            if len(name) < 10:                           
+                            if len(name) < 10:
                                 name += event.unicode
 
                     if event.type == pg.QUIT:
@@ -51,12 +51,21 @@ class PlayerInterface():
                 pg.display.flip()
                 Nwidth = max(txt_name.get_width(), 20)
                 input_name.w = Nwidth
+
+            if name == '':
+                for nbr, i in enumerate(players, start=1):
+                    if i == player:
+                        player.name = f"Joueur {nbr}"            
+            else :
+                player.name = name
+
+            txt_name = font.render(player.name, True, "black")
+            
             if len(players) == 2:
                 player.name_rect = pg.Rect((200 + 200 * number * 1.5, 50), (Nwidth, 40))
             else:
                 player.name_rect = pg.Rect((80 if number < 3 else 600, (20 + (number%3) * 60)), (Nwidth, 40))
             player.name_render = txt_name
-            player.name = name
             name = ""
             screen.fill((180, 50, 0))
         for player in players:
