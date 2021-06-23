@@ -8,6 +8,10 @@ class Team:
     def add_players(self, player):
         self.players.append(player)
         self.players = self.players.copy()
+        player.team = self
     
     def __repr__(self):
         return f"Team object ({', '.join(str(player) for player in self.players)})"
+    
+    def update(self):
+        self.marbles = [(c, d) for player in self.players for c, d in player.marbles]

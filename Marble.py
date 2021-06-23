@@ -2,6 +2,7 @@ import pygame as pg
 from pygame.constants import NOEVENT
 from pygame.draw import circle
 from vector import Vector2
+from Team import Team
 
 
 class Marble:
@@ -100,7 +101,7 @@ class Marble:
         
 
     def move(
-        self, current_player, new_coordinate, lenght, args:tuple=None, old_coordinate=None):
+        self, current_player, new_coordinate, lenght, teams, args:tuple=None, old_coordinate=None):
         if lenght == 1 and new_coordinate in self.possibility(old_coordinate):
             current_player.marbles.remove(old_coordinate)
             current_player.marbles.append(new_coordinate)
@@ -137,6 +138,8 @@ class Marble:
                 converted = vector.convert(*i).indice
                 current_player.marbles.remove(i)
                 current_player.marbles.append(converted)
+            for team in teams:
+                team.update()
             return True
         return False
     

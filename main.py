@@ -35,7 +35,6 @@ if int(nb_player)%2 == 0:
 else:
     teams = [Team([player]) for player in players]
 
-print(teams[1])
 
 pg.display.flip()
 
@@ -53,6 +52,9 @@ coordinates = board.coordinates
 
 for player, circle in zip(players, readBoard(nb_player, mod)):
     player.marbles = [*map(tuple, circle)]
+
+for team in teams:
+    team.update()
 
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [[*range(0, i)] for i in list_coo_x]
@@ -134,11 +136,12 @@ while running:
                     indice_y += 1
 
             x, y = coordinates[indice_y][indice_x]
+            print(current_player.team)
             if (
                 key[pg.K_SPACE]
                 and (x, y) not in Marble.selected
                 and len(Marble.selected) < 3
-                and ((x, y) in current_player.marbles)
+                and ((x, y) in current_player.team.marbles)
             ):
                 if not Marble.selected:
                     Marble.selected.append((x, y))
@@ -186,6 +189,7 @@ while running:
                         current_player,
                         (x, y),
                         len(Marble.selected),
+                        teams,
                         (coordinate, current_player),
                     ):
                         turn += 1

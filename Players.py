@@ -5,6 +5,7 @@ class Player:
         self.name_rect = None
         self.color = color
         self.marbles = []
+        self.team = None
         self.points = 0
     
     def __str__(self) -> str:
