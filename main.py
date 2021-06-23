@@ -56,6 +56,7 @@ for player, circle in zip(players, readBoard(nb_player, mod)):
 for team in teams:
     team.update()
 
+
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [[*range(0, i)] for i in list_coo_x]
 middle = coordinates[len(list_coo_x) // 2]
@@ -178,7 +179,7 @@ while running:
                         (x, y),
                         len(Marble.selected),
                         None,
-                        Marble.selected[-1],
+                        old_coordinate=Marble.selected[-1],
                     ):
                         turn += 1
                     pg.draw.circle(screen, (180, 50, 0), Marble.selected[-1], radius, 3)

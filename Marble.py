@@ -4,7 +4,6 @@ from pygame.draw import circle
 from vector import Vector2
 from Team import Team
 
-
 class Marble:
     def __init__(self, surface, coordinates, players):
         self.coordinates = coordinates
@@ -74,12 +73,12 @@ class Marble:
         players_marble = [(c, d) for player in self.players for c, d in player.marbles]
         converted = vector.convert(*abs1).indice
         for __ in range(2):
-            if converted in coordinate and converted not in current_player.marbles:
+            if converted in coordinate and converted not in current_player.team.marbles:
                 nearest_value, *_ = [i for i in self.neighbor(converted) if i in selected]
                 if converted not in players_marble:
                     yield converted
                 else:
-                    a = [*self.can_push(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), current_player, coordinate, players_marble)]
+                    a = [*self.can_push(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), current_player.team, coordinate, players_marble)]
                     if all(a) and len(selected) > len(a) + 1:
                         yield converted
             vector = -vector
@@ -101,7 +100,8 @@ class Marble:
         
 
     def move(
-        self, current_player, new_coordinate, lenght, teams, args:tuple=None, old_coordinate=None):
+        self, current_player, new_coordinate, lenght, teams, args:tuple=None, old_coordinate=None
+        ):
         if lenght == 1 and new_coordinate in self.possibility(old_coordinate):
             current_player.marbles.remove(old_coordinate)
             current_player.marbles.append(new_coordinate)
@@ -125,31 +125,37 @@ class Marble:
             for i in queue:
                 converted = vector.convert(*i).indice
                 for player, player_copy in zip(self.players, player_marble_copy):
-                    if i in player_copy and i not in current_player.marbles:
+                    if i in player_copy and i not in current_player.team.marbles:
                         player.marbles.remove(i)
                         if converted in args[0]:
                             player.marbles.append(converted)
                         else:
-                            current_player.points += 1
-                            win = self.win(current_player)
+                            current_player.team.points += 1
+                            win = self.win(current_player.team)
                             if win:
-                                print("tiens tu as gagné :p", current_player)
+                                print("tiens tu as gagné :p", current_player.team)
             for i in self.selected:
                 converted = vector.convert(*i).indice
-                current_player.marbles.remove(i)
-                current_player.marbles.append(converted)
+                if i in current_player.marbles:
+                    current_player.marbles.remove(i)
+                    current_player.marbles.append(converted)
+                else:
+                    for player in self.players:
+                        if i in player.marbles:
+                            player.marbles.remove(i)
+                            player.marbles.append(converted)
             for team in teams:
                 team.update()
             return True
         return False
     
     def win(self, current_player):
-        return current_player.points == 6
+        return current_player.team.team.points == 6
 
     def can_push(self, position, vector, lenght, current_player, coordinate, players_marbles):
         for i in range(1, lenght):
             case = (vector * i).convert(*position).indice
             if case in coordinate and case in players_marbles:
-                yield case not in current_player.marbles
+                yield case not in current_player.team.team.marbles
             else:
                 return
