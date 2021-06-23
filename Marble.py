@@ -145,3 +145,5 @@ class Marble:
             case = (vector * i).convert(*position).indice
             if case in coordinate and case in players_marbles:
                 yield case not in current_player.marbles
+            else:
+                return
