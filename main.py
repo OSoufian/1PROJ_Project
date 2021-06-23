@@ -178,7 +178,7 @@ while running:
                         current_player,
                         (x, y),
                         len(Marble.selected),
-                        None,
+                        teams,
                         old_coordinate=Marble.selected[-1],
                     ):
                         turn += 1

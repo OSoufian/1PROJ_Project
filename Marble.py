@@ -78,7 +78,7 @@ class Marble:
                 if converted not in players_marble:
                     yield converted
                 else:
-                    a = [*self.can_push(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), current_player.team, coordinate, players_marble)]
+                    a = [*self.can_push(converted, Vector2((converted[0] - nearest_value[0], converted[1] - nearest_value[1])), len(selected), current_player, coordinate, players_marble)]
                     if all(a) and len(selected) > len(a) + 1:
                         yield converted
             vector = -vector
@@ -111,6 +111,8 @@ class Marble:
                     if old_coordinate in player.marbles:
                         player.marbles.remove(old_coordinate)
                         player.marbles.append(new_coordinate)
+            for team in teams:
+                team.update()
             return True
         if lenght >= 2:
             *can_move, to_move = self.can_move(*args)
@@ -156,12 +158,12 @@ class Marble:
         return False
     
     def win(self, current_player):
-        return current_player.team.team.points == 6
+        return current_player.team.points == 6
 
     def can_push(self, position, vector, lenght, current_player, coordinate, players_marbles):
         for i in range(1, lenght):
             case = (vector * i).convert(*position).indice
             if case in coordinate and case in players_marbles:
-                yield case not in current_player.team.team.marbles
+                yield case not in current_player.team.marbles
             else:
                 return
