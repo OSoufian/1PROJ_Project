@@ -120,16 +120,18 @@ class Marble:
                     break
                 else:
                     queue.append(case)
-            copy_queue = []
             for i in queue:
                 converted = vector.convert(*i).indice
                 for player in self.players:
                     if i in player.marbles and i not in current_player.marbles:
                         player.marbles.remove(i)
-                        copy_queue.append(i)
-                        player.marbles.append(converted)
-            for i in copy_queue:
-                copy_queue.remove(i)
+                        if converted in args[0]:
+                            player.marbles.append(converted)
+                        else:
+                            current_player.points += 1
+                            win = self.win(current_player)
+                            if win:
+                                print("tiens tu as gagné :p", current_player)
             for i in self.selected:
                 converted = vector.convert(*i).indice
                 current_player.marbles.remove(i)
@@ -137,8 +139,8 @@ class Marble:
             return True
         return False
     
-    def loose(self, current_player):
-        return not len(current_player.marbles)
+    def win(self, current_player):
+        return current_player.points == 6
 
     def can_push(self, position, vector, lenght, current_player, coordinate, players_marbles):
         for i in range(1, lenght):
