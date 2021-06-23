@@ -120,10 +120,11 @@ class Marble:
                     break
                 else:
                     queue.append(case)
+            player_marble_copy = [player.marbles.copy() for player in self.players]
             for i in queue:
                 converted = vector.convert(*i).indice
-                for player in self.players:
-                    if i in player.marbles and i not in current_player.marbles:
+                for player, player_copy in zip(self.players, player_marble_copy):
+                    if i in player_copy and i not in current_player.marbles:
                         player.marbles.remove(i)
                         if converted in args[0]:
                             player.marbles.append(converted)
