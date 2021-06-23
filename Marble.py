@@ -103,8 +103,14 @@ class Marble:
         self, current_player, new_coordinate, lenght, teams, args:tuple=None, old_coordinate=None
         ):
         if lenght == 1 and new_coordinate in self.possibility(old_coordinate):
-            current_player.marbles.remove(old_coordinate)
-            current_player.marbles.append(new_coordinate)
+            if old_coordinate in current_player.marbles:
+                current_player.marbles.remove(old_coordinate)
+                current_player.marbles.append(new_coordinate)
+            else:
+                for player in self.players:
+                    if old_coordinate in player.marbles:
+                        player.marbles.remove(old_coordinate)
+                        player.marbles.append(new_coordinate)
             return True
         if lenght >= 2:
             *can_move, to_move = self.can_move(*args)
