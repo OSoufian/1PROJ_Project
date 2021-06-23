@@ -12,7 +12,6 @@ class PlayerInterface():
         message_rect2 = message2.get_rect(x=screen.get_width()//2  - message2.get_width()//2, y=message_rect.y * 2)
         for number, player in enumerate(players):
             name = ""
-            active_name = False
             validate = True
             input_name = pg.Rect(100, 100, 140, 40)
             validate_input = pg.Rect(500, 100, 140, 40)
@@ -22,9 +21,7 @@ class PlayerInterface():
                 for event in pg.event.get():
 
                     if event.type == pg.MOUSEBUTTONDOWN:
-                        active_name = input_name.collidepoint(event.pos)
                         validate = not validate_input.collidepoint(event.pos)
-
 
                     if event.type == pg.KEYDOWN:
             
