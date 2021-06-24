@@ -1,8 +1,12 @@
 class Player:
-    __player = {}
 
-    def __init__(self, color, name):
-        self.name = name
+    def __init__(self, color):
+        self.name = ""
+        self.name_rect = None
         self.color = color
         self.marbles = []
+        self.team = None
         self.points = 0
+    
+    def __str__(self) -> str:
+        return f"player with color = {self.color} - name = {self.name} - point = {self.points}"

@@ -11,14 +11,14 @@ class CreateBoard:
         self.radius = radius
 
     def draw_regular_polygon(self, surface, color, outline=0):    
-        pygame.draw.polygon(surface, color, [(round(self.x + self.radius * cos(2 * pi * i / 6)), round(self.y + self.radius * sin(2 * pi * i / 6))) for i in range(6)], outline)
+        pygame.draw.polygon(surface, color, [(round(self.x + self.radius * cos(pi * i / 3)), round(self.y + self.radius * sin(pi * i / 3))) for i in range(6)], outline)
 
 
     def draw_ceil(self, surface, color, outline):
         list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
-        radius_circle = self.radius / (pi * (6 / 2))
-        x = round(self.x + self.radius * cos(2 * pi * 2 / 6)) + radius_circle - 6        
-        y = round(self.y + self.radius * sin(2 * pi * 4/ 6)) + radius_circle + 7
+        radius_circle = self.radius / (pi * 3 )
+        x = round(self.x + self.radius * cos(pi * 2 / 3)) + radius_circle - 6      
+        y = round(self.y + self.radius * sin(pi * 4/ 3)) + radius_circle + 7
         sub = []
         
         for n, i in enumerate(list_coo_x):            
@@ -34,7 +34,7 @@ class CreateBoard:
         sprites = [ pygame.draw.circle(surface, color, i, radius_circle, outline)for i in [i for c in self.coordinates for i in c]]
         
         for center in [i for c in self.coordinates for i in c]:
-            sprites.append(pygame.draw.circle(surface, color, center, radius_circle))
+            sprites.append(pygame.draw.circle(surface, color, center, radius_circle)) 
             pygame.draw.circle(surface, (180, 50, 0), center, radius_circle, 3)
             
         return radius_circle, sprites

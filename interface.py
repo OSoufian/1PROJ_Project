@@ -1,13 +1,14 @@
 import typing
 import pygame as pg
-
+import platform
 class CheckBox:
     
     def __init__(self, font: pg.font.Font, positions: typing.List[pg.Rect], labels: typing.List[str]):
-        self.checked = None
+        self.checked = 0
         self.positions = positions
         self.font = font
         self.list_surfaces = [font.render(text, False, "black") for text in labels]
+        self.labels = list(labels)
     
     def draw(self, screen):
         i = 0
@@ -28,33 +29,32 @@ class CheckBox:
 
 class Jeu:
     def __init__(self, screen):
-        self.screen = screen        
-        self.image = pg.transform.scale(pg.image.load("./Menu/abalone.png"), (400, 500))
-        self.parametre = pg.transform.scale(pg.image.load('./Menu/parametre.png'), (80, 80)) # l'image paramètre (regle)     
-        self.next = pg.transform.scale(pg.image.load("./Menu/suivant.png"), (50, 50)) # l'image next (regle)
-        self.regle = pg.image.load("./Menu/regle.png") # l' image regle
-        self.book_image = pg.transform.scale(pg.image.load("Menu/rule.png"), (50, 50)) # image button play (configuration)
-        self.play = pg.transform.scale(pg.image.load('./Menu/play.png'), (200, 100))        
-        self.fond = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), self.screen.get_size()) # image de fond screen
+        self.screen = screen   
+        self.mod_player = None     
+        self.image = pg.transform.scale(pg.image.load("./Menu/abalone.png"), (400, 500)).convert_alpha()
+        self.parametre = pg.transform.scale(pg.image.load('./Menu/parametre.png'), (80, 80)).convert_alpha() # l'image paramètre (regle)     
+        self.next = pg.transform.scale(pg.image.load("./Menu/suivant.png"), (50, 50)).convert_alpha() # l'image next (regle)
+        self.regle = pg.image.load("./Menu/regle.png").convert_alpha() # l' image regle
+        self.book_image = pg.transform.scale(pg.image.load("Menu/rule.png"), (50, 50)).convert_alpha() # image button play (configuration)
+        self.play = pg.transform.scale(pg.image.load('./Menu/play.png'), (200, 100)).convert_alpha()       
+        self.fond = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), self.screen.get_size()).convert_alpha() # image de fond screen
 
-        self.button_coord = self.play.get_rect()
-        self.button_coord.x, self.button_coord.y = 300, 480
+        self.button_coord = self.play.get_rect(x=300, y=580)
 
-        self.next_coord = self.next.get_rect()
-        self.next_coord.x= self.next_coord.y = 700
+        self.next_coord = self.next.get_rect(x=700, y=700)
 
-        self.play_coord = self.play.get_rect()
-        self.play_coord.x, self.play_coord.y = 320, 680
+        self.play_coord = self.play.get_rect(x=320, y=700)
 
-        self.mode = ["Standard", "Domanation", "Face à Face", "Fujiyama", "Infiltration",
+        self.mode = ["Standard","Domination", "Face a Face", "Fujiyama", "Infiltration",
                 "Marguerite allemande", "Marguerite belge", "Marguerite Hollandaise",
-                "Marguerite suisse", "Pyramide", "Snake variante", "Personnalisé"]
+                "Marguerite suisse", "Pyramide", "Snakes", "The wall", "Alliances", "Araignee",
+                "Forcage", "Centrifugeuse", "Mosaique", "Personnalise"]
 
     def master(self):
         conditonal = 0
-        check_player = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(300 + i * 100, 200, 20, 20) for i in range(4)], [f"{i}" for i in range(2, 5)])
-        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (250 if i >= 6 else 0), 350 + i * 50 % 300, 20, 20) for i in range(12)], (f"{i}" for i in self.mode))
-        
+        check_player = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(200 + i * 100, 200, 20, 20) for i in range(7)], [f"{i}" for i in range(2, 7)])
+        check_standard = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50, 350, 20, 20)], ("Standard",))
+        check_mode = CheckBox(pg.font.SysFont('Times New Roman', 20), [pg.Rect(50 + (500 if i >= 12 else (250 if i >= 6 else 0)), 350 + i * 50 % 300, 20, 20) for i in range(18)], (f"{i}" for i in self.mode))
         while conditonal < 3:
 
             self.screen.blit(self.fond, (0,0))
@@ -70,7 +70,7 @@ class Jeu:
                 # welcome page
                 elif conditonal == 0:
 
-                    self.message("grande", "WELCOME TO ABALONE", (30, 80, 100, 50), (255, 255, 255))
+                    self.message("moyenne", "WELCOME TO ABALONE", (160, 80, 100, 50), (255, 255, 255))
                     self.screen.blit(self.image, (190, 100, 100, 50)) and self.screen.blit(self.play, self.button_coord)
                     pg.display.flip()
 
@@ -94,9 +94,13 @@ class Jeu:
                     self.screen.blit(self.play, self.play_coord)
                     self.screen.blit(self.parametre, (550, 30, 100, 50))
                     check_player.draw(self.screen)
-                    check_mode.draw(self.screen)
+                    if check_player.checked > 0:
+                        check_standard.draw(self.screen)
+                    else:
+                        check_mode.draw(self.screen)
                     pg.display.flip()
-
+            self.mod_player= self.mode[check_mode.checked], check_player.labels[check_player.checked]
+            
     def message(self, police, message, message_rectangle, couleur):
         if police == "petite":
             police = pg.font.SysFont('Times New Roman', 20, False)
