@@ -139,7 +139,7 @@ class Marble:
                             player.marbles.append(converted)
                         else:
                             current_player.team.points += 1
-                            win = self.win(current_player.team)
+                            win = self.win(current_player)
                             if win:
                                 print("tiens tu as gagné :p", current_player.team)
             for i in self.selected:

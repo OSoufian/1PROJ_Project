@@ -22,6 +22,9 @@ screen.fill((180, 50, 0))
 iterator = iter(["black", "white", "#ff2b41", "cyan2", "springgreen4", "orchid2"])
 background = pg.transform.scale(pg.image.load("./Menu/fond.jpg"), size)
 
+icon = pg.image.load("./Menu/icon.png")
+pg.display.set_icon(icon)
+
 players = [Player(next(iterator)) for _ in range(int(nb_player))]
 player_interface = PlayerInterface()
 player_interface.run(screen, players)
@@ -56,7 +59,6 @@ for player, circle in zip(players, readBoard(nb_player, mod)):
 for team in teams:
     team.update()
 
-
 list_coo_x = list(range(5, 9)) + list(range(9, 4, -1))
 list_x = [[*range(0, i)] for i in list_coo_x]
 middle = coordinates[len(list_coo_x) // 2]
@@ -69,19 +71,20 @@ Marble = Marble(screen, coordinates, players)
 
 def create_table():
     play = 0
-    if event.type == pg.MOUSEBUTTONDOWN:
-        clicked_sprites = [s for s in sprites if s.collidepoint(pg.mouse.get_pos())]
-        coordinate_circle = clicked_sprites[0].center
-        player = players[play % len(players)]
-        while (
-            len(clicked_sprites) >= 1
-            and len(players[play % len(players)].circles) < 14
-            and not any(p.circles for p in players if coordinate_circle in p.circles)
-        ):
+    for event in pg.event.get():
+        if event.type == pg.MOUSEBUTTONDOWN:
+            clicked_sprites = [s for s in sprites if s.collidepoint(pg.mouse.get_pos())]
+            coordinate_circle = clicked_sprites[0].center
+            player = players[play % len(players)]
+            while (
+                len(clicked_sprites) >= 1
+                and len(players[play % len(players)].marbles) < 14
+                and not any(p.marbles for p in players if coordinate_circle in p.marbles)
+            ):
 
-            player.circles.append(coordinate_circle)
-            pg.draw.circle(screen, player.color, coordinate_circle, radius - 3)
-            play += 1
+                player.marbles.append(coordinate_circle)
+                pg.draw.circle(screen, player.color, coordinate_circle, radius - 3)
+                play += 1
 
 coordinate = [
     coordinates[i][j]
@@ -97,6 +100,9 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
+        
+        if mod == 'Personnalise':
+                create_table()
 
         for circle in Marble.neighbor((x, y)):
             pg.draw.circle(screen, (250, 159, 122), circle, radius)
